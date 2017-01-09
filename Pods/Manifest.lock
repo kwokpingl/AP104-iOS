@@ -1,0 +1,37 @@
+PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - FSCalendar (2.6.0)
+  - SAMKeychain (1.5.2)
+
+DEPENDENCIES:
+  - AFNetworking
+  - FMDB
+  - FSCalendar
+  - SAMKeychain
+
+SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  FSCalendar: c00fa5f4c3ec343ee6f7b804ae19322e9898bb84
+  SAMKeychain: 1865333198217411f35327e8da61b43de79b635b
+
+PODFILE CHECKSUM: 255d58dcee685222a69c3ae31754d71a4be239ca
+
+COCOAPODS: 1.1.1
