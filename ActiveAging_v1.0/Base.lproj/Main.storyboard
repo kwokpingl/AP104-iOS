@@ -12,10 +12,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Account Verification View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="AccountVerificationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -192,6 +192,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="14n-Mb-AIi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2311" y="1001"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="blq-ks-U4I">
+            <objects>
+                <viewController id="vJ3-XF-zrD" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yYt-SB-6Js"/>
+                        <viewControllerLayoutGuide type="bottom" id="fqX-4O-9cQ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TLn-ZV-T6z">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WKt-i0-ea3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="700" y="-996"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="cES-ZD-yjZ">
