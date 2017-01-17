@@ -10,7 +10,7 @@
 
 @implementation Sever
 
-+(void)loginAuthorization:(NSString *)authorization{
++ (void) loginAuthorization:(NSString *)authorization{
     
 }
 

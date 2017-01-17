@@ -21,6 +21,7 @@
 		3DB322121E114FF7002A9FD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DB322111E114FF7002A9FD9 /* Assets.xcassets */; };
 		3DB322151E114FF7002A9FD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB322131E114FF7002A9FD9 /* LaunchScreen.storyboard */; };
 		3DB3221E1E1182DC002A9FD9 /* Weather.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB3221C1E1182DC002A9FD9 /* Weather.storyboard */; };
+		3DC2C1EE1E2B2BB0008778E1 /* KeychainManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DC2C1ED1E2B2BB0008778E1 /* KeychainManager.m */; };
 		99CFA874AD9FCD28C26F7FB0 /* libPods-ActiveAging_v1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,8 @@
 		3DB322141E114FF7002A9FD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3DB322161E114FF7002A9FD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3DB3221D1E1182DC002A9FD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Weather.storyboard; sourceTree = "<group>"; };
+		3DC2C1EC1E2B2BAF008778E1 /* KeychainManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainManager.h; sourceTree = "<group>"; };
+		3DC2C1ED1E2B2BB0008778E1 /* KeychainManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainManager.m; sourceTree = "<group>"; };
 		957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ActiveAging_v1.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B227D972DDCA904F9E93DF17 /* Pods-ActiveAging_v1.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.release.xcconfig"; sourceTree = "<group>"; };
 		B79FEDE8AEA70ECDDC3931BC /* Pods-ActiveAging_v1.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.debug.xcconfig"; sourceTree = "<group>"; };
@@ -121,6 +124,8 @@
 				3D5015621E2607D0006F5F20 /* Sever.m */,
 				3D5015641E2607E4006F5F20 /* DataManager.h */,
 				3D5015651E2607E4006F5F20 /* DataManager.m */,
+				3DC2C1EC1E2B2BAF008778E1 /* KeychainManager.h */,
+				3DC2C1ED1E2B2BB0008778E1 /* KeychainManager.m */,
 			);
 			path = ActiveAging_v1.0;
 			sourceTree = "<group>";
@@ -273,6 +278,7 @@
 				3D5015661E2607E4006F5F20 /* DataManager.m in Sources */,
 				3D5015601E26079C006F5F20 /* AccountVerificationViewController.m in Sources */,
 				3DB3220A1E114FF7002A9FD9 /* AppDelegate.m in Sources */,
+				3DC2C1EE1E2B2BB0008778E1 /* KeychainManager.m in Sources */,
 				3D5015631E2607D0006F5F20 /* Sever.m in Sources */,
 				3DB322071E114FF7002A9FD9 /* main.m in Sources */,
 			);
