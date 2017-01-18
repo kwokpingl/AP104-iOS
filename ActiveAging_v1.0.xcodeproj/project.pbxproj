@@ -7,13 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D45210F1E2EC189002E416C /* KeychainManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D45210E1E2EC189002E416C /* KeychainManager.m */; };
+		3D4521121E2EC1C6002E416C /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D4521111E2EC1C6002E416C /* UserInfo.m */; };
+		3D4521141E2ECDE0002E416C /* Cuties.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3D4521131E2ECDE0002E416C /* Cuties.jpg */; };
+		3D4521181E2ED2F5002E416C /* ServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D4521171E2ED2F5002E416C /* ServerManager.m */; };
+		3D45211B1E2EFB67002E416C /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D45211A1E2EFB67002E416C /* WelcomeViewController.m */; };
+		3D45211E1E2EFBA2002E416C /* InputNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D45211D1E2EFBA2002E416C /* InputNameViewController.m */; };
+		3D4521211E2EFBB1002E416C /* InputPhoneNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D4521201E2EFBB1002E416C /* InputPhoneNumberViewController.m */; };
+		3D4521241E2EFBD3002E416C /* ConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D4521231E2EFBD3002E416C /* ConfirmationViewController.m */; };
+		3D4521271E2EFC08002E416C /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D4521261E2EFC08002E416C /* PhotoViewController.m */; };
+		3D45212B1E2F09BD002E416C /* HomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D45212A1E2F09BD002E416C /* HomePageViewController.m */; };
+		3D45212E1E2F2ADE002E416C /* MapTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D45212D1E2F2ADE002E416C /* MapTabViewController.m */; };
+		3D4521321E2F3159002E416C /* SetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D4521311E2F3159002E416C /* SetupViewController.m */; };
 		3D50154C1E23AB21006F5F20 /* Events.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D50154A1E23AB21006F5F20 /* Events.storyboard */; };
 		3D50154E1E23AB42006F5F20 /* Calendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D50154D1E23AB42006F5F20 /* Calendar.storyboard */; };
 		3D5015501E23ABC2006F5F20 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D50154F1E23ABC2006F5F20 /* Map.storyboard */; };
 		3D5015531E23ABED006F5F20 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D5015511E23ABED006F5F20 /* Contact.storyboard */; };
-		3D5015561E23D451006F5F20 /* AccountChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5015551E23D451006F5F20 /* AccountChecker.m */; };
 		3D5015601E26079C006F5F20 /* AccountVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D50155F1E26079C006F5F20 /* AccountVerificationViewController.m */; };
-		3D5015631E2607D0006F5F20 /* Sever.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5015621E2607D0006F5F20 /* Sever.m */; };
 		3D5015661E2607E4006F5F20 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5015651E2607E4006F5F20 /* DataManager.m */; };
 		3DB322071E114FF7002A9FD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB322061E114FF7002A9FD9 /* main.m */; };
 		3DB3220A1E114FF7002A9FD9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB322091E114FF7002A9FD9 /* AppDelegate.m */; };
@@ -21,21 +31,40 @@
 		3DB322121E114FF7002A9FD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DB322111E114FF7002A9FD9 /* Assets.xcassets */; };
 		3DB322151E114FF7002A9FD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB322131E114FF7002A9FD9 /* LaunchScreen.storyboard */; };
 		3DB3221E1E1182DC002A9FD9 /* Weather.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB3221C1E1182DC002A9FD9 /* Weather.storyboard */; };
-		3DC2C1EE1E2B2BB0008778E1 /* KeychainManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DC2C1ED1E2B2BB0008778E1 /* KeychainManager.m */; };
 		99CFA874AD9FCD28C26F7FB0 /* libPods-ActiveAging_v1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D45210D1E2EC189002E416C /* KeychainManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainManager.h; sourceTree = "<group>"; };
+		3D45210E1E2EC189002E416C /* KeychainManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainManager.m; sourceTree = "<group>"; };
+		3D4521101E2EC1C6002E416C /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
+		3D4521111E2EC1C6002E416C /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
+		3D4521131E2ECDE0002E416C /* Cuties.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Cuties.jpg; sourceTree = "<group>"; };
+		3D4521151E2ED0DE002E416C /* Definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Definitions.h; sourceTree = "<group>"; };
+		3D4521161E2ED2F5002E416C /* ServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerManager.h; sourceTree = "<group>"; };
+		3D4521171E2ED2F5002E416C /* ServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerManager.m; sourceTree = "<group>"; };
+		3D4521191E2EFB67002E416C /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
+		3D45211A1E2EFB67002E416C /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
+		3D45211C1E2EFBA2002E416C /* InputNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputNameViewController.h; sourceTree = "<group>"; };
+		3D45211D1E2EFBA2002E416C /* InputNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputNameViewController.m; sourceTree = "<group>"; };
+		3D45211F1E2EFBB1002E416C /* InputPhoneNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputPhoneNumberViewController.h; sourceTree = "<group>"; };
+		3D4521201E2EFBB1002E416C /* InputPhoneNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputPhoneNumberViewController.m; sourceTree = "<group>"; };
+		3D4521221E2EFBD3002E416C /* ConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmationViewController.h; sourceTree = "<group>"; };
+		3D4521231E2EFBD3002E416C /* ConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmationViewController.m; sourceTree = "<group>"; };
+		3D4521251E2EFC08002E416C /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
+		3D4521261E2EFC08002E416C /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
+		3D4521291E2F09BD002E416C /* HomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePageViewController.h; sourceTree = "<group>"; };
+		3D45212A1E2F09BD002E416C /* HomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageViewController.m; sourceTree = "<group>"; };
+		3D45212C1E2F2ADE002E416C /* MapTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTabViewController.h; sourceTree = "<group>"; };
+		3D45212D1E2F2ADE002E416C /* MapTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTabViewController.m; sourceTree = "<group>"; };
+		3D4521301E2F3159002E416C /* SetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetupViewController.h; sourceTree = "<group>"; };
+		3D4521311E2F3159002E416C /* SetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetupViewController.m; sourceTree = "<group>"; };
 		3D50154B1E23AB21006F5F20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Events.storyboard; sourceTree = "<group>"; };
 		3D50154D1E23AB42006F5F20 /* Calendar.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Calendar.storyboard; sourceTree = "<group>"; };
 		3D50154F1E23ABC2006F5F20 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
 		3D5015521E23ABED006F5F20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Contact.storyboard; sourceTree = "<group>"; };
-		3D5015541E23D451006F5F20 /* AccountChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountChecker.h; sourceTree = "<group>"; };
-		3D5015551E23D451006F5F20 /* AccountChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountChecker.m; sourceTree = "<group>"; };
 		3D50155E1E26079C006F5F20 /* AccountVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountVerificationViewController.h; sourceTree = "<group>"; };
 		3D50155F1E26079C006F5F20 /* AccountVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountVerificationViewController.m; sourceTree = "<group>"; };
-		3D5015611E2607D0006F5F20 /* Sever.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sever.h; sourceTree = "<group>"; };
-		3D5015621E2607D0006F5F20 /* Sever.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sever.m; sourceTree = "<group>"; };
 		3D5015641E2607E4006F5F20 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		3D5015651E2607E4006F5F20 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		3DB322021E114FF7002A9FD9 /* ActiveAging_v1.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ActiveAging_v1.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,8 +76,6 @@
 		3DB322141E114FF7002A9FD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3DB322161E114FF7002A9FD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3DB3221D1E1182DC002A9FD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Weather.storyboard; sourceTree = "<group>"; };
-		3DC2C1EC1E2B2BAF008778E1 /* KeychainManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainManager.h; sourceTree = "<group>"; };
-		3DC2C1ED1E2B2BB0008778E1 /* KeychainManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainManager.m; sourceTree = "<group>"; };
 		957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ActiveAging_v1.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B227D972DDCA904F9E93DF17 /* Pods-ActiveAging_v1.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.release.xcconfig"; sourceTree = "<group>"; };
 		B79FEDE8AEA70ECDDC3931BC /* Pods-ActiveAging_v1.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.debug.xcconfig"; sourceTree = "<group>"; };
@@ -75,13 +102,68 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		3D4521281E2EFC3F002E416C /* MainMenu */ = {
+			isa = PBXGroup;
+			children = (
+				3D4521291E2F09BD002E416C /* HomePageViewController.h */,
+				3D45212A1E2F09BD002E416C /* HomePageViewController.m */,
+			);
+			name = MainMenu;
+			sourceTree = "<group>";
+		};
+		3D45212F1E2F30F1002E416C /* Setup */ = {
+			isa = PBXGroup;
+			children = (
+				3D4521301E2F3159002E416C /* SetupViewController.h */,
+				3D4521311E2F3159002E416C /* SetupViewController.m */,
+			);
+			name = Setup;
+			sourceTree = "<group>";
+		};
+		3D4521331E2F40E5002E416C /* Events */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Events;
+			sourceTree = "<group>";
+		};
+		3D4521341E2F40F7002E416C /* Weather */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Weather;
+			sourceTree = "<group>";
+		};
+		3D4521351E2F40FE002E416C /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Contacts;
+			sourceTree = "<group>";
+		};
+		3D4521361E2F4106002E416C /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Calendar;
+			sourceTree = "<group>";
+		};
 		3D5015571E23D459006F5F20 /* Login Page */ = {
 			isa = PBXGroup;
 			children = (
-				3D5015541E23D451006F5F20 /* AccountChecker.h */,
-				3D5015551E23D451006F5F20 /* AccountChecker.m */,
+				3D4521131E2ECDE0002E416C /* Cuties.jpg */,
 				3D50155E1E26079C006F5F20 /* AccountVerificationViewController.h */,
 				3D50155F1E26079C006F5F20 /* AccountVerificationViewController.m */,
+				3D4521191E2EFB67002E416C /* WelcomeViewController.h */,
+				3D45211A1E2EFB67002E416C /* WelcomeViewController.m */,
+				3D45211C1E2EFBA2002E416C /* InputNameViewController.h */,
+				3D45211D1E2EFBA2002E416C /* InputNameViewController.m */,
+				3D45211F1E2EFBB1002E416C /* InputPhoneNumberViewController.h */,
+				3D4521201E2EFBB1002E416C /* InputPhoneNumberViewController.m */,
+				3D4521221E2EFBD3002E416C /* ConfirmationViewController.h */,
+				3D4521231E2EFBD3002E416C /* ConfirmationViewController.m */,
+				3D4521251E2EFC08002E416C /* PhotoViewController.h */,
+				3D4521261E2EFC08002E416C /* PhotoViewController.m */,
 			);
 			name = "Login Page";
 			sourceTree = "<group>";
@@ -107,10 +189,16 @@
 		3DB322041E114FF7002A9FD9 /* ActiveAging_v1.0 */ = {
 			isa = PBXGroup;
 			children = (
+				3D4521361E2F4106002E416C /* Calendar */,
+				3D4521351E2F40FE002E416C /* Contacts */,
+				3D4521341E2F40F7002E416C /* Weather */,
+				3D4521331E2F40E5002E416C /* Events */,
+				3D45212F1E2F30F1002E416C /* Setup */,
+				3D4521281E2EFC3F002E416C /* MainMenu */,
+				3D5015571E23D459006F5F20 /* Login Page */,
 				EC1309681E2CCCAE00D21982 /* Maps */,
 				3DB322081E114FF7002A9FD9 /* AppDelegate.h */,
 				3DB322091E114FF7002A9FD9 /* AppDelegate.m */,
-				3D5015571E23D459006F5F20 /* Login Page */,
 				3DB3220E1E114FF7002A9FD9 /* Main.storyboard */,
 				3D5015511E23ABED006F5F20 /* Contact.storyboard */,
 				3D50154F1E23ABC2006F5F20 /* Map.storyboard */,
@@ -120,13 +208,16 @@
 				3DB322111E114FF7002A9FD9 /* Assets.xcassets */,
 				3DB322131E114FF7002A9FD9 /* LaunchScreen.storyboard */,
 				3DB322161E114FF7002A9FD9 /* Info.plist */,
+				3D4521151E2ED0DE002E416C /* Definitions.h */,
 				3DB322051E114FF7002A9FD9 /* Supporting Files */,
-				3D5015611E2607D0006F5F20 /* Sever.h */,
-				3D5015621E2607D0006F5F20 /* Sever.m */,
 				3D5015641E2607E4006F5F20 /* DataManager.h */,
 				3D5015651E2607E4006F5F20 /* DataManager.m */,
-				3DC2C1EC1E2B2BAF008778E1 /* KeychainManager.h */,
-				3DC2C1ED1E2B2BB0008778E1 /* KeychainManager.m */,
+				3D4521161E2ED2F5002E416C /* ServerManager.h */,
+				3D4521171E2ED2F5002E416C /* ServerManager.m */,
+				3D4521101E2EC1C6002E416C /* UserInfo.h */,
+				3D4521111E2EC1C6002E416C /* UserInfo.m */,
+				3D45210D1E2EC189002E416C /* KeychainManager.h */,
+				3D45210E1E2EC189002E416C /* KeychainManager.m */,
 			);
 			path = ActiveAging_v1.0;
 			sourceTree = "<group>";
@@ -150,6 +241,8 @@
 		EC1309681E2CCCAE00D21982 /* Maps */ = {
 			isa = PBXGroup;
 			children = (
+				3D45212C1E2F2ADE002E416C /* MapTabViewController.h */,
+				3D45212D1E2F2ADE002E416C /* MapTabViewController.m */,
 			);
 			name = Maps;
 			sourceTree = "<group>";
@@ -222,6 +315,7 @@
 				3DB3221E1E1182DC002A9FD9 /* Weather.storyboard in Resources */,
 				3DB322121E114FF7002A9FD9 /* Assets.xcassets in Resources */,
 				3D5015531E23ABED006F5F20 /* Contact.storyboard in Resources */,
+				3D4521141E2ECDE0002E416C /* Cuties.jpg in Resources */,
 				3DB322101E114FF7002A9FD9 /* Main.storyboard in Resources */,
 				3D50154C1E23AB21006F5F20 /* Events.storyboard in Resources */,
 			);
@@ -282,12 +376,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D5015561E23D451006F5F20 /* AccountChecker.m in Sources */,
+				3D45211E1E2EFBA2002E416C /* InputNameViewController.m in Sources */,
+				3D4521121E2EC1C6002E416C /* UserInfo.m in Sources */,
+				3D45211B1E2EFB67002E416C /* WelcomeViewController.m in Sources */,
 				3D5015661E2607E4006F5F20 /* DataManager.m in Sources */,
 				3D5015601E26079C006F5F20 /* AccountVerificationViewController.m in Sources */,
+				3D4521211E2EFBB1002E416C /* InputPhoneNumberViewController.m in Sources */,
+				3D45212B1E2F09BD002E416C /* HomePageViewController.m in Sources */,
+				3D4521271E2EFC08002E416C /* PhotoViewController.m in Sources */,
+				3D4521241E2EFBD3002E416C /* ConfirmationViewController.m in Sources */,
+				3D4521181E2ED2F5002E416C /* ServerManager.m in Sources */,
 				3DB3220A1E114FF7002A9FD9 /* AppDelegate.m in Sources */,
-				3DC2C1EE1E2B2BB0008778E1 /* KeychainManager.m in Sources */,
-				3D5015631E2607D0006F5F20 /* Sever.m in Sources */,
+				3D45212E1E2F2ADE002E416C /* MapTabViewController.m in Sources */,
+				3D45210F1E2EC189002E416C /* KeychainManager.m in Sources */,
+				3D4521321E2F3159002E416C /* SetupViewController.m in Sources */,
 				3DB322071E114FF7002A9FD9 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

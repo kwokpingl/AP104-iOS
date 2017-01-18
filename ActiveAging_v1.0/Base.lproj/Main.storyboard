@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -42,50 +41,18 @@
                         </constraints>
                     </view>
                     <connections>
-                        <segue destination="gPh-io-7u4" kind="show" id="Wyd-L8-WWO"/>
-                        <segue destination="W3A-zp-uPp" kind="show" id="O6H-rn-N9v"/>
+                        <segue destination="gPh-io-7u4" kind="show" identifier="SignUp" id="Wyd-L8-WWO"/>
+                        <segue destination="N9w-YS-dxt" kind="show" identifier="Login" id="OAx-5s-wNm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-474" y="78"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="RbZ-zT-Yhd">
-            <objects>
-                <viewController id="W3A-zp-uPp" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="lPG-R7-1Np"/>
-                        <viewControllerLayoutGuide type="bottom" id="7Ft-ZN-16a"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="dBz-Au-nnj">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QuQ-kM-lQX">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="QuQ-kM-lQX" secondAttribute="trailing" id="Hs6-8f-wfe"/>
-                            <constraint firstItem="QuQ-kM-lQX" firstAttribute="top" secondItem="dBz-Au-nnj" secondAttribute="top" id="OSW-5f-jFL"/>
-                            <constraint firstItem="QuQ-kM-lQX" firstAttribute="bottom" secondItem="7Ft-ZN-16a" secondAttribute="top" id="chd-wm-pcm"/>
-                            <constraint firstItem="QuQ-kM-lQX" firstAttribute="leading" secondItem="dBz-Au-nnj" secondAttribute="leading" id="hMf-uz-XhI"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <segue destination="N9w-YS-dxt" kind="show" id="sgu-HU-Hsf"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Mw7-p6-WPs" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="585" y="1002"/>
-        </scene>
         <!--今天有啥好玩的呢?-->
         <scene sceneID="GpT-D7-Yhx">
             <objects>
-                <viewController id="n5L-fl-gzX" sceneMemberID="viewController">
+                <viewController id="n5L-fl-gzX" customClass="HomePageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BOF-DE-K14"/>
                         <viewControllerLayoutGuide type="bottom" id="H0k-k9-duU"/>
@@ -133,6 +100,9 @@
                                 <rect key="frame" x="204" y="454" width="95" height="95"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="設定"/>
+                                <connections>
+                                    <segue destination="wm7-xh-D66" kind="show" id="4YV-XH-Zgp"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITB-8l-xUF">
                                 <rect key="frame" x="89" y="454" width="95" height="95"/>
@@ -211,10 +181,10 @@
             </objects>
             <point key="canvasLocation" x="700" y="-996"/>
         </scene>
-        <!--View Controller-->
+        <!--Welcome View Controller-->
         <scene sceneID="cES-ZD-yjZ">
             <objects>
-                <viewController id="gPh-io-7u4" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WelcomeViewController" id="gPh-io-7u4" customClass="WelcomeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5ar-Om-xvB"/>
                         <viewControllerLayoutGuide type="bottom" id="IKc-6y-2z9"/>
@@ -255,7 +225,7 @@
         <!--請輸入您的姓名-->
         <scene sceneID="3i6-oE-JdR">
             <objects>
-                <viewController id="Gxr-8l-iAc" sceneMemberID="viewController">
+                <viewController id="Gxr-8l-iAc" customClass="InputNameViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="v7l-n3-trX"/>
                         <viewControllerLayoutGuide type="bottom" id="yH5-px-16q"/>
@@ -281,15 +251,12 @@
                                     </textField>
                                 </subviews>
                             </stackView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P2K-Ym-3Cl">
-                                <rect key="frame" x="0.0" y="407" width="375" height="170"/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yqR-QZ-VkX">
                                 <rect key="frame" x="0.0" y="577" width="375" height="90"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="下一步"/>
                                 <connections>
-                                    <segue destination="X55-MP-Byp" kind="show" id="3Ha-LY-VBz"/>
+                                    <action selector="nextButtonPressed:" destination="Gxr-8l-iAc" eventType="touchUpInside" id="AUU-H4-WIz"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -297,19 +264,28 @@
                         <constraints>
                             <constraint firstItem="yqR-QZ-VkX" firstAttribute="leading" secondItem="BPP-3l-o10" secondAttribute="leading" id="BLX-5c-RXM"/>
                             <constraint firstItem="yqR-QZ-VkX" firstAttribute="height" secondItem="BPP-3l-o10" secondAttribute="height" multiplier="90:667" id="ISz-HB-Ufs"/>
-                            <constraint firstItem="yqR-QZ-VkX" firstAttribute="top" secondItem="P2K-Ym-3Cl" secondAttribute="bottom" id="Qg9-KV-g68"/>
-                            <constraint firstAttribute="trailing" secondItem="P2K-Ym-3Cl" secondAttribute="trailing" id="RYf-24-Gkx"/>
                             <constraint firstItem="yH5-px-16q" firstAttribute="top" secondItem="yqR-QZ-VkX" secondAttribute="bottom" id="Rt8-XA-Jjt"/>
                             <constraint firstAttribute="trailing" secondItem="OhV-87-amx" secondAttribute="trailing" id="WHr-D6-CZ7"/>
                             <constraint firstAttribute="trailing" secondItem="yqR-QZ-VkX" secondAttribute="trailing" id="dPJ-ox-bvg"/>
-                            <constraint firstItem="P2K-Ym-3Cl" firstAttribute="height" secondItem="BPP-3l-o10" secondAttribute="height" multiplier="170:667" id="h6l-Vm-QHm"/>
                             <constraint firstItem="OhV-87-amx" firstAttribute="height" secondItem="BPP-3l-o10" secondAttribute="height" multiplier="100:667" id="oa3-ah-lLF"/>
-                            <constraint firstItem="P2K-Ym-3Cl" firstAttribute="leading" secondItem="BPP-3l-o10" secondAttribute="leading" id="pUN-Yu-f0v"/>
                             <constraint firstItem="OhV-87-amx" firstAttribute="leading" secondItem="BPP-3l-o10" secondAttribute="leading" id="tEx-VX-6pn"/>
                             <constraint firstItem="OhV-87-amx" firstAttribute="top" secondItem="v7l-n3-trX" secondAttribute="bottom" constant="100" id="xvD-Af-hOc"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="請輸入您的姓名" id="mZ1-7A-DJ5"/>
+                    <navigationItem key="navigationItem" title="請輸入您的姓名" id="mZ1-7A-DJ5">
+                        <barButtonItem key="backBarButtonItem" title="回上頁" id="bN7-mf-7p7"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="undo" id="FWM-zZ-jU4">
+                            <connections>
+                                <action selector="undoButtonPressed:" destination="Gxr-8l-iAc" id="EbV-2B-ZO5"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="firstnameTextField" destination="8H8-0s-QYV" id="Tv4-mf-jXL"/>
+                        <outlet property="lastnameTextField" destination="l7U-Ae-Lps" id="Sd1-3m-hUB"/>
+                        <outlet property="nextButton" destination="yqR-QZ-VkX" id="72j-My-7KT"/>
+                        <segue destination="X55-MP-Byp" kind="show" identifier="inputPhoneNumber" id="fQT-tN-WD9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MZO-FN-vnR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -318,7 +294,7 @@
         <!--請輸入您的手機號碼-->
         <scene sceneID="Fwp-Lk-1kw">
             <objects>
-                <viewController id="X55-MP-Byp" sceneMemberID="viewController">
+                <viewController id="X55-MP-Byp" customClass="InputPhoneNumberViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tth-ET-4c9"/>
                         <viewControllerLayoutGuide type="bottom" id="tXg-Uk-A88"/>
@@ -333,36 +309,41 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GOO-E5-2Hk">
-                                <rect key="frame" x="0.0" y="407" width="375" height="170"/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hxY-GT-Y6z">
                                 <rect key="frame" x="0.0" y="577" width="375" height="90"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="下一步"/>
                                 <connections>
-                                    <segue destination="IUe-yt-ACD" kind="show" id="7fA-Lb-DTM"/>
+                                    <action selector="nextButtonPressed:" destination="X55-MP-Byp" eventType="touchUpInside" id="2AE-qh-plj"/>
                                 </connections>
                             </button>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qEd-Um-m0f">
+                                <rect key="frame" x="0.0" y="353" width="375" height="216"/>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="daB-Ij-m4M" secondAttribute="trailing" id="0CR-vy-y7h"/>
-                            <constraint firstItem="hxY-GT-Y6z" firstAttribute="top" secondItem="GOO-E5-2Hk" secondAttribute="bottom" id="5rX-2s-uHB"/>
                             <constraint firstItem="hxY-GT-Y6z" firstAttribute="height" secondItem="RLY-jn-DYL" secondAttribute="height" multiplier="90:667" id="6E5-hM-wLx"/>
                             <constraint firstItem="tXg-Uk-A88" firstAttribute="top" secondItem="hxY-GT-Y6z" secondAttribute="bottom" id="9IH-ZU-1RS"/>
+                            <constraint firstItem="qEd-Um-m0f" firstAttribute="trailing" secondItem="hxY-GT-Y6z" secondAttribute="trailing" id="Cs3-dD-AjA"/>
                             <constraint firstItem="daB-Ij-m4M" firstAttribute="top" secondItem="tth-ET-4c9" secondAttribute="bottom" constant="100" id="D45-du-eER"/>
-                            <constraint firstAttribute="trailing" secondItem="GOO-E5-2Hk" secondAttribute="trailing" id="Gip-ZP-JaV"/>
-                            <constraint firstItem="GOO-E5-2Hk" firstAttribute="height" secondItem="RLY-jn-DYL" secondAttribute="height" multiplier="170:667" id="Rix-Ea-WN2"/>
+                            <constraint firstItem="qEd-Um-m0f" firstAttribute="leading" secondItem="hxY-GT-Y6z" secondAttribute="leading" id="Knk-tN-Rfb"/>
                             <constraint firstAttribute="trailing" secondItem="hxY-GT-Y6z" secondAttribute="trailing" id="SNq-kY-aTR"/>
+                            <constraint firstItem="hxY-GT-Y6z" firstAttribute="top" secondItem="qEd-Um-m0f" secondAttribute="bottom" constant="8" symbolic="YES" id="ZH3-AD-p1V"/>
                             <constraint firstItem="daB-Ij-m4M" firstAttribute="leading" secondItem="RLY-jn-DYL" secondAttribute="leading" id="Zdh-lA-Mzn"/>
                             <constraint firstItem="hxY-GT-Y6z" firstAttribute="leading" secondItem="RLY-jn-DYL" secondAttribute="leading" id="hu6-8Z-vrU"/>
-                            <constraint firstItem="GOO-E5-2Hk" firstAttribute="leading" secondItem="RLY-jn-DYL" secondAttribute="leading" id="l5S-hS-In6"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="請輸入您的手機號碼" id="SKK-zb-rcA">
                         <barButtonItem key="backBarButtonItem" title="回上頁" id="jj7-HL-zlB"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="areaPicker" destination="qEd-Um-m0f" id="q1T-NT-P6C"/>
+                        <outlet property="nextButton" destination="hxY-GT-Y6z" id="446-4O-hwK"/>
+                        <outlet property="phoneNumberTextField" destination="daB-Ij-m4M" id="LrO-gz-USY"/>
+                        <segue destination="IUe-yt-ACD" kind="show" identifier="confirmation" id="dGB-xa-O9C"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3eN-Z9-MeC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -371,7 +352,7 @@
         <!--請輸入驗證碼-->
         <scene sceneID="rKq-zY-6gH">
             <objects>
-                <viewController id="IUe-yt-ACD" sceneMemberID="viewController">
+                <viewController id="IUe-yt-ACD" customClass="ConfirmationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ubt-GG-lvW"/>
                         <viewControllerLayoutGuide type="bottom" id="ptt-GV-VJA"/>
@@ -380,15 +361,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WJM-tW-ULE">
-                                <rect key="frame" x="0.0" y="407" width="375" height="170"/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xBE-Tp-aMJ">
                                 <rect key="frame" x="0.0" y="577" width="375" height="90"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="還差一點點"/>
                                 <connections>
-                                    <segue destination="xZH-mc-ysR" kind="show" id="DSg-6P-iou"/>
+                                    <action selector="nextButtonPressed:" destination="IUe-yt-ACD" eventType="touchUpInside" id="EQx-ah-yZ0"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="驗証碼" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="O37-2q-gDM">
@@ -402,18 +380,19 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="O37-2q-gDM" secondAttribute="trailing" id="135-DG-wMC"/>
                             <constraint firstItem="ptt-GV-VJA" firstAttribute="top" secondItem="xBE-Tp-aMJ" secondAttribute="bottom" id="1Lj-qX-02G"/>
-                            <constraint firstAttribute="trailing" secondItem="WJM-tW-ULE" secondAttribute="trailing" id="GJ3-k7-BoG"/>
-                            <constraint firstItem="WJM-tW-ULE" firstAttribute="leading" secondItem="qev-Od-Jxw" secondAttribute="leading" id="bvy-CV-lsg"/>
                             <constraint firstItem="O37-2q-gDM" firstAttribute="leading" secondItem="qev-Od-Jxw" secondAttribute="leading" id="eCi-Gl-MP7"/>
                             <constraint firstItem="O37-2q-gDM" firstAttribute="top" secondItem="Ubt-GG-lvW" secondAttribute="bottom" constant="100" id="eci-yW-flf"/>
                             <constraint firstItem="xBE-Tp-aMJ" firstAttribute="height" secondItem="qev-Od-Jxw" secondAttribute="height" multiplier="90:667" id="fbB-QN-Z8L"/>
                             <constraint firstAttribute="trailing" secondItem="xBE-Tp-aMJ" secondAttribute="trailing" id="iAf-w4-c5v"/>
-                            <constraint firstItem="WJM-tW-ULE" firstAttribute="height" secondItem="qev-Od-Jxw" secondAttribute="height" multiplier="170:667" id="jni-id-fUW"/>
-                            <constraint firstItem="xBE-Tp-aMJ" firstAttribute="top" secondItem="WJM-tW-ULE" secondAttribute="bottom" id="jp5-04-dgI"/>
                             <constraint firstItem="xBE-Tp-aMJ" firstAttribute="leading" secondItem="qev-Od-Jxw" secondAttribute="leading" id="upS-8P-dd3"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="請輸入驗證碼" id="nxw-eA-Bb3"/>
+                    <connections>
+                        <outlet property="nextButton" destination="xBE-Tp-aMJ" id="OHt-qg-0m3"/>
+                        <outlet property="verificationCodeTextField" destination="O37-2q-gDM" id="PQV-8l-liW"/>
+                        <segue destination="xZH-mc-ysR" kind="show" identifier="inputPicture" id="CCp-yb-DyX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LnR-RR-MTu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -422,7 +401,7 @@
         <!--請貼上亮亮照片-->
         <scene sceneID="gm1-y5-alp">
             <objects>
-                <viewController id="xZH-mc-ysR" sceneMemberID="viewController">
+                <viewController id="xZH-mc-ysR" customClass="PhotoViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="P0x-p1-FfQ"/>
                         <viewControllerLayoutGuide type="bottom" id="muk-3D-E0n"/>
@@ -431,15 +410,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yK5-yi-1fh">
-                                <rect key="frame" x="0.0" y="407" width="375" height="170"/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vat-dV-OOd">
                                 <rect key="frame" x="0.0" y="577" width="375" height="90"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="完成"/>
+                                <connections>
+                                    <action selector="finishButtonPressed:" destination="xZH-mc-ysR" eventType="touchUpInside" id="scj-ws-VHh"/>
+                                </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xYR-br-ilR">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xYR-br-ilR">
                                 <rect key="frame" x="72" y="147" width="230" height="230"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="xYR-br-ilR" secondAttribute="height" multiplier="1:1" id="31c-QX-woz"/>
@@ -450,21 +429,18 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="vat-dV-OOd" secondAttribute="trailing" id="2KT-D1-SBU"/>
                             <constraint firstItem="xYR-br-ilR" firstAttribute="height" secondItem="Fcb-vd-7L0" secondAttribute="height" multiplier="230:667" id="7Rs-DM-7DG"/>
-                            <constraint firstItem="vat-dV-OOd" firstAttribute="top" secondItem="yK5-yi-1fh" secondAttribute="bottom" id="9aV-kS-GC2"/>
-                            <constraint firstItem="vat-dV-OOd" firstAttribute="top" secondItem="yK5-yi-1fh" secondAttribute="bottom" id="Epp-c4-AqP"/>
                             <constraint firstItem="vat-dV-OOd" firstAttribute="leading" secondItem="Fcb-vd-7L0" secondAttribute="leading" id="Fag-sD-IVC"/>
-                            <constraint firstItem="yK5-yi-1fh" firstAttribute="top" secondItem="xYR-br-ilR" secondAttribute="bottom" constant="30" id="I7N-wG-yoX"/>
                             <constraint firstItem="muk-3D-E0n" firstAttribute="top" secondItem="vat-dV-OOd" secondAttribute="bottom" id="IVs-Jb-KuX"/>
-                            <constraint firstAttribute="trailing" secondItem="yK5-yi-1fh" secondAttribute="trailing" id="XWI-Y1-9nw"/>
                             <constraint firstItem="vat-dV-OOd" firstAttribute="height" secondItem="Fcb-vd-7L0" secondAttribute="height" multiplier="90:667" id="YQn-ja-Rxl"/>
                             <constraint firstItem="xYR-br-ilR" firstAttribute="centerX" secondItem="Fcb-vd-7L0" secondAttribute="centerX" id="btL-n5-V1R"/>
-                            <constraint firstItem="yK5-yi-1fh" firstAttribute="leading" secondItem="Fcb-vd-7L0" secondAttribute="leading" id="cac-NK-J5U"/>
-                            <constraint firstItem="yK5-yi-1fh" firstAttribute="height" secondItem="Fcb-vd-7L0" secondAttribute="height" multiplier="170:667" id="pw0-66-PPq"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="請貼上亮亮照片" id="tFe-VM-huG">
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="ylG-Wx-b9Z"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="camera" id="ylG-Wx-b9Z"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="finishedButton" destination="vat-dV-OOd" id="FY6-Y7-kVw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CNF-9G-NgJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -545,6 +521,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a9A-xy-yNh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2549" y="1454"/>
+        </scene>
+        <!--Setup View Controller-->
+        <scene sceneID="ZP7-GB-AR4">
+            <objects>
+                <viewController id="wm7-xh-D66" customClass="SetupViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GV0-EE-k7J"/>
+                        <viewControllerLayoutGuide type="bottom" id="eec-2T-3CW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3xo-SJ-wTr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dkb-c8-fkU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3593" y="1269"/>
         </scene>
     </scenes>
 </document>
