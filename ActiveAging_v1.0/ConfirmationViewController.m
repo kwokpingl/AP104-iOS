@@ -40,9 +40,6 @@
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     
-//    
-//    NSString * message = _serverMgr.message;
-//
     
     [_nextButton setEnabled:true];
     
@@ -51,26 +48,7 @@
 }
 
 - (IBAction)nextButtonPressed:(id)sender {
-    [_serverMgr loginAuthorization:@"user" UserName:[_userInfo getUsername] UserPhoneNumber:[_userInfo getPassword] Action:@"create"];
-    
-    if ([_keyMgr setKeychainObject:[_userInfo getUsername] forKey:[_userInfo getPassword]]){
-        [_nextButton setEnabled:true];
-        [self performSegueWithIdentifier:@"inputPicture" sender:self];
-    } else {
-        NSString * message = @"error at keyChain";
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"對話框"
-                                     message:message
-                                     preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction * ok = [UIAlertAction
-                                  actionWithTitle:@"OK"
-                                  style:UIAlertActionStyleDefault
-                                  handler:nil];
-            [alert addAction:ok];
-            [self presentViewController:alert animated:true completion:nil];
-    }
-    
-    
+    [self performSegueWithIdentifier:@"InputPhoto" sender:self];
 }
 
 

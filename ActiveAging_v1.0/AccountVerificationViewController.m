@@ -15,7 +15,9 @@
 @interface AccountVerificationViewController (){
     KeychainManager * _keyChainManager;
     UserInfo * _userInfo;
+    BOOL foundKeychain;
 }
+@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
 
 @end
 
@@ -31,26 +33,36 @@
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     imageView.image = [UIImage imageNamed:@"Cuties.jpg"];
     [self.view addSubview:imageView];
+    foundKeychain = [_keyChainManager foundKeychain];
+    
+
     
     // Check if KEYCHAIN_ITEM is AVALIABLE
-    if ([_keyChainManager foundKeychain]){
-        
-        [self performSegueWithIdentifier:@"Login" sender:self];
-        
+    if (foundKeychain){
+        [_welcomeLabel setText:[NSString stringWithFormat:@"歡迎回來%@", [_userInfo getUsername]]];
     }else{
-        
-        [self performSegueWithIdentifier:@"SignUp" sender:self];
-
+        [_welcomeLabel setText:@"歡迎來到「哈啦哈啦趣」"];
     }
-    
+    NSTimer * timer = [NSTimer scheduledTimerWithTimeInterval:2.0 repeats:false block:^(NSTimer * _Nonnull timer) {
+        [self segueSwitching:timer];
+    }];
+    [timer fire];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 
+- (void) segueSwitching:(NSTimer *) timer{
+    [timer invalidate];
+    if (foundKeychain){
+        [self performSegueWithIdentifier:@"Login" sender:self];
+    } else {
+        [self performSegueWithIdentifier:@"SignUp" sender:self];
+    }
+}
 
 
 /*
