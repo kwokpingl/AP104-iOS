@@ -59,10 +59,10 @@ completion:(DoneHandler)done{
 
 // MARK: RETRIEVE_EVENTS
 - (void) retrieveEventInfo:(NSString *)action
-                    UserID:(NSString *)userID
+                    UserID:(NSInteger )userID
                    EventID:(NSString *)eventID
                 completion:(DoneHandler)done{
-    NSDictionary * jsonObj = @{USER_ID_KEY: userID,
+    NSDictionary * jsonObj = @{USER_ID_KEY: @(userID),
                                EVENT_ID_KEY:eventID,
                                ACTION_KEY: action
                                };

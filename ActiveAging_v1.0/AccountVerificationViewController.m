@@ -57,7 +57,8 @@
         [_serverMgr loginAuthorization:@"user" UserName:_userInfo.getUsername UserPhoneNumber:_userInfo.getPassword Action:ACTION_GET_ID completion:^(NSError *error, id result) {
             if ([result[@"result"] boolValue]){
                 [_welcomeLabel setText:[NSString stringWithFormat:@"歡迎回來%@", [_userInfo getUsername]]];
-//                [_userInfo setUserID:<#(NSInteger)#>]
+                NSString * userID = result[@"message"];
+                [_userInfo setUserID:[userID integerValue]];
                 [timer fire];
             } else {
                 [_welcomeLabel setText:@"Something Wrong"];

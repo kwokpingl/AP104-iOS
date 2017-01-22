@@ -55,11 +55,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="B1Q-i9-4ec">
-                                                    <rect key="frame" x="10" y="0.0" width="61.5" height="43.5"/>
+                                                    <rect key="frame" x="10" y="0.0" width="61.5" height="54.5"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="01D-aB-HiQ">
-                                                    <rect key="frame" x="81.5" y="0.0" width="226.5" height="43.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                    <rect key="frame" x="81.5" y="0.0" width="226.5" height="54.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -127,11 +127,19 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="緊急連絡"/>
                             </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TAe-bV-qfo">
+                                <rect key="frame" x="0.0" y="64" width="375" height="467"/>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="qLo-IP-Phs" firstAttribute="trailing" secondItem="31M-AG-ohg" secondAttribute="trailingMargin" id="ADj-kC-Tll"/>
+                            <constraint firstItem="TAe-bV-qfo" firstAttribute="width" secondItem="31M-AG-ohg" secondAttribute="width" id="IdZ-IZ-xz5"/>
+                            <constraint firstItem="TAe-bV-qfo" firstAttribute="leading" secondItem="31M-AG-ohg" secondAttribute="leading" id="K8s-cf-a2j"/>
+                            <constraint firstAttribute="trailing" secondItem="TAe-bV-qfo" secondAttribute="trailing" id="d2s-bA-Pd5"/>
                             <constraint firstItem="4VD-pe-QK9" firstAttribute="top" secondItem="qLo-IP-Phs" secondAttribute="bottom" id="jjd-p6-dVu"/>
+                            <constraint firstItem="TAe-bV-qfo" firstAttribute="top" secondItem="Nnu-H8-vLG" secondAttribute="bottom" id="lP2-Ul-1Uz"/>
+                            <constraint firstItem="TAe-bV-qfo" firstAttribute="height" secondItem="31M-AG-ohg" secondAttribute="height" multiplier="0.7" id="vau-2F-Qbn"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="活動資料" id="a5h-XK-xvY">

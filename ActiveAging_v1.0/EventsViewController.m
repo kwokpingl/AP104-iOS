@@ -9,14 +9,17 @@
 #import "EventsViewController.h"
 #import "EventTableViewCell.h"
 #import "ServerManager.h" // retrieveEventInfo
+#import "UserInfo.h"
 
 
 
 @interface EventsViewController ()<UITableViewDelegate, UITableViewDataSource>{
     
     NSDictionary * eventsDict;
+    NSArray * eventsArray;
     ServerManager * _serverMgr;
-    
+    UserInfo * _userInfo;
+    NSString * currentPage;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
@@ -29,10 +32,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    eventsDict = [NSMutableDictionary new];
     _serverMgr = [ServerManager shareInstance];
+    _userInfo = [UserInfo shareInstance];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    currentPage = @"notJoined";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -42,23 +46,63 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     // start loading the data
-//    _serverMgr retrieveEventInfo:USER_EVENT_FETCH UserID:<#(NSString *)#> EventID:<#(NSString *)#> completion:<#^(NSError *error, id result)done#>
+    [_serverMgr retrieveEventInfo:USER_EVENT_FETCH UserID:_userInfo.getUserID EventID:@"" completion:^(NSError *error, id result) {
+        if ([result[@"result"] boolValue]){
+            eventsDict = [[NSDictionary alloc] initWithDictionary:result[@"message"]];
+            [_tableView reloadData];
+        }
+    }];
     
     // then reload Table
 }
 
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    
-//}
-//
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//}
+
+#pragma mark- TABLEVIEW_METHODS
+// MARK: BASIC_SETUP
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    eventsArray = [[NSArray alloc] initWithArray:eventsDict[currentPage]];
+    return eventsArray.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    EventTableViewCell * cell = [_tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    cell.eventTitleLabel.text = eventsArray[indexPath.row][EVENT_TITLE_KEY];
+    // also image
+    
+    
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
+    EventTableViewCell * cell = [_tableView cellForRowAtIndexPath:indexPath];
+    
+    NSString * cellTitle = cell.eventTitleLabel.text;
+    
+    if ([cellTitle isEqualToString:eventsArray[indexPath.row][EVENT_TITLE_KEY]]){
+        cell.eventTitleLabel.text = eventsArray[indexPath.row][EVENT_REG_BEGIN_KEY];
+    } else {
+        cell.eventTitleLabel.text = eventsArray[indexPath.row][EVENT_TITLE_KEY];
+    }
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+}
+
 - (IBAction)locationButtonPressed:(id)sender {
+    
+    
+    
 }
 
 - (IBAction)recordButtonPressed:(id)sender {
+    if ([currentPage isEqualToString:@"notJoined"]){
+        currentPage = @"joined";
+    } else {
+        currentPage = @"notJoined";
+    }
 }
+
 
 
 /*

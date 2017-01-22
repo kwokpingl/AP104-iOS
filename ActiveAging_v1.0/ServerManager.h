@@ -33,7 +33,7 @@ typedef void (^DoneHandler)(NSError *error,id result);
                     completion: (DoneHandler) done;
 
 - (void) retrieveEventInfo: (NSString *) action
-                    UserID: (NSString *) userID
+                    UserID: (NSInteger ) userID
                    EventID: (NSString *) eventID
                 completion:(DoneHandler) done;
 
