@@ -54,9 +54,10 @@
     // Check if KEYCHAIN_ITEM is AVALIABLE
     if (foundKeychain){
         // check if user is correct
-        [_serverMgr loginAuthorization:@"user" UserName:_userInfo.getUsername UserPhoneNumber:_userInfo.getPassword Action:ACTION_CHECK completion:^(NSError *error, id result) {
-            if (![result[@"result"] boolValue]){
+        [_serverMgr loginAuthorization:@"user" UserName:_userInfo.getUsername UserPhoneNumber:_userInfo.getPassword Action:ACTION_GET_ID completion:^(NSError *error, id result) {
+            if ([result[@"result"] boolValue]){
                 [_welcomeLabel setText:[NSString stringWithFormat:@"歡迎回來%@", [_userInfo getUsername]]];
+//                [_userInfo setUserID:<#(NSInteger)#>]
                 [timer fire];
             } else {
                 [_welcomeLabel setText:@"Something Wrong"];

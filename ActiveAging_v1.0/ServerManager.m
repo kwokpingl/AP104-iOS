@@ -7,7 +7,6 @@
 //
 
 #import "ServerManager.h"
-#import "Definitions.h"
 #import <AFNetworking.h>
 
 static ServerManager * serverMng = nil;
@@ -22,6 +21,7 @@ static ServerManager * serverMng = nil;
 
 
 #pragma mark - USER_METHODS_AFN
+// MARK: LOGIN_METHOD
 - (void) loginAuthorization:(NSString *)authorization UserName:(NSString *)userName UserPhoneNumber:(NSString *)userPhoneNumber Action: (NSString *) action completion: (DoneHandler) done{
     NSDictionary * jsonObj = @{AUTHORIZATION_KEY: authorization,
                                USER_NAME_KEY:userName,
@@ -33,6 +33,47 @@ static ServerManager * serverMng = nil;
     
 }
 
+
+// MARK: UPLOAD_PICTURE
+- (void) uploadPictureWithData: (NSData *) data Authorization:
+(NSString *) authorization
+UserName:(NSString *) userName
+UserPhoneNumber:(NSString *)userPhoneNumber
+completion:(DoneHandler)done{
+    NSDictionary * jsonObj = @{AUTHORIZATION_KEY: authorization,
+                               USER_NAME_KEY: userName,
+                               USER_PHONENUMBER_KEY: userPhoneNumber};
+    
+
+    [self doPost:UPLOAD_PIC_URL
+      parameters:jsonObj
+            data:data
+      completion:done];
+    
+}
+
+
+// MARK: RETRIEVE_USERINFO
+
+
+
+// MARK: RETRIEVE_EVENTS
+- (void) retrieveEventInfo:(NSString *)action
+                    UserID:(NSString *)userID
+                   EventID:(NSString *)eventID
+                completion:(DoneHandler)done{
+    NSDictionary * jsonObj = @{USER_ID_KEY: userID,
+                               EVENT_ID_KEY:eventID,
+                               ACTION_KEY: action
+                               };
+    
+    [self doPost:EVENTS_REGISTER_URL parameters:jsonObj completion:done];
+}
+
+
+#pragma mark - PRIVATE_METHODS
+
+// MARK: DO_POST
 - (void) doPost:(NSString*) urlString
      parameters:(NSDictionary*)parameters
      completion:(DoneHandler) done{
@@ -52,34 +93,18 @@ static ServerManager * serverMng = nil;
               parameters:finalParameter
                 progress:nil
                  success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        NSLog(@"SUCCESS LOGIN: %@", responseObject);
-        done(nil,responseObject);
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        NSLog(@"ERROR LOGIN: %@", error);
-        done(error, nil);
-    }];
+                     
+                     NSLog(@"SUCCESS LOGIN: %@", responseObject);
+                     done(nil,responseObject);
+                     
+                 } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                     
+                     NSLog(@"ERROR LOGIN: %@", error);
+                     done(error, nil);
+                 }];
 }
 
-- (void) uploadPictureWithData: (NSData *) data Authorization:
-(NSString *) authorization
-UserName:(NSString *) userName
-UserPhoneNumber:(NSString *)userPhoneNumber
-completion:(DoneHandler)done{
-    NSDictionary * jsonObj = @{AUTHORIZATION_KEY: authorization,
-                               USER_NAME_KEY: userName,
-                               USER_PHONENUMBER_KEY: userPhoneNumber};
-    
-
-    [self doPost:UPLOAD_PIC_URL
-      parameters:jsonObj
-            data:data
-      completion:done];
-    
-}
-
+// MARK: DO_POST_WITH_DATA
 - (void) doPost:(NSString*) urlString
      parameters:(NSDictionary*)parameters
            data: (NSData *) data
@@ -125,12 +150,17 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
     
 }
 
+#pragma mark - STILL_WORKING_ON
 // MARK: RETRIEVE_INFO
-- (void) retrieveInfo: (NSString *) user{
-    
-}
+//- (NSDictionary *) retrieveInfo:(NSInteger) userID {
+//    
+//}
 
 // MARK: DELETE_ACCOUNT
+
+
+
+
 
 #pragma mark - USER_METHODS
 //- (void) loginAuthorization:(NSString *) authorization

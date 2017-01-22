@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Definitions.h"
 
 typedef void (^DoneHandler)(NSError *error,id result);
+//typedef void (^DICTIONARY_RETRIEVER)(NSMutableDictionary* dict);
 
 @interface ServerManager : NSObject
 @property (nonatomic, strong) NSString * message;
@@ -29,5 +31,11 @@ typedef void (^DoneHandler)(NSError *error,id result);
 
                UserPhoneNumber: (NSString *) userPhoneNumber
                     completion: (DoneHandler) done;
+
+- (void) retrieveEventInfo: (NSString *) action
+                    UserID: (NSString *) userID
+                   EventID: (NSString *) eventID
+                completion:(DoneHandler) done;
+
 
 @end

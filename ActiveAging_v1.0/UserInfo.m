@@ -14,6 +14,7 @@ static UserInfo * userInfo = nil;
     NSString * _username;
     NSString * _password;
     UIImage * _profileImg;
+    NSInteger _userID;
 }
 + (instancetype) shareInstance{
     if (userInfo == nil){
@@ -32,6 +33,10 @@ static UserInfo * userInfo = nil;
     _profileImg = img;
 }
 
+- (void) setUserID:(NSInteger)userID{
+    _userID = userID;
+}
+
 - (NSString *) getUsername{
     return _username;
 }
@@ -42,5 +47,9 @@ static UserInfo * userInfo = nil;
 
 - (UIImage *) getProfileImage{
     return _profileImg;
+}
+
+- (NSInteger) getUserID{
+    return _userID;
 }
 @end

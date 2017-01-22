@@ -14,9 +14,11 @@
 
 - (void) setUserInfo: (NSString *) username userPassword: (NSString *) password;
 - (void) setProfileImage: (UIImage *) img;
+-(void) setUserID:(NSInteger)userID;
 
 - (NSString *) getUsername;
 - (NSString *) getPassword;
 - (UIImage *) getProfileImage;
+- (NSInteger) getUserID;
 
 @end

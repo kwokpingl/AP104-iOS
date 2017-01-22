@@ -26,6 +26,8 @@
 		3D5015661E2607E4006F5F20 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5015651E2607E4006F5F20 /* DataManager.m */; };
 		3D81C4581E33509C00C8E22F /* Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D81C4571E33509C00C8E22F /* Plus.png */; };
 		3D81C45B1E34629A00C8E22F /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */; };
+		3D81C45E1E34643800C8E22F /* EventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D81C45D1E34643800C8E22F /* EventsViewController.m */; };
+		3D81C4611E34646500C8E22F /* EventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D81C4601E34646500C8E22F /* EventDetailViewController.m */; };
 		3DB322071E114FF7002A9FD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB322061E114FF7002A9FD9 /* main.m */; };
 		3DB3220A1E114FF7002A9FD9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB322091E114FF7002A9FD9 /* AppDelegate.m */; };
 		3DB322101E114FF7002A9FD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB3220E1E114FF7002A9FD9 /* Main.storyboard */; };
@@ -69,6 +71,10 @@
 		3D81C4571E33509C00C8E22F /* Plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Plus.png; sourceTree = "<group>"; };
 		3D81C4591E34629A00C8E22F /* EventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableViewCell.h; sourceTree = "<group>"; };
 		3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableViewCell.m; sourceTree = "<group>"; };
+		3D81C45C1E34643800C8E22F /* EventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsViewController.h; sourceTree = "<group>"; };
+		3D81C45D1E34643800C8E22F /* EventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsViewController.m; sourceTree = "<group>"; };
+		3D81C45F1E34646500C8E22F /* EventDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailViewController.h; sourceTree = "<group>"; };
+		3D81C4601E34646500C8E22F /* EventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailViewController.m; sourceTree = "<group>"; };
 		3DB322021E114FF7002A9FD9 /* ActiveAging_v1.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ActiveAging_v1.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DB322061E114FF7002A9FD9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3DB322081E114FF7002A9FD9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -127,6 +133,10 @@
 			children = (
 				3D81C4591E34629A00C8E22F /* EventTableViewCell.h */,
 				3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */,
+				3D81C45C1E34643800C8E22F /* EventsViewController.h */,
+				3D81C45D1E34643800C8E22F /* EventsViewController.m */,
+				3D81C45F1E34646500C8E22F /* EventDetailViewController.h */,
+				3D81C4601E34646500C8E22F /* EventDetailViewController.m */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -385,6 +395,7 @@
 				3D45211B1E2EFB67002E416C /* WelcomeViewController.m in Sources */,
 				3D5015661E2607E4006F5F20 /* DataManager.m in Sources */,
 				3D5015601E26079C006F5F20 /* AccountVerificationViewController.m in Sources */,
+				3D81C45E1E34643800C8E22F /* EventsViewController.m in Sources */,
 				3D45212B1E2F09BD002E416C /* HomePageViewController.m in Sources */,
 				3D4521271E2EFC08002E416C /* PhotoViewController.m in Sources */,
 				3D4521241E2EFBD3002E416C /* ConfirmationViewController.m in Sources */,
@@ -395,6 +406,7 @@
 				3D4521321E2F3159002E416C /* SetupViewController.m in Sources */,
 				3DB322071E114FF7002A9FD9 /* main.m in Sources */,
 				3D81C45B1E34629A00C8E22F /* EventTableViewCell.m in Sources */,
+				3D81C4611E34646500C8E22F /* EventDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,11 +551,12 @@
 			baseConfigurationReference = B79FEDE8AEA70ECDDC3931BC /* Pods-ActiveAging_v1.0.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 8P5JAYPRGQ;
 				INFOPLIST_FILE = ActiveAging_v1.0/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.J.ActiveAging-v1-0";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.J.ActiveAging-V";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -554,11 +567,12 @@
 			baseConfigurationReference = B227D972DDCA904F9E93DF17 /* Pods-ActiveAging_v1.0.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 8P5JAYPRGQ;
 				INFOPLIST_FILE = ActiveAging_v1.0/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.J.ActiveAging-v1-0";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.J.ActiveAging-V";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
