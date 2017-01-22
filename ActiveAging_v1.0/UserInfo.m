@@ -13,6 +13,7 @@ static UserInfo * userInfo = nil;
 @implementation UserInfo{
     NSString * _username;
     NSString * _password;
+    UIImage * _profileImg;
 }
 + (instancetype) shareInstance{
     if (userInfo == nil){
@@ -27,11 +28,19 @@ static UserInfo * userInfo = nil;
     _password = password;
 }
 
+- (void) setProfileImage: (UIImage *) img{
+    _profileImg = img;
+}
+
 - (NSString *) getUsername{
     return _username;
 }
 
 - (NSString *) getPassword{
     return _password;
+}
+
+- (UIImage *) getProfileImage{
+    return _profileImg;
 }
 @end

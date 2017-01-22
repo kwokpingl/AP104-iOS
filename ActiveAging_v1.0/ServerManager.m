@@ -72,6 +72,7 @@ completion:(DoneHandler)done{
                                USER_NAME_KEY: userName,
                                USER_PHONENUMBER_KEY: userPhoneNumber};
     
+
     [self doPost:UPLOAD_PIC_URL
       parameters:jsonObj
             data:data
@@ -83,29 +84,54 @@ completion:(DoneHandler)done{
      parameters:(NSDictionary*)parameters
            data: (NSData *) data
      completion:(DoneHandler) done{
+    
     AFHTTPSessionManager * sessionManager = [AFHTTPSessionManager manager];
     
-    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:parameters options:NSJSONWritingPrettyPrinted error:nil];
+    NSData * jsonData = [NSJSONSerialization
+                         dataWithJSONObject:parameters
+                         options:NSJSONWritingPrettyPrinted error:nil];
     
-    NSString * jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    NSString * jsonStr = [[NSString alloc]
+                          initWithData:jsonData
+                          encoding:NSUTF8StringEncoding];
+    
     NSDictionary * finalDic = @{DATA_KEY: jsonStr};
     
     sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     
     // now set the picture
-    [sessionManager POST:UPLOAD_PIC_URL parameters:finalDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        [formData appendPartWithFileData:data name:@"photoToUpload" fileName:@"profile.jpg" mimeType:@"image/jpg"];
-    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [sessionManager POST:UPLOAD_PIC_URL
+              parameters:finalDic
+constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [formData appendPartWithFileData:data
+                                    name:@"photoToUpload"
+                                fileName:@"profile.jpg"
+                                mimeType:@"image/jpg"];
+}
+                progress:nil
+                 success:^(NSURLSessionDataTask * _Nonnull task,
+                           id  _Nullable responseObject) {
+                     
+                     NSLog(@"UPLOAD PHOTO SUCCESS: %@", responseObject);
+                     done(nil, responseObject);
         
-        NSLog(@"UPLOAD PHOTO SUCCESS: %@", responseObject);
-        done(nil, responseObject);
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"ERR_UPLOAD PHOTO FAILED: %@", error);
-        done (error, nil);
+                 }
+                 failure:^(NSURLSessionDataTask * _Nullable task,
+                           NSError * _Nonnull error) {
+                     
+                     NSLog(@"ERR_UPLOAD PHOTO FAILED: %@", error);
+                     done (error, nil);
     }];
     
 }
+
+// MARK: RETRIEVE_INFO
+- (void) retrieveInfo: (NSString *) user{
+    
+}
+
+// MARK: DELETE_ACCOUNT
+
 #pragma mark - USER_METHODS
 //- (void) loginAuthorization:(NSString *) authorization
 //                   UserName:(NSString *) userName

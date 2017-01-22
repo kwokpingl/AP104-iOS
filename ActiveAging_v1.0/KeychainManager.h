@@ -10,6 +10,7 @@
 #import <Security/Security.h>
 #import "Definitions.h"
 
+typedef void (^USERINFO)(NSString * userName, NSString * userPhoneNumber);
 
 @interface KeychainManager : NSObject
 
@@ -19,11 +20,15 @@
 
 + (instancetype) sharedInstance;
 
-- (BOOL) foundKeychain;
+//- (BOOL) foundKeychain;
+- (BOOL) foundKeychain: (USERINFO) userinfo;
 - (NSData *) getKeychainObjectForKey : (NSString *) key;
 - (BOOL) setKeychainObject : (NSString *) object
                      forKey: (NSString *) key;
 //- (void) resetKeychain;
-- (void) retrieveUserInfo;
+//- (void) retrieveUserInfo;
+- (void) retrieveUserInfo: (USERINFO) userinfo;
+
+- (void) deleteKeychain: (NSString *) username Password: (NSString *) userPassword;
 
 @end

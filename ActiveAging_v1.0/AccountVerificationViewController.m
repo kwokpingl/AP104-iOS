@@ -9,12 +9,15 @@
 #import "AccountVerificationViewController.h"
 #import "KeychainManager.h"
 #import "UserInfo.h"
+#import "ServerManager.h"
 #import "WelcomeViewController.h"
 
 
 @interface AccountVerificationViewController (){
     KeychainManager * _keyChainManager;
     UserInfo * _userInfo;
+    ServerManager * _serverMgr;
+    
     BOOL foundKeychain;
 }
 @property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
@@ -27,26 +30,49 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _keyChainManager = [KeychainManager sharedInstance];
+    _serverMgr = [ServerManager shareInstance];
+    _userInfo = [UserInfo shareInstance];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     imageView.image = [UIImage imageNamed:@"Cuties.jpg"];
     [self.view addSubview:imageView];
-    foundKeychain = [_keyChainManager foundKeychain];
     
-
+    
+    NSTimer * timer = [NSTimer timerWithTimeInterval:2.0 repeats:false block:^(NSTimer * _Nonnull timer) {
+        [self segueSwitching:timer];
+    }];
+    
+    foundKeychain = [_keyChainManager foundKeychain:^(NSString *userName, NSString *userPhoneNumber) {
+        [_userInfo setUserInfo:userName userPassword:userPhoneNumber];
+        
+    }];
+    
     
     // Check if KEYCHAIN_ITEM is AVALIABLE
     if (foundKeychain){
-        [_welcomeLabel setText:[NSString stringWithFormat:@"歡迎回來%@", [_userInfo getUsername]]];
+        // check if user is correct
+        [_serverMgr loginAuthorization:@"user" UserName:_userInfo.getUsername UserPhoneNumber:_userInfo.getPassword Action:ACTION_CHECK completion:^(NSError *error, id result) {
+            if (![result[@"result"] boolValue]){
+                [_welcomeLabel setText:[NSString stringWithFormat:@"歡迎回來%@", [_userInfo getUsername]]];
+                [timer fire];
+            } else {
+                [_welcomeLabel setText:@"Something Wrong"];
+            }
+        }];
+        
+        
+        // fetch profile image
+        
+        
     }else{
         [_welcomeLabel setText:@"歡迎來到「哈啦哈啦趣」"];
+        [timer fire];
     }
-    NSTimer * timer = [NSTimer scheduledTimerWithTimeInterval:2.0 repeats:false block:^(NSTimer * _Nonnull timer) {
-        [self segueSwitching:timer];
-    }];
-    [timer fire];
+    
+    
 }
 
 - (void) didReceiveMemoryWarning {

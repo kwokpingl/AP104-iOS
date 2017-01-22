@@ -10,12 +10,14 @@
 #import "WelcomeViewController.h"
 #import "ServerManager.h"
 #import "UserInfo.h"
+#import "KeychainManager.h"
 #import <Photos/Photos.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
 @interface PhotoViewController ()<UINavigationControllerDelegate, UIImagePickerControllerDelegate>{
-    ServerManager * serverMgr;
-    UserInfo * userInfo;
+    ServerManager * _serverMgr;
+    UserInfo * _userInfo;
+    KeychainManager * _keychainMgr;
 }
 @property (weak, nonatomic) IBOutlet UIButton *finishedButton;
 @property (weak, nonatomic) IBOutlet UIImageView *photoImageView;
@@ -29,8 +31,9 @@
     // Do any additional setup after loading the view.
     _photoImageView.image = [UIImage imageNamed:@"Plus.png"];
     
-    serverMgr = [ServerManager shareInstance];
-    userInfo = [UserInfo shareInstance];
+    _serverMgr = [ServerManager shareInstance];
+    _userInfo = [UserInfo shareInstance];
+    _keychainMgr = [KeychainManager sharedInstance];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -42,14 +45,25 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)finishButtonPressed:(id)sender {
+    // disable the button
+    [_finishedButton setEnabled: false];
     // UPLOAD PHOTO
     // compress photo
     NSData * imgData = UIImageJPEGRepresentation(_photoImageView.image, 0.7);
     
     // SEND
-    [serverMgr uploadPictureWithData:imgData Authorization:@"user" UserName:userInfo.getUsername UserPhoneNumber:userInfo.getPassword completion:^(NSError *error, id result) {
+    [_serverMgr uploadPictureWithData:imgData Authorization:@"user" UserName:_userInfo.getUsername UserPhoneNumber:_userInfo.getPassword completion:^(NSError *error, id result) {
         if ([result[@"result"] boolValue]){
             NSLog(@"SUCCESS: %@", result[@"message"]);
+            
+            [_userInfo setProfileImage:_photoImageView.image];
+            
+            [_keychainMgr setKeychainObject:_userInfo.getUsername forKey:_userInfo.getPassword];
+            
+            UIViewController * vc = [self.storyboard
+                                     instantiateViewControllerWithIdentifier:@"AccountVerificationViewController"];
+            [self presentViewController:vc animated:true completion:nil];
+            
         } else {
             NSLog(@"FAILED: %@", result[@"error"]);
         }
@@ -69,8 +83,11 @@
         [self launchPickerWithType:UIImagePickerControllerSourceTypePhotoLibrary];
     }];
     
+    UIAlertAction * cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    
     [alert addAction:camera];
     [alert addAction:photoLibrary];
+    [alert addAction:cancel];
     [self presentViewController:alert animated:true completion:nil];
     
 }

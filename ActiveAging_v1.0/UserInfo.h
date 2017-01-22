@@ -7,12 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface UserInfo : NSObject
 + (instancetype) shareInstance;
 
 - (void) setUserInfo: (NSString *) username userPassword: (NSString *) password;
+- (void) setProfileImage: (UIImage *) img;
+
 - (NSString *) getUsername;
 - (NSString *) getPassword;
+- (UIImage *) getProfileImage;
 
 @end

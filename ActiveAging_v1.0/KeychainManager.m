@@ -25,7 +25,7 @@ static KeychainManager * _keyManager = nil;
 
 
 // MARK: FOUND_KEYCHAIN_ITEM?
-- (BOOL) foundKeychain{
+- (BOOL) foundKeychain:(USERINFO)userinfo{
     
     OSStatus errorStus = noErr;
     _genericQuery = [NSMutableDictionary new];
@@ -46,7 +46,7 @@ static KeychainManager * _keyManager = nil;
     
     if (errorStus == noErr){ // if keychain item with _genericQuery definition was found
         
-        [self retrieveUserInfo];
+        [self retrieveUserInfo:userinfo];
         
         return true;
     }
@@ -147,7 +147,7 @@ static KeychainManager * _keyManager = nil;
 
 
 // MARK: RETRIEVE_USER_INFO 
-- (void) retrieveUserInfo {
+- (void) retrieveUserInfo:(USERINFO)userinfo{
 
     _userInfo = [UserInfo shareInstance];
     
@@ -166,16 +166,24 @@ static KeychainManager * _keyManager = nil;
     if (errorStus == noErr){
         NSDictionary * resultDict = (__bridge_transfer NSDictionary *)resultRef;
         
-        NSString * password = [[NSString alloc] initWithData:resultDict[(__bridge id)kSecValueData] encoding:NSUTF8StringEncoding];
-        NSString * username = [[NSString alloc] initWithData:resultDict[(__bridge id)kSecAttrAccount] encoding:NSUTF8StringEncoding] ;
-        [_userInfo setUserInfo:username userPassword:password];
+        NSString * username = [[NSString alloc] initWithData:resultDict[(__bridge id)kSecValueData] encoding:NSUTF8StringEncoding];
+        NSString * password = [[NSString alloc] initWithData:resultDict[(__bridge id)kSecAttrAccount] encoding:NSUTF8StringEncoding] ;
+        userinfo(username,password);
     }else{
         NSLog(@"Something wrong with RETRIEVING USER INFO");
     }
 }
 
 
-
+- (void) deleteKeychain: (NSString *) username Password: (NSString *) userPassword{
+    NSMutableDictionary * dict = [self prepareDict:userPassword];
+    if (SecItemCopyMatching((__bridge CFDictionaryRef)dict, nil)==noErr){
+        OSStatus stus = SecItemDelete((__bridge CFDictionaryRef)dict);
+        NSLog(@"Error : %d",(int)stus );
+    } else {
+        NSLog(@"NO ACCOUNT FOUND");
+    }
+}
 
 
 

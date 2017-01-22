@@ -25,6 +25,7 @@
 		3D5015601E26079C006F5F20 /* AccountVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D50155F1E26079C006F5F20 /* AccountVerificationViewController.m */; };
 		3D5015661E2607E4006F5F20 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5015651E2607E4006F5F20 /* DataManager.m */; };
 		3D81C4581E33509C00C8E22F /* Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D81C4571E33509C00C8E22F /* Plus.png */; };
+		3D81C45B1E34629A00C8E22F /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */; };
 		3DB322071E114FF7002A9FD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB322061E114FF7002A9FD9 /* main.m */; };
 		3DB3220A1E114FF7002A9FD9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB322091E114FF7002A9FD9 /* AppDelegate.m */; };
 		3DB322101E114FF7002A9FD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB3220E1E114FF7002A9FD9 /* Main.storyboard */; };
@@ -66,6 +67,8 @@
 		3D5015641E2607E4006F5F20 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		3D5015651E2607E4006F5F20 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		3D81C4571E33509C00C8E22F /* Plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Plus.png; sourceTree = "<group>"; };
+		3D81C4591E34629A00C8E22F /* EventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableViewCell.h; sourceTree = "<group>"; };
+		3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableViewCell.m; sourceTree = "<group>"; };
 		3DB322021E114FF7002A9FD9 /* ActiveAging_v1.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ActiveAging_v1.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DB322061E114FF7002A9FD9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3DB322081E114FF7002A9FD9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -122,6 +125,8 @@
 		3D4521331E2F40E5002E416C /* Events */ = {
 			isa = PBXGroup;
 			children = (
+				3D81C4591E34629A00C8E22F /* EventTableViewCell.h */,
+				3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -389,6 +394,7 @@
 				3D45210F1E2EC189002E416C /* KeychainManager.m in Sources */,
 				3D4521321E2F3159002E416C /* SetupViewController.m in Sources */,
 				3DB322071E114FF7002A9FD9 /* main.m in Sources */,
+				3D81C45B1E34629A00C8E22F /* EventTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
