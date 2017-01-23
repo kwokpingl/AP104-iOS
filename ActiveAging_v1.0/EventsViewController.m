@@ -10,7 +10,8 @@
 #import "EventTableViewCell.h"
 #import "ServerManager.h" // retrieveEventInfo
 #import "UserInfo.h"
-
+//#import "EventDetailViewController.h"
+#import "EventDetailTableViewController.h"
 
 
 @interface EventsViewController ()<UITableViewDelegate, UITableViewDataSource>{
@@ -21,6 +22,7 @@
     UserInfo * _userInfo;
     NSString * currentPage;
 }
+@property (weak, nonatomic) IBOutlet UINavigationItem *navigationItem;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
 @property (weak, nonatomic) IBOutlet UIButton *eventRecordButton;
@@ -66,6 +68,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     EventTableViewCell * cell = [_tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    
+    [cell setAccessoryType:UITableViewCellAccessoryDetailDisclosureButton];
+    
     cell.eventTitleLabel.text = eventsArray[indexPath.row][EVENT_TITLE_KEY];
     // also image
     
@@ -86,11 +91,16 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    EventDetailViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"EventDetailViewController"];
+//    vc.eventDetailDict = [[NSDictionary alloc] initWithDictionary:eventsArray[indexPath.row]];
+//    [self presentViewController:vc animated:true completion:nil];
+    
+    [self performSegueWithIdentifier:@"eventDetail" sender:self];
     
 }
 
 - (IBAction)locationButtonPressed:(id)sender {
-    
+    // show a picker
     
     
 }
@@ -98,10 +108,27 @@
 - (IBAction)recordButtonPressed:(id)sender {
     if ([currentPage isEqualToString:@"notJoined"]){
         currentPage = @"joined";
+        [_eventRecordButton setTitle: @"最新活動"
+                            forState:UIControlStateNormal];
     } else {
         currentPage = @"notJoined";
+        [_eventRecordButton setTitle: @"活動記錄"
+                            forState:UIControlStateNormal];
+    }
+    [_tableView reloadData];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if ([segue.identifier isEqualToString:@"eventDetail"]){
+        EventDetailTableViewController * vc = [segue destinationViewController];
+        EventTableViewCell * cell = [_tableView dequeueReusableCellWithIdentifier:@"Cell"];
+        NSIndexPath * indexPath = [_tableView indexPathForCell:cell];
+        
+        vc.eventDetailDict = eventsArray[indexPath.row];
+        NSLog(@"");
     }
 }
+
 
 
 

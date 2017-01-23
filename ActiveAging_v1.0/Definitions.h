@@ -45,21 +45,29 @@
 
 // MARK: EVENT
 #define EVENT_ID_KEY            @"event_ID"
+    // description 資訊
 #define EVENT_TITLE_KEY         @"event_title"
 #define EVENT_DESCRIPTION_KEY   @"event_description"
+#define EVENT_START_KEY     @"event_startingDateTime"
+#define EVENT_END_KEY       @"event_endingDateTime"
+    // registration time 報名期間
 #define EVENT_REG_BEGIN_KEY     @"event_registerBeginDateTime"
 #define EVENT_REG_END_KEY       @"event_registerEndDateTime"
+    // address 地址
 #define EVENT_CITY_KEY          @"event_city"
-#define EVENT_ADDRESS_KEY       @"evnet_address"
+#define EVENT_ADDRESS_KEY       @"event_address"
 #define EVENT_LON_KEY           @"event_Lon"
 #define EVENT_LAT_KEY           @"event_Lat"
+    // contact info 聯絡方式
 #define EVENT_ORGN_NAME_KEY     @"event_organizer_name"
 #define EVENT_ORGN_PHONE_KEY    @"event_organizer_phoneNumber"
 #define EVENT_ORGN_FAX_KEY      @"event_organizer_faxNumber"
 #define EVENT_ORGN_CELL_KEY     @"event_organizer_cellNumber"
 #define EVENT_ORGN_EMAIL_KEY    @"event_organizer_email"
+    // organization 舉辦單位
 #define EVENT_ORGNTION_KEY      @"event_organization"
 #define EVENT_WEBPAGE_KEY       @"event_webpage"
+    // pic 圖檔
 #define EVENT_PIC_KEY           @"event_pic"
 
 /*
