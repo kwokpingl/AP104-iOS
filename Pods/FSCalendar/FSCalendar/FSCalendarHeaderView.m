@@ -16,7 +16,7 @@
 
 @property (readonly, nonatomic) BOOL hasValidateVisibleLayout;
 
-- (void)scrollToOffset:(CGFloat)scrollOffset;
+- (void)scrollToOffset:(CGFloat)scrollOffset animated:(BOOL)animated;
 
 @end
 
@@ -77,8 +77,8 @@
     
     if (_needsAdjustingMonthPosition) {
         _needsAdjustingMonthPosition = NO;
-        [self scrollToOffset:_scrollOffset];
-    };
+        [self scrollToOffset:_scrollOffset animated:NO];
+    }
     
 }
 
@@ -97,7 +97,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    switch (self.calendar.scope) {
+    switch (self.calendar.transitionCoordinator.representingScope) {
         case FSCalendarScopeMonth: {
             switch (_scrollDirection) {
                 case UICollectionViewScrollDirectionVertical: {
@@ -133,12 +133,12 @@
 {
     FSCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.header = self;
-    cell.titleLabel.font = _appearance.preferredHeaderTitleFont;
+    cell.titleLabel.font = _appearance.headerTitleFont;
     cell.titleLabel.textColor = _appearance.headerTitleColor;
     _calendar.formatter.dateFormat = _appearance.headerDateFormat;
     BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
     NSString *text = nil;
-    switch (self.calendar.scope) {
+    switch (self.calendar.transitionCoordinator.representingScope) {
         case FSCalendarScopeMonth: {
             if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
                 // 多出的两项需要制空
@@ -198,28 +198,33 @@
 
 - (void)setScrollOffset:(CGFloat)scrollOffset
 {
+    [self setScrollOffset:scrollOffset animated:NO];
+}
+
+- (void)setScrollOffset:(CGFloat)scrollOffset animated:(BOOL)animated
+{
     if (_scrollOffset != scrollOffset) {
         _scrollOffset = scrollOffset;
     }
     if (self.hasValidateVisibleLayout) {
-        [self scrollToOffset:scrollOffset];
+        [self scrollToOffset:scrollOffset animated:NO];
     } else {
         _needsAdjustingMonthPosition = YES;
         [self setNeedsLayout];
     }
 }
 
-- (void)scrollToOffset:(CGFloat)scrollOffset
+- (void)scrollToOffset:(CGFloat)scrollOffset animated:(BOOL)animated
 {
 #if TARGET_INTERFACE_BUILDER
     _needsAdjustingMonthPosition = YES;
 #endif
     if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
         CGFloat step = self.collectionView.fs_width*((self.scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1);
-        [_collectionView setContentOffset:CGPointMake((scrollOffset+0.5)*step, 0) animated:NO];
+        [_collectionView setContentOffset:CGPointMake((scrollOffset+0.5)*step, 0) animated:animated];
     } else {
         CGFloat step = self.collectionView.fs_height;
-        [_collectionView setContentOffset:CGPointMake(0, scrollOffset*step) animated:NO];
+        [_collectionView setContentOffset:CGPointMake(0, scrollOffset*step) animated:animated];
     }
 }
 
@@ -255,6 +260,14 @@
 - (void)reloadData
 {
     [_collectionView reloadData];
+}
+
+- (void)configureAppearance
+{
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarHeaderCell * _Nonnull cell, NSUInteger idx, BOOL * _Nonnull stop) {
+        cell.titleLabel.font = self.appearance.headerTitleFont;
+        cell.titleLabel.textColor = self.appearance.headerTitleColor;
+    }];
 }
 
 @end
@@ -304,16 +317,6 @@
     
 }
 
-- (void)invalidateHeaderFont
-{
-    _titleLabel.font = self.header.appearance.preferredHeaderTitleFont;
-}
-
-- (void)invalidateHeaderTextColor
-{
-    _titleLabel.textColor = self.header.appearance.headerTitleColor;
-}
-
 @end
 
 
@@ -339,7 +342,7 @@
     self.itemSize = CGSizeMake(
                                self.collectionView.fs_width*((self.scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1),
                                self.collectionView.fs_height
-                              );
+                               );
     
 }
 

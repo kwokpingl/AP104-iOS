@@ -34,6 +34,8 @@ UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 UIKIT_EXTERN NSString * const FSCalendarDefaultCellReuseIdentifier;
 UIKIT_EXTERN NSString * const FSCalendarInvalidArgumentsExceptionName;
 
+#define CGPointInfinity CGPointMake(NSIntegerMax,NSIntegerMax)
+#define CGSizeAutomatic CGSizeMake(FSCalendarAutomaticDimension,FSCalendarAutomaticDimension)
 
 #if TARGET_INTERFACE_BUILDER
 #define FSCalendarDeviceIsIPad NO
@@ -55,8 +57,14 @@ UIKIT_EXTERN NSString * const FSCalendarInvalidArgumentsExceptionName;
 
 #if CGFLOAT_IS_DOUBLE
 #define FSCalendarFloor(c) floor(c)
+#define FSCalendarRound(c) round(c)
+#define FSCalendarCeil(c) ceil(c)
+#define FSCalendarMod(c1,c2) fmod(c1,c2)
 #else
 #define FSCalendarFloor(c) floorf(c)
+#define FSCalendarRound(c) roundf(c)
+#define FSCalendarCeil(c) ceilf(c)
+#define FSCalendarMod(c1,c2) fmodf(c1,c2)
 #endif
 
 #define FSCalendarUseWeakSelf __weak __typeof__(self) FSCalendarWeakSelf = self;
@@ -66,12 +74,6 @@ UIKIT_EXTERN NSString * const FSCalendarInvalidArgumentsExceptionName;
 #pragma mark - Deprecated
 
 #define FSCalendarDeprecated(instead) DEPRECATED_MSG_ATTRIBUTE(" Use " # instead " instead")
-
-FSCalendarDeprecated('FSCalendarScrollDirection')
-typedef NS_ENUM(NSInteger, FSCalendarFlow) {
-    FSCalendarFlowVertical,
-    FSCalendarFlowHorizontal
-};
 
 FSCalendarDeprecated('borderRadius')
 typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {

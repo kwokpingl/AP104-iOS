@@ -56,20 +56,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_REQUIRES_SUPER;
 
 // For DIY overridden
-- (void)layoutSubviews NS_REQUIRES_SUPER; // Configure view frames
+- (void)layoutSubviews NS_REQUIRES_SUPER; // Configure frames of subviews
 - (void)configureAppearance NS_REQUIRES_SUPER; // Configure appearance for cell
-
-- (void)invalidateTitleFont;
-- (void)invalidateSubtitleFont;
-- (void)invalidateTitleTextColor;
-- (void)invalidateSubtitleTextColor;
-
-- (void)invalidateBorderColors;
-- (void)invalidateFillColors;
-- (void)invalidateEventColors;
-- (void)invalidateBorderRadius;
-
-- (void)invalidateImage;
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary;
 - (void)performSelecting;

@@ -39,7 +39,7 @@
 {
     if (!date) return NSNotFound;
     NSDateComponents *component = [self.gregorian components:NSCalendarUnitMonth
-                                                   fromDate:date];
+                                                    fromDate:date];
     return component.month;
 }
 
@@ -47,7 +47,7 @@
 {
     if (!date) return NSNotFound;
     NSDateComponents *component = [self.gregorian components:NSCalendarUnitDay
-                                                   fromDate:date];
+                                                    fromDate:date];
     return component.day;
 }
 
@@ -169,36 +169,36 @@
 - (NSInteger)yearsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
     NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear
-                                                    fromDate:fromDate
-                                                      toDate:toDate
-                                                     options:0];
+                                                     fromDate:fromDate
+                                                       toDate:toDate
+                                                      options:0];
     return components.year;
 }
 
 - (NSInteger)monthsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
     NSDateComponents *components = [self.gregorian components:NSCalendarUnitMonth
-                                                    fromDate:fromDate
-                                                      toDate:toDate
-                                                     options:0];
+                                                     fromDate:fromDate
+                                                       toDate:toDate
+                                                      options:0];
     return components.month;
 }
 
 - (NSInteger)weeksFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
     NSDateComponents *components = [self.gregorian components:NSCalendarUnitWeekOfYear
-                                                    fromDate:fromDate
-                                                      toDate:toDate
-                                                     options:0];
+                                                     fromDate:fromDate
+                                                       toDate:toDate
+                                                      options:0];
     return components.weekOfYear;
 }
 
 - (NSInteger)daysFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
     NSDateComponents *components = [self.gregorian components:NSCalendarUnitDay
-                                                    fromDate:fromDate
-                                                      toDate:toDate
-                                                     options:0];
+                                                     fromDate:fromDate
+                                                       toDate:toDate
+                                                      options:0];
     return components.day;
 }
 

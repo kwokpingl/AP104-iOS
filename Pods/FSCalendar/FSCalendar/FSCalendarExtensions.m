@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 10/8/16.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "FSCalendarExtensions.h"
@@ -206,8 +206,8 @@
 {
     if (!month) return 0;
     NSRange days = [self rangeOfUnit:NSCalendarUnitDay
-                                        inUnit:NSCalendarUnitMonth
-                                       forDate:month];
+                              inUnit:NSCalendarUnitMonth
+                             forDate:month];
     return days.length;
 }
 
@@ -219,6 +219,26 @@
         objc_setAssociatedObject(self, _cmd, components, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return components;
+}
+
+@end
+
+@implementation NSMapTable (FSCalendarExtensions)
+
+- (void)setObject:(nullable id)obj forKeyedSubscript:(id<NSCopying>)key
+{
+    if (!key) return;
+    
+    if (obj) {
+        [self setObject:obj forKey:key];
+    } else {
+        [self removeObjectForKey:key];
+    }
+}
+
+- (id)objectForKeyedSubscript:(id<NSCopying>)key
+{
+    return [self objectForKey:key];
 }
 
 @end
@@ -245,6 +265,26 @@
 
 @implementation NSObject (FSCalendarExtensions)
 
+#define IVAR_IMP(SET,GET,TYPE) \
+- (void)fs_set##SET##Variable:(TYPE)value forKey:(NSString *)key \
+{ \
+Ivar ivar = class_getInstanceVariable([self class], key.UTF8String); \
+((void (*)(id, Ivar, TYPE))object_setIvar)(self, ivar, value); \
+} \
+- (TYPE)fs_##GET##VariableForKey:(NSString *)key \
+{ \
+Ivar ivar = class_getInstanceVariable([self class], key.UTF8String); \
+ptrdiff_t offset = ivar_getOffset(ivar); \
+unsigned char *bytes = (unsigned char *)(__bridge void *)self; \
+TYPE value = *((TYPE *)(bytes+offset)); \
+return value; \
+}
+IVAR_IMP(Bool,bool,BOOL)
+IVAR_IMP(Float,float,CGFloat)
+IVAR_IMP(Integer,integer,NSInteger)
+IVAR_IMP(UnsignedInteger,unsignedInteger,NSUInteger)
+#undef IVAR_IMP
+
 - (void)fs_setVariable:(id)variable forKey:(NSString *)key
 {
     Ivar ivar = class_getInstanceVariable(self.class, key.UTF8String);
@@ -256,21 +296,6 @@
     Ivar ivar = class_getInstanceVariable(self.class, key.UTF8String);
     id variable = object_getIvar(self, ivar);
     return variable;
-}
-
-- (void)fs_setUnsignedIntegerVariable:(NSUInteger)value forKey:(NSString *)key
-{
-    Ivar ivar = class_getInstanceVariable([self class], key.UTF8String);
-    ((void (*)(id, Ivar, NSUInteger))object_setIvar)(self, ivar, value);
-}
-
-- (NSUInteger)fs_unsignedIntegerVariableForKey:(NSString *)key
-{
-    Ivar ivar = class_getInstanceVariable([self class], key.UTF8String);
-    ptrdiff_t offset = ivar_getOffset(ivar);
-    unsigned char *bytes = (unsigned char *)(__bridge void*)self;
-    NSUInteger value = *((NSUInteger *)(bytes+offset));
-    return value;
 }
 
 - (id)fs_performSelector:(SEL)selector withObjects:(nullable id)firstObject, ...
@@ -301,8 +326,8 @@
                         // struct
 #define PARAM_STRUCT_TYPES(_type,_getter,_default) \
 if (!strcmp(argType, @encode(_type))) { \
-    _type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:_default; \
-    [invocation setArgument:&value atIndex:index]; \
+_type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:_default; \
+[invocation setArgument:&value atIndex:index]; \
 }
                         PARAM_STRUCT_TYPES(CGPoint, CGPointValue, CGPointZero)
                         PARAM_STRUCT_TYPES(CGSize, CGSizeValue, CGSizeZero)
@@ -320,8 +345,8 @@ if (!strcmp(argType, @encode(_type))) { \
                         // basic type
 #define PARAM_BASIC_TYPES(_type,_getter) \
 if (!strcmp(argType, @encode(_type))) { \
-    _type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:0; \
-    [invocation setArgument:&value atIndex:index]; \
+_type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:0; \
+[invocation setArgument:&value atIndex:index]; \
 }
                         PARAM_BASIC_TYPES(BOOL, boolValue)
                         PARAM_BASIC_TYPES(int, intValue)
@@ -368,9 +393,9 @@ if (!strcmp(argType, @encode(_type))) { \
             // struct
 #define RETURN_STRUCT_TYPES(_type) \
 if (!strcmp(returnType, @encode(_type))) { \
-    _type value; \
-    [invocation getReturnValue:&value]; \
-    returnValue = [NSValue value:&value withObjCType:@encode(_type)]; \
+_type value; \
+[invocation getReturnValue:&value]; \
+returnValue = [NSValue value:&value withObjCType:@encode(_type)]; \
 }
             RETURN_STRUCT_TYPES(CGPoint)
             RETURN_STRUCT_TYPES(CGSize)
@@ -388,8 +413,8 @@ if (!strcmp(returnType, @encode(_type))) { \
             void *buffer = (void *)malloc(length);
             [invocation getReturnValue:buffer];
 #define RETURN_BASIC_TYPES(_type) \
-    if (!strcmp(returnType, @encode(_type))) { \
-    returnValue = @(*((_type*)buffer)); \
+if (!strcmp(returnType, @encode(_type))) { \
+returnValue = @(*((_type*)buffer)); \
 }
             RETURN_BASIC_TYPES(BOOL)
             RETURN_BASIC_TYPES(int)
@@ -404,6 +429,7 @@ if (!strcmp(returnType, @encode(_type))) { \
             RETURN_BASIC_TYPES(double)
             
 #undef RETURN_BASIC_TYPES
+            free(buffer);
         }
     }
     return returnValue;

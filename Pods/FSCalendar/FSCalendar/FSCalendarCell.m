@@ -47,7 +47,6 @@
 
 - (void)commonInit
 {
-    
     UILabel *label;
     CAShapeLayer *shapeLayer;
     UIImageView *imageView;
@@ -96,7 +95,7 @@
     if (self.placeholder) {
         if (self.calendar.placeholderType==FSCalendarPlaceholderTypeNone) {
             self.contentView.hidden = self.monthPosition != FSCalendarMonthPositionCurrent;
-        } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTail && self.calendar.scope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
+        } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTail && self.calendar.transitionCoordinator.representingScope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
             
             NSIndexPath *indexPath = [self.calendar.collectionView indexPathForCell:self];
             
@@ -181,7 +180,7 @@
                                        CGRectGetMaxY(_shapeLayer.frame)+eventSize*0.17+self.preferredEventOffset.y,
                                        self.fs_width,
                                        eventSize*0.83
-                                      );
+                                       );
     
 }
 
@@ -228,10 +227,18 @@
     if (![textColor isEqual:_titleLabel.textColor]) {
         _titleLabel.textColor = textColor;
     }
+    UIFont *titleFont = self.calendar.appearance.titleFont;
+    if (![titleFont isEqual:_titleLabel.font]) {
+        _titleLabel.font = titleFont;
+    }
     if (_subtitle) {
         textColor = self.colorForSubtitleLabel;
         if (![textColor isEqual:_subtitleLabel.textColor]) {
             _subtitleLabel.textColor = textColor;
+        }
+        titleFont = self.calendar.appearance.subtitleFont;
+        if (![titleFont isEqual:_subtitleLabel.font]) {
+            _subtitleLabel.font = titleFont;
         }
     }
     
@@ -255,10 +262,17 @@
             _shapeLayer.strokeColor = cellBorderColor;
         }
         
+        CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
+                                                    cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius].CGPath;
+        if (!CGPathEqualToPath(_shapeLayer.path, path)) {
+            _shapeLayer.path = path;
+        }
+        
     }
     
     if (![_image isEqual:_imageView.image]) {
-        [self invalidateImage];
+        _imageView.image = _image;
+        _imageView.hidden = !_image;
     }
     
     if (_eventIndicator.hidden == (_numberOfEvents > 0)) {
@@ -268,7 +282,7 @@
     _eventIndicator.numberOfEvents = self.numberOfEvents;
     _eventIndicator.color = self.colorsForEvents;
     
-
+    
 }
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
@@ -289,54 +303,6 @@
         return dictionary[@(FSCalendarCellStateWeekend)];
     }
     return dictionary[@(FSCalendarCellStateNormal)];
-}
-
-- (void)invalidateTitleFont
-{
-    _titleLabel.font = self.appearance.preferredTitleFont;
-}
-
-- (void)invalidateTitleTextColor
-{
-    _titleLabel.textColor = self.colorForTitleLabel;
-}
-
-- (void)invalidateSubtitleFont
-{
-    _subtitleLabel.font = self.appearance.preferredSubtitleFont;
-}
-
-- (void)invalidateSubtitleTextColor
-{
-    _subtitleLabel.textColor = self.colorForSubtitleLabel;
-}
-
-- (void)invalidateBorderColors
-{
-    _shapeLayer.strokeColor = self.colorForCellBorder.CGColor;
-}
-
-- (void)invalidateFillColors
-{
-    _shapeLayer.fillColor = self.colorForCellFill.CGColor;
-}
-
-- (void)invalidateEventColors
-{
-    _eventIndicator.color = self.colorsForEvents;
-}
-
-- (void)invalidateBorderRadius
-{
-    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
-                                                cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius].CGPath;
-    _shapeLayer.path = path;
-}
-
-- (void)invalidateImage
-{
-    _imageView.image = _image;
-    _imageView.hidden = !_image;
 }
 
 #pragma mark - Properties
@@ -392,16 +358,16 @@
 \
 - (void)set##CAPITAL:(CGPoint)NAME \
 { \
-    BOOL diff = !CGPointEqualToPoint(NAME, self.NAME); \
-    _##NAME = NAME; \
-    if (diff) { \
-        [self setNeedsLayout]; \
-    } \
+BOOL diff = !CGPointEqualToPoint(NAME, self.NAME); \
+_##NAME = NAME; \
+if (diff) { \
+[self setNeedsLayout]; \
+} \
 } \
 \
 - (CGPoint)NAME \
 { \
-    return CGPointEqualToPoint(_##NAME, CGPointZero) ? ALTERNATIVE : _##NAME; \
+return CGPointEqualToPoint(_##NAME, CGPointInfinity) ? ALTERNATIVE : _##NAME; \
 }
 
 OFFSET_PROPERTY(preferredTitleOffset, PreferredTitleOffset, _appearance.titleOffset);
@@ -415,14 +381,8 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
 {
     if (![_calendar isEqual:calendar]) {
         _calendar = calendar;
-    }
-    if (![_appearance isEqual:calendar.appearance]) {
         _appearance = calendar.appearance;
-        [self invalidateTitleFont];
-        [self invalidateSubtitleFont];
-        [self invalidateTitleTextColor];
-        [self invalidateSubtitleTextColor];
-        [self invalidateEventColors];
+        [self configureAppearance];
     }
 }
 

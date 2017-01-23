@@ -7,6 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "SQLite3DBManager.h"
+
+#define SQLITE_FILENAME @"eventsList.sql"
+#define EVENTS_TABLE_NAME @"EventsList"
 
 @interface AppDelegate ()
 
@@ -17,9 +21,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    SQLite3DBManager * dbManager = [[SQLite3DBManager alloc] initWithDatabaseFilename:SQLITE_FILENAME];
+    
+    NSString * query = [NSString stringWithFormat:@"create table %@ (id integer primary key autoincrement, title text, startDateTime text, endDateTime text, detail text, location text)", EVENTS_TABLE_NAME];
+    
+    [dbManager executeQuery:query];
     return YES;
 }
-
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 03/11/2016.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "FSCalendarWeekdayView.h"
@@ -12,6 +12,10 @@
 #import "FSCalendarExtensions.h"
 
 @interface FSCalendarWeekdayView()
+
+@property (strong, nonatomic) NSPointerArray *weekdayPointers;
+@property (weak  , nonatomic) UIView *contentView;
+@property (weak  , nonatomic) FSCalendar *calendar;
 
 - (void)commonInit;
 
@@ -43,12 +47,12 @@
     [self addSubview:contentView];
     _contentView = contentView;
     
-    _weekdayLabels = [NSHashTable weakObjectsHashTable];
+    _weekdayPointers = [NSPointerArray weakObjectsPointerArray];
     for (int i = 0; i < 7; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:weekdayLabel];
-        [_weekdayLabels addObject:weekdayLabel];
+        [_weekdayPointers addPointer:(__bridge void * _Nullable)(weekdayLabel)];
     }
 }
 
@@ -58,33 +62,71 @@
     
     self.contentView.frame = self.bounds;
     
-    CGFloat weekdayWidth = self.fs_width/self.weekdayLabels.count;
-    [self.weekdayLabels.allObjects enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger index, BOOL *stop) {
-        weekdayLabel.frame = CGRectMake(index*weekdayWidth, 0, weekdayWidth, self.contentView.fs_height);
-    }];
+    // Position Calculation
+    NSInteger count = self.weekdayPointers.count;
+    size_t size = sizeof(CGFloat)*count;
+    CGFloat *widths = malloc(size);
     
-}
-
-- (void)invalidateWeekdaySymbols
-{
-    BOOL useVeryShortWeekdaySymbols = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
-    NSArray *weekdaySymbols = useVeryShortWeekdaySymbols ? self.calendar.gregorian.veryShortStandaloneWeekdaySymbols : self.calendar.gregorian.shortStandaloneWeekdaySymbols;
-    BOOL useDefaultWeekdayCase = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesDefaultCase;
-    [self.weekdayLabels.allObjects enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
-        index += self.calendar.firstWeekday-1;
-        index %= 7;
-        label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
+    CGFloat contentWidth = self.contentView.fs_width;
+    for (int i = 0; i < count; i++) {
+        NSInteger currentCount = count-i;
+        CGFloat actualWidth = FSCalendarRound(contentWidth/currentCount*2)*0.5;
+        contentWidth -= actualWidth;
+        widths[i] = actualWidth;
+    }
+    CGFloat *positions = malloc(size);
+    positions[0] = 0;
+    for (int i = 1; i < count; i++) {
+        positions[i] = positions[i-1] + widths[i-1];
+    }
+    [self.weekdayLabels enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger index, BOOL *stop) {
+        CGFloat x = positions[index];
+        CGFloat width = widths[index];
+        weekdayLabel.frame = CGRectMake(x, 0, width, self.contentView.fs_height);
     }];
+    free(positions);
+    free(widths);
+    
 }
 
 - (void)setCalendar:(FSCalendar *)calendar
 {
     _calendar = calendar;
-    [self invalidateWeekdaySymbols];
-    for (UILabel *label in self.weekdayLabels) {
-        label.font = self.calendar.appearance.preferredWeekdayFont;
-        label.textColor = self.calendar.appearance.weekdayTextColor;
-    }
+    [self configureAppearance];
 }
+
+- (void)configureAppearance
+{
+    BOOL useVeryShortWeekdaySymbols = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
+    NSArray *weekdaySymbols = useVeryShortWeekdaySymbols ? self.calendar.gregorian.veryShortStandaloneWeekdaySymbols : self.calendar.gregorian.shortStandaloneWeekdaySymbols;
+    BOOL useDefaultWeekdayCase = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesDefaultCase;
+    
+    void(^configureLabel)(UILabel *, NSInteger index) = ^(UILabel *label, NSInteger index) {
+        label.font = self.calendar.appearance.weekdayFont;
+        label.textColor = self.calendar.appearance.weekdayTextColor;
+        index += self.calendar.firstWeekday-1;
+        index %= 7;
+        label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
+    };
+    
+#if TARGET_INTERFACE_BUILDER
+    [self.weekdayLabels enumerateObjectsUsingBlock:^(UILabel * _Nonnull label, NSUInteger idx, BOOL * _Nonnull stop) {
+        configureLabel(label,idx);
+    }];
+#else
+    [self.weekdayLabels enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(UILabel * _Nonnull label, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([NSThread isMainThread]) {
+            configureLabel(label,idx);
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                configureLabel(label,idx);
+            });
+        }
+    }];
+#endif
+    
+}
+
+- (NSArray<UILabel *> *)weekdayLabels { return self.weekdayPointers.allObjects; }
 
 @end
