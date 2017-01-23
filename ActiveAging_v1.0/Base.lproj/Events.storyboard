@@ -51,7 +51,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="S9U-ec-eIB" id="5bu-ku-9My">
-                                            <rect key="frame" x="0.0" y="0.0" width="308" height="54.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="308" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="B1Q-i9-4ec">
@@ -196,7 +196,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="InnerTableView" destination="V4J-XT-XGy" id="EnG-zf-IV5"/>
+                                            <outlet property="InnerTableView" destination="V4J-XT-XGy" id="pSe-r6-rn3"/>
                                             <outlet property="OuterBottomContentHeightContraint" destination="Pt6-xN-sAX" id="Bxm-ED-lAY"/>
                                             <outlet property="OuterBottomContentView" destination="y7H-xu-ZlA" id="xdY-aN-8sr"/>
                                             <outlet property="OuterContentView" destination="89q-bi-92G" id="tQL-6F-g95"/>
@@ -227,7 +227,6 @@
                         <barButtonItem key="rightBarButtonItem" title="Join" id="dDY-Yz-No3"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="innerTableView" destination="V4J-XT-XGy" id="lEd-vF-GrR"/>
                         <outlet property="outerTableView" destination="wUd-t1-eRL" id="N1l-8b-cFA"/>
                     </connections>
                 </viewController>
@@ -345,11 +344,6 @@
                     <navigationItem key="navigationItem" title="Title" id="wss-1a-ny8">
                         <barButtonItem key="rightBarButtonItem" title="Join" id="DFr-Hi-o0v"/>
                     </navigationItem>
-                    <connections>
-                        <outlet property="eventDetailTableView" destination="xR5-nT-eMi" id="4GV-ch-wlc"/>
-                        <outlet property="eventImageView" destination="CO5-3R-YCl" id="sfL-c6-fiZ"/>
-                        <outlet property="navigationItem" destination="wss-1a-ny8" id="VrR-cN-ccz"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fCo-Q7-m3V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

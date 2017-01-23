@@ -9,22 +9,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>FMDB.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>FSCalendar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods-ActiveAging_v1.0.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>SAMKeychain.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

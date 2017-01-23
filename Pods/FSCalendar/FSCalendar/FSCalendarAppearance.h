@@ -62,7 +62,7 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
 /**
  * The font of the weekday text.
  *
-* @warning The size of font is adjusted by calendar size. To turn it off, set adjustsFontSizeToFitContentSize to NO;
+ * @warning The size of font is adjusted by calendar size. To turn it off, set adjustsFontSizeToFitContentSize to NO;
  */
 @property (strong, nonatomic) UIFont   *weekdayFont;
 

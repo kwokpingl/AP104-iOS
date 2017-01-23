@@ -18,6 +18,7 @@
     UserInfo * _userInfo;
     NSMutableDictionary * basedKeysMDict;
     NSMutableDictionary * sortedDetailMDict;
+    NSMutableArray * sortedDetailMArray;
     NSMutableArray * basedKeysMArray;
     
     NSInteger selectedIndex;
@@ -58,12 +59,13 @@
 #pragma mark - TABLE_VIEW
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView == _outerTableView){
-        return basedKeysMDict
+        return basedKeysMDict.count;
     }
     
     if (tableView == _innerTableView){
-        
+        return sortedDetailMArray.count;
     }
+    return 1;
 }
 
 #pragma mark - PRIVATE_METHOD
@@ -91,18 +93,20 @@
     
     // sort new dictionary
     [EventDetailSorter returnArrayWithDictionaryFrom:_eventDetailDict KeyDictionary:basedKeysMDict complete:^(NSMutableArray *sortedArray) {
-        
+        sortedDetailMArray = [[NSMutableArray alloc] initWithArray:sortedArray];
+        [_outerTableView reloadData];
+        [_innerTableView reloadData];
     }];
     
     
-    [EventDetailSorter
-     returnSortedDictionary:_eventDetailDict
-     BasedDictionary:basedKeysMDict
-     complete:^(NSMutableDictionary *sortedDictionary) {
-         sortedDetailMDict = [[NSMutableDictionary alloc] initWithDictionary:sortedDictionary];
-         [_outerTableView reloadData];
-         [_innerTableView reloadData];
-     }];
+//    [EventDetailSorter
+//     returnSortedDictionary:_eventDetailDict
+//     BasedDictionary:basedKeysMDict
+//     complete:^(NSMutableDictionary *sortedDictionary) {
+//         sortedDetailMDict = [[NSMutableDictionary alloc] initWithDictionary:sortedDictionary];
+//         [_outerTableView reloadData];
+//         [_innerTableView reloadData];
+//     }];
     
     // SET PICTURE
     

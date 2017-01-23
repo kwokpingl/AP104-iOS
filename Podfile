@@ -9,7 +9,5 @@ target 'ActiveAging_v1.0' do
 
   # Pods for ActiveAging_v1.0
 pod 'AFNetworking'
-pod 'SAMKeychain'
-pod 'FMDB'
 pod 'FSCalendar'
 end

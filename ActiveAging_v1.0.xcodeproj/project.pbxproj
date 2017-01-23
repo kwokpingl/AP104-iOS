@@ -39,7 +39,14 @@
 		3DFC71071E362CF2004D8975 /* EventDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC71061E362CF2004D8975 /* EventDetailTableViewController.m */; };
 		3DFC710D1E3642E8004D8975 /* EventDetailOuterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC710C1E3642E8004D8975 /* EventDetailOuterTableViewCell.m */; };
 		3DFC71101E364312004D8975 /* EventDetailInnerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC710F1E364312004D8975 /* EventDetailInnerTableViewCell.m */; };
+		3DFC71121E367354004D8975 /* libAFNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFC71111E367354004D8975 /* libAFNetworking.a */; };
+		3DFC71141E36735A004D8975 /* libFSCalendar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFC71131E36735A004D8975 /* libFSCalendar.a */; };
+		3DFC71161E367369004D8975 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFC71151E367369004D8975 /* libsqlite3.tbd */; };
+		3DFC71191E367771004D8975 /* CalEventsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */; };
 		99CFA874AD9FCD28C26F7FB0 /* libPods-ActiveAging_v1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */; };
+		E70C46A51E3657F50007FEC4 /* SQLite3DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */; };
+		E70C46AC1E365E750007FEC4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46AB1E365E750007FEC4 /* ViewController.m */; };
+		E70C46AE1E365F360007FEC4 /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46AD1E365F360007FEC4 /* EventManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -99,9 +106,21 @@
 		3DFC710C1E3642E8004D8975 /* EventDetailOuterTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailOuterTableViewCell.m; sourceTree = "<group>"; };
 		3DFC710E1E364312004D8975 /* EventDetailInnerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailInnerTableViewCell.h; sourceTree = "<group>"; };
 		3DFC710F1E364312004D8975 /* EventDetailInnerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailInnerTableViewCell.m; sourceTree = "<group>"; };
+		3DFC71111E367354004D8975 /* libAFNetworking.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAFNetworking.a; path = "../../../../Library/Developer/Xcode/DerivedData/ActiveAging_v1.0-akretxhkamdzlqapaijbnsaixlcq/Build/Products/Debug-iphonesimulator/AFNetworking/libAFNetworking.a"; sourceTree = "<group>"; };
+		3DFC71131E36735A004D8975 /* libFSCalendar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFSCalendar.a; path = "../../../../Library/Developer/Xcode/DerivedData/ActiveAging_v1.0-akretxhkamdzlqapaijbnsaixlcq/Build/Products/Debug-iphonesimulator/FSCalendar/libFSCalendar.a"; sourceTree = "<group>"; };
+		3DFC71151E367369004D8975 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		3DFC71171E367771004D8975 /* CalEventsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalEventsTableViewCell.h; sourceTree = "<group>"; };
+		3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalEventsTableViewCell.m; sourceTree = "<group>"; };
 		957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ActiveAging_v1.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B227D972DDCA904F9E93DF17 /* Pods-ActiveAging_v1.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.release.xcconfig"; sourceTree = "<group>"; };
 		B79FEDE8AEA70ECDDC3931BC /* Pods-ActiveAging_v1.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.debug.xcconfig"; sourceTree = "<group>"; };
+		E70C46A31E3657F50007FEC4 /* SQLite3DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLite3DBManager.h; sourceTree = "<group>"; };
+		E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLite3DBManager.m; sourceTree = "<group>"; };
+		E70C46AA1E365E750007FEC4 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		E70C46AB1E365E750007FEC4 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		E70C46AD1E365F360007FEC4 /* EventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventManager.m; sourceTree = "<group>"; };
+		E70C46AF1E365F410007FEC4 /* EventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventManager.h; sourceTree = "<group>"; };
+		E70C46B01E365F870007FEC4 /* EditEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditEventViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +128,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DFC71161E367369004D8975 /* libsqlite3.tbd in Frameworks */,
+				3DFC71141E36735A004D8975 /* libFSCalendar.a in Frameworks */,
+				3DFC71121E367354004D8975 /* libAFNetworking.a in Frameworks */,
 				99CFA874AD9FCD28C26F7FB0 /* libPods-ActiveAging_v1.0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -175,13 +197,6 @@
 			name = Contacts;
 			sourceTree = "<group>";
 		};
-		3D4521361E2F4106002E416C /* Calendar */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Calendar;
-			sourceTree = "<group>";
-		};
 		3D5015571E23D459006F5F20 /* Login Page */ = {
 			isa = PBXGroup;
 			children = (
@@ -222,7 +237,7 @@
 		3DB322041E114FF7002A9FD9 /* ActiveAging_v1.0 */ = {
 			isa = PBXGroup;
 			children = (
-				3D4521361E2F4106002E416C /* Calendar */,
+				E70C46A91E365E330007FEC4 /* Calendar */,
 				3D4521351E2F40FE002E416C /* Contacts */,
 				3D4521341E2F40F7002E416C /* Weather */,
 				3D4521331E2F40E5002E416C /* Events */,
@@ -232,6 +247,8 @@
 				EC1309681E2CCCAE00D21982 /* Maps */,
 				3DB322081E114FF7002A9FD9 /* AppDelegate.h */,
 				3DB322091E114FF7002A9FD9 /* AppDelegate.m */,
+				E70C46A31E3657F50007FEC4 /* SQLite3DBManager.h */,
+				E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */,
 				3DB3220E1E114FF7002A9FD9 /* Main.storyboard */,
 				3D5015511E23ABED006F5F20 /* Contact.storyboard */,
 				3D50154F1E23ABC2006F5F20 /* Map.storyboard */,
@@ -279,9 +296,26 @@
 		78CF3B493146A2D7E53ECE39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3DFC71151E367369004D8975 /* libsqlite3.tbd */,
+				3DFC71131E36735A004D8975 /* libFSCalendar.a */,
+				3DFC71111E367354004D8975 /* libAFNetworking.a */,
 				957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E70C46A91E365E330007FEC4 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				E70C46AA1E365E750007FEC4 /* ViewController.h */,
+				E70C46AB1E365E750007FEC4 /* ViewController.m */,
+				E70C46AD1E365F360007FEC4 /* EventManager.m */,
+				E70C46AF1E365F410007FEC4 /* EventManager.h */,
+				E70C46B01E365F870007FEC4 /* EditEventViewController.h */,
+				3DFC71171E367771004D8975 /* CalEventsTableViewCell.h */,
+				3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */,
+			);
+			name = Calendar;
 			sourceTree = "<group>";
 		};
 		EC1309681E2CCCAE00D21982 /* Maps */ = {
@@ -432,6 +466,7 @@
 				3D45212B1E2F09BD002E416C /* HomePageViewController.m in Sources */,
 				3D4521271E2EFC08002E416C /* PhotoViewController.m in Sources */,
 				3DFC71101E364312004D8975 /* EventDetailInnerTableViewCell.m in Sources */,
+				E70C46AC1E365E750007FEC4 /* ViewController.m in Sources */,
 				3D4521241E2EFBD3002E416C /* ConfirmationViewController.m in Sources */,
 				3D4521181E2ED2F5002E416C /* ServerManager.m in Sources */,
 				3DB3220A1E114FF7002A9FD9 /* AppDelegate.m in Sources */,
@@ -439,8 +474,11 @@
 				3DFC710D1E3642E8004D8975 /* EventDetailOuterTableViewCell.m in Sources */,
 				3D45212E1E2F2ADE002E416C /* MapTabViewController.m in Sources */,
 				3D45210F1E2EC189002E416C /* KeychainManager.m in Sources */,
+				3DFC71191E367771004D8975 /* CalEventsTableViewCell.m in Sources */,
+				E70C46AE1E365F360007FEC4 /* EventManager.m in Sources */,
 				3D4521321E2F3159002E416C /* SetupViewController.m in Sources */,
 				3DB322071E114FF7002A9FD9 /* main.m in Sources */,
+				E70C46A51E3657F50007FEC4 /* SQLite3DBManager.m in Sources */,
 				3D81C45B1E34629A00C8E22F /* EventTableViewCell.m in Sources */,
 				3D81C4611E34646500C8E22F /* EventDetailViewController.m in Sources */,
 				3DFC71071E362CF2004D8975 /* EventDetailTableViewController.m in Sources */,

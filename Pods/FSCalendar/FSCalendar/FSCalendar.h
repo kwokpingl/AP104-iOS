@@ -4,7 +4,7 @@
 //
 //  Created by Wenchao Ding on 29/1/15.
 //  Copyright © 2016 Wenchao Ding. All rights reserved.
-// 
+//
 //  https://github.com/WenchaoD
 //
 //
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class FSCalendar;
 
 /**
- * FSCalendarDataSource is a source set of FSCalendar. The basic role is to provide event、subtitle and min/max day to display for calendar.
+ * FSCalendarDataSource is a source set of FSCalendar. The basic role is to provide event、subtitle and min/max day to display, or customized day cell for the calendar.
  */
 @protocol FSCalendarDataSource <NSObject>
 
@@ -123,25 +123,22 @@ NS_ASSUME_NONNULL_BEGIN
  Asks the delegate whether the specific date is allowed to be selected by tapping.
  */
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition;
-- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date FSCalendarDeprecated(-calendar:shouldSelectDate:atMonthPosition:);
 
 /**
  Tells the delegate a date in the calendar is selected by tapping.
  */
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition;
-- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date FSCalendarDeprecated(-calendar:didSelectDate:atMonthPosition:);
 
 /**
  Asks the delegate whether the specific date is allowed to be deselected by tapping.
  */
 - (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition;
-- (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date FSCalendarDeprecated(-calendar:shouldDeselectDate:atMonthPosition:);
 
 /**
  Tells the delegate a date in the calendar is deselected by tapping.
  */
 - (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition;
-- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date FSCalendarDeprecated(-calendar:didDeselectDate:atMonthPosition:);
+
 
 /**
  Tells the delegate the calendar is about to change the bounding rect.
@@ -163,6 +160,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated FSCalendarDeprecated(-calendar:boundingRectWillChange:animated:);
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar FSCalendarDeprecated(-calendarCurrentPageDidChange:);
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date FSCalendarDeprecated(-calendar:shouldSelectDate:atMonthPosition:);- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date FSCalendarDeprecated(-calendar:didSelectDate:atMonthPosition:);
+- (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date FSCalendarDeprecated(-calendar:shouldDeselectDate:atMonthPosition:);
+- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date FSCalendarDeprecated(-calendar:didDeselectDate:atMonthPosition:);
 
 @end
 
@@ -171,7 +171,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @see FSCalendarAppearance
  */
-@protocol FSCalendarDelegateAppearance <NSObject>
+@protocol FSCalendarDelegateAppearance <FSCalendarDelegate>
 
 @optional
 
@@ -292,13 +292,13 @@ IB_DESIGNABLE
  * The locale of month and weekday symbols. Change it to display them in your own language.
  *
  * e.g. To display them in Chinese:
- * 
+ *
  *    calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
  */
 @property (copy, nonatomic) NSLocale *locale;
 
 /**
- * The scroll direction of FSCalendar. 
+ * The scroll direction of FSCalendar.
  *
  * e.g. To make the calendar scroll vertically
  *
@@ -307,20 +307,26 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarScrollDirection scrollDirection;
 
 /**
- * The scope of calendar, change scope will trigger an inner frame change, make sure the frame has been correctly adjusted in 
+ * The scope of calendar, change scope will trigger an inner frame change, make sure the frame has been correctly adjusted in
  *
  *    - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated;
  */
 @property (assign, nonatomic) FSCalendarScope scope;
 
 /**
- * A UIPanGestureRecognizer instance which enables the control of scope on the whole day-area. Not available if the scrollDirection is vertical.
- *
- * e.g.
- *
- *    calendar.scopeGesture.enabled = YES;
+ A UIPanGestureRecognizer instance which enables the control of scope on the whole day-area. Not available if the scrollDirection is vertical.
+ 
+ @deprecated Use -handleScopeGesture: instead
+ 
+ e.g.
+ 
+ UIPanGestureRecognizer *scopeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:calendar action:@selector(handleScopeGesture:)];
+ [calendar addGestureRecognizer:scopeGesture];
+ 
+ @see DIYExample
+ @see FSCalendarScopeExample
  */
-@property (readonly, nonatomic) UIPanGestureRecognizer *scopeGesture;
+@property (readonly, nonatomic) UIPanGestureRecognizer *scopeGesture FSCalendarDeprecated(handleScopeGesture:);
 
 /**
  * A UILongPressGestureRecognizer instance which enables the swipe-to-choose feature of the calendar.
@@ -365,7 +371,7 @@ IB_DESIGNABLE
 @property (strong, nonatomic) FSCalendarWeekdayView *calendarWeekdayView;
 
 /**
- The calendar view of the calendar
+ The header view of the calendar
  */
 @property (strong, nonatomic) FSCalendarHeaderView *calendarHeaderView;
 
@@ -391,8 +397,19 @@ IB_DESIGNABLE
 
 /**
  A Boolean value that determines whether the calendar should show a handle for control the scope. Default is NO;
+ 
+ @deprecated Use -handleScopeGesture: instead
+ 
+ e.g.
+ 
+ UIPanGestureRecognizer *scopeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.calendar action:@selector(handleScopeGesture:)];
+ scopeGesture.delegate = ...
+ [anyOtherView addGestureRecognizer:scopeGesture];
+ 
+ @see FSCalendarScopeExample
+ 
  */
-@property (assign, nonatomic) IBInspectable BOOL showsScopeHandle;
+@property (assign, nonatomic) IBInspectable BOOL showsScopeHandle FSCalendarDeprecated(handleScopeGesture:);
 
 /**
  The multiplier of line height while paging enabled is NO. Default is 1.0;
@@ -469,7 +486,7 @@ IB_DESIGNABLE
 
 /**
  Register a class for use in creating new calendar cells.
-
+ 
  @param cellClass The class of a cell that you want to use in the calendar.
  @param identifier The reuse identifier to associate with the specified class. This parameter must not be nil and must not be an empty string.
  */
@@ -477,7 +494,7 @@ IB_DESIGNABLE
 
 /**
  Returns a reusable calendar cell object located by its identifier.
-
+ 
  @param identifier The reuse identifier for the specified cell. This parameter must not be nil.
  @param date The specific date of the cell.
  @return A valid FSCalendarCell object.
@@ -486,7 +503,7 @@ IB_DESIGNABLE
 
 /**
  Returns the calendar cell for the specified date.
-
+ 
  @param date The date of the cell
  @param position The month position for the cell
  @return An object representing a cell of the calendar, or nil if the cell is not visible or date is out of range.
@@ -525,6 +542,17 @@ IB_DESIGNABLE
  */
 - (CGRect)frameForDate:(NSDate *)date;
 
+/**
+ Invalidates the current appearance of the calendar and triggers an update during the next update cycle.
+ */
+- (void)setNeedsConfigureAppearance;
+
+/**
+ An action selector for UIPanGestureRecognizer instance to control the scope transition
+ 
+ @param sender A UIPanGestureRecognizer instance which controls the scope of the calendar
+ */
+- (void)handleScopeGesture:(UIPanGestureRecognizer *)sender;
 
 @end
 
@@ -592,9 +620,6 @@ IB_DESIGNABLE
 - (NSInteger)dayOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
 - (NSInteger)weekdayOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
 - (NSInteger)weekOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
-- (NSDate *)dateByIgnoringTimeComponentsOfDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateBySettingHour:minute:seconds:ofDate:options:]);
-- (NSDate *)tomorrowOfDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);;
-- (NSDate *)yesterdayOfDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
 - (NSDate *)dateByAddingYears:(NSInteger)years toDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
 - (NSDate *)dateBySubstractingYears:(NSInteger)years fromDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
 - (NSDate *)dateByAddingMonths:(NSInteger)months toDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
@@ -603,10 +628,6 @@ IB_DESIGNABLE
 - (NSDate *)dateBySubstractingWeeks:(NSInteger)weeks fromDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
 - (NSDate *)dateByAddingDays:(NSInteger)days toDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
 - (NSDate *)dateBySubstractingDays:(NSInteger)days fromDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
-- (NSInteger)yearsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate FSCalendarDeprecated([NSCalendar components:fromDate:toDate:options:]);
-- (NSInteger)monthsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate FSCalendarDeprecated([NSCalendar components:fromDate:toDate:options:]);
-- (NSInteger)daysFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate FSCalendarDeprecated([NSCalendar components:fromDate:toDate:options:]);
-- (NSInteger)weeksFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate FSCalendarDeprecated([NSCalendar components:fromDate:toDate:options:]);
 - (BOOL)isDate:(NSDate *)date1 equalToDate:(NSDate *)date2 toCalendarUnit:(FSCalendarUnit)unit FSCalendarDeprecated([NSCalendar -isDate:equalToDate:toUnitGranularity:]);
 - (BOOL)isDateInToday:(NSDate *)date FSCalendarDeprecated([NSCalendar -isDateInToday:]);
 
@@ -614,4 +635,3 @@ IB_DESIGNABLE
 @end
 
 NS_ASSUME_NONNULL_END
-
