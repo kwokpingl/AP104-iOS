@@ -12,6 +12,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
+
+static dispatch_once_t onceToken;
 @interface MapViewController () <MKMapViewDelegate, CLLocationManagerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet MKMapView *mapview;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
@@ -44,9 +46,9 @@
     [_mapview setShowsUserLocation:true];
     shareLocation = false;
     
-    UITapGestureRecognizer * tap = [UITapGestureRecognizer new];
-    [tap addTarget:self action:@selector(endEditing)];
-    [self.view addGestureRecognizer:tap];
+//    UITapGestureRecognizer * tap = [UITapGestureRecognizer new];
+//    [tap addTarget:self action:@selector(endEditing)];
+//    [self.view addGestureRecognizer:tap];
     
     
     // REQUEST PERMISSION
@@ -166,9 +168,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    if (shareLocation){
-        [cllocationMgr startUpdatingLocation];
-    }
+    [cllocationMgr startUpdatingLocation];
 }
 
 
@@ -209,8 +209,6 @@
     
     MKCoordinateRegion  region = MKCoordinateRegionMake(myCoordinate, span);
     
-    static dispatch_once_t onceToken;
-    
     dispatch_once(&onceToken, ^{
         [_mapview setRegion:region];
         [self showFriendAnnotation];
@@ -250,6 +248,7 @@
         [_tableView reloadData];
     } else {
         [_groupView setHidden:true];
+        onceToken = 0;
     }
 }
 
@@ -275,6 +274,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    [_groupView setHidden:true];
+    
     NSArray * memberArray = dummyDictionary[chosenGroup];
     
     CLLocationDegrees lat = [memberArray[indexPath.row][USER_CUR_LAT] doubleValue];
@@ -285,7 +286,6 @@
 //    MKOverlayRenderer 
     MKCoordinateRegion region = MKCoordinateRegionMake(location, span);
     [_mapview setRegion:region];
-    
 }
 
 
