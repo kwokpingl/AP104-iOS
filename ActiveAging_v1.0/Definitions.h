@@ -38,10 +38,14 @@
 #define USER_NAME_KEY           @"userName"
 #define USER_PASSWORD_KEY       @"userPassword"
 #define USER_PHONENUMBER_KEY    @"userPhoneNumber"
+#define USER_CUR_LON        @"userCurrentLongtitude"
+#define USER_CUR_LAT    @"userCurrentLatitude"
+#define USER_PIC                   @"userPic"
 #define ACTION_KEY              @"action"
 #define ACTION_CHECK        @"checkAvailability"
 #define ACTION_ADD          @"create"
 #define ACTION_GET_ID       @"getID"
+
 
 // MARK: EVENT
 #define EVENT_ID_KEY            @"event_ID"
