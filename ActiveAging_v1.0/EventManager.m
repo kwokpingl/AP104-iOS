@@ -129,6 +129,10 @@ static EventManager * _store = nil;
     dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
     NSDate * startDateTime = [dateFormatter dateFromString:startDateTimeStr];
+    if (startDateTime == nil){
+        dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+        startDateTime = [dateFormatter dateFromString:startDateTimeStr];
+    }
     NSDate * endDateTime = [dateFormatter dateFromString:endDateTimeStr];
 //    endDateTime = [NSDate dateWithTimeIntervalSinceReferenceDate:162000];
     addEvent = [EKEvent eventWithEventStore:_store];

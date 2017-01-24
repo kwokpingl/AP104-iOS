@@ -7,6 +7,8 @@
 //
 
 #import "EventDetailInnerTableViewCell.h"
+#import "SQLite3DBManager.h"
+#import "EventManager.h"
 
 @implementation EventDetailInnerTableViewCell
 

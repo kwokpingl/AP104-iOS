@@ -15,4 +15,5 @@
 @property (weak, nonatomic) IBOutlet UIView *OuterBottomContentView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *OuterBottomContentHeightContraint;
 @property (weak, nonatomic) IBOutlet UITableView *InnerTableView;
+@property (strong, nonatomic) NSArray * detailArray;
 @end

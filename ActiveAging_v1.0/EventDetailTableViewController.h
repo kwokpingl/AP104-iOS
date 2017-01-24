@@ -10,5 +10,6 @@
 
 @interface EventDetailTableViewController : UIViewController
 @property (nonatomic, strong) NSDictionary * eventDetailDict;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *joinButton;
 @property (nonatomic, strong) UIImage * eventImg;
 @end

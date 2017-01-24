@@ -143,7 +143,7 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b0T-Jl-ZjT" userLabel="Top View">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xcc-yh-jwS" userLabel="Top Title">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xcc-yh-jwS" userLabel="Top Title">
                                                             <rect key="frame" x="8" y="0.0" width="359" height="40"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                             <nil key="textColor"/>
@@ -199,10 +199,9 @@
                                             <outlet property="InnerTableView" destination="V4J-XT-XGy" id="pSe-r6-rn3"/>
                                             <outlet property="OuterBottomContentHeightContraint" destination="Pt6-xN-sAX" id="Bxm-ED-lAY"/>
                                             <outlet property="OuterBottomContentView" destination="y7H-xu-ZlA" id="xdY-aN-8sr"/>
-                                            <outlet property="OuterContentView" destination="89q-bi-92G" id="tQL-6F-g95"/>
+                                            <outlet property="OuterContentView" destination="b0T-Jl-ZjT" id="14z-qD-fsE"/>
                                             <outlet property="OuterTopContentTitleLabel" destination="Xcc-yh-jwS" id="IKf-cd-Gmt"/>
                                             <outlet property="OuterTopContentView" destination="b0T-Jl-ZjT" id="jaw-RT-88H"/>
-                                            <outlet property="titleView" destination="b0T-Jl-ZjT" id="6hr-Kn-6Qe"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -224,9 +223,14 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="BmW-Xa-43k">
-                        <barButtonItem key="rightBarButtonItem" title="Join" id="dDY-Yz-No3"/>
+                        <barButtonItem key="rightBarButtonItem" title="有興趣" id="bzd-4L-WRc">
+                            <connections>
+                                <action selector="joinBtnPressed:" destination="7oD-ON-5FY" id="1cm-b3-3B9"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="joinButton" destination="bzd-4L-WRc" id="PKB-9e-jMo"/>
                         <outlet property="outerTableView" destination="wUd-t1-eRL" id="N1l-8b-cFA"/>
                     </connections>
                 </viewController>

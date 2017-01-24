@@ -48,10 +48,12 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     // start loading the data
-    [_serverMgr retrieveEventInfo:USER_EVENT_FETCH UserID:_userInfo.getUserID EventID:@"" completion:^(NSError *error, id result) {
+    [_serverMgr retrieveEventInfo:USER_EVENT_FETCH UserID:_userInfo.getUserID EventID:@"-1" completion:^(NSError *error, id result) {
         if ([result[@"result"] boolValue]){
             eventsDict = [[NSDictionary alloc] initWithDictionary:result[@"message"]];
-            [_tableView reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_tableView reloadData];
+            });
         }
     }];
     
@@ -62,7 +64,9 @@
 #pragma mark- TABLEVIEW_METHODS
 // MARK: BASIC_SETUP
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
     eventsArray = [[NSArray alloc] initWithArray:eventsDict[currentPage]];
+    
     return eventsArray.count;
 }
 
@@ -91,11 +95,8 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    EventDetailViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"EventDetailViewController"];
-//    vc.eventDetailDict = [[NSDictionary alloc] initWithDictionary:eventsArray[indexPath.row]];
-//    [self presentViewController:vc animated:true completion:nil];
     
-    [self performSegueWithIdentifier:@"eventDetail" sender:self];
+    [self performSegueWithIdentifier:@"eventDetail" sender:indexPath];
     
 }
 
@@ -121,9 +122,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"eventDetail"]){
         EventDetailTableViewController * vc = [segue destinationViewController];
-        EventTableViewCell * cell = [_tableView dequeueReusableCellWithIdentifier:@"Cell"];
-        NSIndexPath * indexPath = [_tableView indexPathForCell:cell];
-        
+//        EventTableViewCell * cell = [_tableView dequeueReusableCellWithIdentifier:@"Cell"];
+//        NSIndexPath * indexPath = [_tableView indexPathForCell:cell];
+        NSIndexPath * indexPath = (NSIndexPath *) sender;
         vc.eventDetailDict = eventsArray[indexPath.row];
         NSLog(@"");
     }

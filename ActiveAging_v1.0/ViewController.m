@@ -436,6 +436,9 @@ static void * __KVOContext;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (IBAction)backButtonPressed:(id)sender {
+    [self dismissViewControllerAnimated:true completion:nil];
+}
 
 
 @end
