@@ -66,7 +66,18 @@
             
         } else {
             NSLog(@"FAILED: %@", result[@"error"]);
+            // TEMP
+            [_userInfo setProfileImage:_photoImageView.image];
+            
+            [_keychainMgr setKeychainObject:_userInfo.getUsername forKey:_userInfo.getPassword];
+            
+            
+            UIViewController * vc = [self.storyboard
+                  instantiateViewControllerWithIdentifier:@"AccountVerificationViewController"];
+            [self presentViewController:vc animated:true completion:nil];
         }
+        
+        
     }];
     
 }
