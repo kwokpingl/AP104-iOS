@@ -10,4 +10,8 @@ target 'ActiveAging_v1.0' do
   # Pods for ActiveAging_v1.0
 pod 'AFNetworking'
 pod 'FSCalendar'
+pod 'Mantle'
+pod 'LBBlurredImage'
+pod 'TSMessages'
+pod 'ReactiveObjC'
 end

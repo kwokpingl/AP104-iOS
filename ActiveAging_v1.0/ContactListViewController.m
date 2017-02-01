@@ -59,9 +59,9 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0){
-        return groups.count;
+        return groupsArray.count;
     } else{
-        return contacts.count;
+        return contactsArray.count;
     }
 }
 
@@ -81,11 +81,11 @@
     ContactTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     
     if (indexPath.section == 0){
-        cell.titleLabel.text = groups[indexPath.row];
+        cell.titleLabel.text = groupsArray[indexPath.row];
         [cell.subtitleLabel setHidden:true];
         [cell.imageView setHidden:true];
     }else{
-        cell.titleLabel.text = contacts[indexPath.row][USER_NAME_KEY];
+        cell.titleLabel.text = contactsArray[indexPath.row][USER_NAME_KEY];
     }
     
     return cell;
