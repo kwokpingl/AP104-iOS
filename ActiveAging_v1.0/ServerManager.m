@@ -9,14 +9,14 @@
 #import "ServerManager.h"
 #import <AFNetworking.h>
 
-static ServerManager * serverMng = nil;
+static ServerManager * serverMgr = nil;
 
 @implementation ServerManager
 + (instancetype) shareInstance{
-    if (serverMng == nil){
-        serverMng = [ServerManager new];
+    if (serverMgr == nil){
+        serverMgr = [ServerManager new];
     }
-    return serverMng;
+    return serverMgr;
 }
 
 
@@ -67,8 +67,23 @@ completion:(DoneHandler)done{
                                ACTION_KEY: action
                                };
     
-    [self doPost:EVENTS_REGISTER_URL parameters:jsonObj completion:done];
+    [self doPost:EVENTS_REGISTER_URL
+      parameters:jsonObj
+      completion:done];
 }
+
+
+- (void) fetchVerificationCodeForPhoneNumber: (NSString *) userPhoneNumber Action:(NSString *)action Code: (NSString *) code completion:(DoneHandler)done{
+    
+    // this will need USER_PHONENUMBER and USERNAME
+    NSDictionary * jsonObj = @{USER_PHONENUMBER_KEY: userPhoneNumber, ACTION_KEY: action, VERIFICATION_KEY: code};
+    
+    [self doPost:VERIFICATION_CODE_URL
+      parameters:jsonObj
+      completion:done];
+}
+
+//- (void) 
 
 
 #pragma mark - PRIVATE_METHODS
@@ -124,6 +139,8 @@ completion:(DoneHandler)done{
     
     sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     
+//    [sessionManager.requestSerializer setTimeoutInterval:20.0];
+    
     // now set the picture
     [sessionManager POST:UPLOAD_PIC_URL
               parameters:finalDic
@@ -149,6 +166,11 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
     }];
     
 }
+
+
+
+
+
 
 #pragma mark - STILL_WORKING_ON
 // MARK: RETRIEVE_INFO

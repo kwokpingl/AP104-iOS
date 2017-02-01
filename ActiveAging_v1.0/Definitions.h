@@ -10,9 +10,15 @@
 #define Definitions_h
 
 // MARK: SERVER_BASIC
-#define BASE_URL                @"http://activeaging.xp3.biz"
+//#define BASE_URL                @"http://activeaging.xp3.biz"
+#define BASE_URL        @"http://localhost:8888/ActiveAging"
+
+// MARK: USER_ID URL
 #define LOGIN_URL               [BASE_URL stringByAppendingPathComponent:@"php/login.php"]
+#define TEST_URL            [BASE_URL stringByAppendingPathComponent:@"php/test.php"]
 #define DATA_KEY                @"data"
+
+
 
 // MARK: SEND_PICTURE_URL
 #define UPLOAD_PIC_URL          [BASE_URL stringByAppendingPathComponent:@"php/uploadImage.php"]
@@ -24,6 +30,13 @@
 #define USER_EVENT_JOIN @"join"
 #define USER_EVENT_QUIT @"quit"
 
+
+// MARK: VERIFICATION_CODE_URL
+#define VERIFICATION_CODE_URL          [BASE_URL stringByAppendingPathComponent:@"php/verificationCode.php"]
+#define VERIFICATION_KEY            @"validationCode"
+#define VERIFICATION_ACTION_DELETE @"delete"
+#define VERIFICATION_ACTION_SEND    @"send"
+#define VERIFICATION_ACTION_CHECK   @"check"
 
 // MARK: KEYCHAIN_ITEM
 #define keyAttrLabel        @"ActiveAging Login"
@@ -38,13 +51,14 @@
 #define USER_NAME_KEY           @"userName"
 #define USER_PASSWORD_KEY       @"userPassword"
 #define USER_PHONENUMBER_KEY    @"userPhoneNumber"
-#define USER_CUR_LON        @"userCurrentLongtitude"
-#define USER_CUR_LAT    @"userCurrentLatitude"
-#define USER_PIC                   @"userPic"
+#define USER_CUR_LON_KEY        @"userCurrentLongtitude"
+#define USER_CUR_LAT_KEY    @"userCurrentLatitude"
+#define USER_PIC_KEY                   @"userPic"
 #define ACTION_KEY              @"action"
 #define ACTION_CHECK        @"checkAvailability"
 #define ACTION_ADD          @"create"
 #define ACTION_GET_ID       @"getID"
+#define ACTION_DELETE       @"delete"
 
 
 // MARK: EVENT
@@ -74,6 +88,15 @@
     // pic 圖檔
 #define EVENT_PIC_KEY           @"event_pic"
 
+
+// GROUP TABLE
+#define GROUP_ID_KEY    @"group_ID"
+#define GROUP_NAME_KEY  @"group_name"
+#define USER_ROLE_KEY      @"role"
+#define ROLE_MASTER     @"1"
+#define ROLE_PARTICIPANT    @"-1"
+
+
 /*
  1	event_ID	
  2	event_title	text
@@ -96,7 +119,14 @@
  19	event_pic
  */
 
+// Mobile Database
+#define MOBILE_DATABASE @"activeaging.sql"
 
+#define CONTACT_LIST_TABLE    @"contactList"
+#define GROUP_LIST_TABLE    @"groupList"
+#define EMERGENCY_TABLE     @"emergencyList"
 
-
+#define EMERGENCY_ID_KEY    @"emergency_ID"
+#define EMERGENCY_NAME_KEY  @"emergnecy_name"
+#define EMERGENCY_PHONE_KEY @"emergencyPhoneNumber"
 #endif /* Definitions_h */

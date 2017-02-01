@@ -48,6 +48,8 @@
 		3DFC71161E367369004D8975 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFC71151E367369004D8975 /* libsqlite3.tbd */; };
 		3DFC71191E367771004D8975 /* CalEventsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */; };
 		99CFA874AD9FCD28C26F7FB0 /* libPods-ActiveAging_v1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */; };
+		AE240FE51E41B2C900AB6B33 /* ContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE240FE41E41B2C900AB6B33 /* ContactListViewController.m */; };
+		AE240FE81E42111700AB6B33 /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE240FE71E42111700AB6B33 /* ContactTableViewCell.m */; };
 		E70C46A51E3657F50007FEC4 /* SQLite3DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */; };
 		E70C46AC1E365E750007FEC4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46AB1E365E750007FEC4 /* ViewController.m */; };
 		E70C46AE1E365F360007FEC4 /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46AD1E365F360007FEC4 /* EventManager.m */; };
@@ -122,6 +124,10 @@
 		3DFC71171E367771004D8975 /* CalEventsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalEventsTableViewCell.h; sourceTree = "<group>"; };
 		3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalEventsTableViewCell.m; sourceTree = "<group>"; };
 		957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ActiveAging_v1.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE240FE31E41B2C900AB6B33 /* ContactListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListViewController.h; sourceTree = "<group>"; };
+		AE240FE41E41B2C900AB6B33 /* ContactListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListViewController.m; sourceTree = "<group>"; };
+		AE240FE61E42111700AB6B33 /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
+		AE240FE71E42111700AB6B33 /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
 		B227D972DDCA904F9E93DF17 /* Pods-ActiveAging_v1.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.release.xcconfig"; sourceTree = "<group>"; };
 		B79FEDE8AEA70ECDDC3931BC /* Pods-ActiveAging_v1.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.debug.xcconfig"; sourceTree = "<group>"; };
 		E70C46A31E3657F50007FEC4 /* SQLite3DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLite3DBManager.h; sourceTree = "<group>"; };
@@ -205,6 +211,10 @@
 		3D4521351E2F40FE002E416C /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
+				AE240FE31E41B2C900AB6B33 /* ContactListViewController.h */,
+				AE240FE41E41B2C900AB6B33 /* ContactListViewController.m */,
+				AE240FE61E42111700AB6B33 /* ContactTableViewCell.h */,
+				AE240FE71E42111700AB6B33 /* ContactTableViewCell.m */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -249,6 +259,7 @@
 		3DB322041E114FF7002A9FD9 /* ActiveAging_v1.0 */ = {
 			isa = PBXGroup;
 			children = (
+				AEA9FCB71E3CDA770053516E /* Time */,
 				E70C46A91E365E330007FEC4 /* Calendar */,
 				3D4521351E2F40FE002E416C /* Contacts */,
 				3D4521341E2F40F7002E416C /* Weather */,
@@ -318,6 +329,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AEA9FCB71E3CDA770053516E /* Time */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Time;
+			sourceTree = "<group>";
+		};
 		E70C46A91E365E330007FEC4 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
@@ -379,7 +397,7 @@
 				TargetAttributes = {
 					3DB322011E114FF7002A9FD9 = {
 						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = 8P5JAYPRGQ;
+						DevelopmentTeam = 8SLV3B6FU8;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -477,6 +495,7 @@
 			files = (
 				3D45211E1E2EFBA2002E416C /* InputNameViewController.m in Sources */,
 				3D4521121E2EC1C6002E416C /* UserInfo.m in Sources */,
+				AE240FE81E42111700AB6B33 /* ContactTableViewCell.m in Sources */,
 				3D45211B1E2EFB67002E416C /* WelcomeViewController.m in Sources */,
 				3D5015661E2607E4006F5F20 /* DataManager.m in Sources */,
 				3D5015601E26079C006F5F20 /* AccountVerificationViewController.m in Sources */,
@@ -501,6 +520,7 @@
 				E70C46A51E3657F50007FEC4 /* SQLite3DBManager.m in Sources */,
 				3D81C45B1E34629A00C8E22F /* EventTableViewCell.m in Sources */,
 				3D81C4611E34646500C8E22F /* EventDetailViewController.m in Sources */,
+				AE240FE51E41B2C900AB6B33 /* ContactListViewController.m in Sources */,
 				3DFC71071E362CF2004D8975 /* EventDetailTableViewController.m in Sources */,
 				3D02065C1E35956600DCED4D /* EventDetailTableViewCell.m in Sources */,
 			);
@@ -648,7 +668,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 8P5JAYPRGQ;
+				DEVELOPMENT_TEAM = 8SLV3B6FU8;
 				INFOPLIST_FILE = ActiveAging_v1.0/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -664,7 +684,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 8P5JAYPRGQ;
+				DEVELOPMENT_TEAM = 8SLV3B6FU8;
 				INFOPLIST_FILE = ActiveAging_v1.0/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

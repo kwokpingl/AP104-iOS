@@ -28,7 +28,6 @@ typedef void (^DoneHandler)(NSError *error,id result);
 - (void) uploadPictureWithData: (NSData *) data
                  Authorization:(NSString *) authorization
                       UserName: (NSString *)userName
-
                UserPhoneNumber: (NSString *) userPhoneNumber
                     completion: (DoneHandler) done;
 
@@ -36,6 +35,8 @@ typedef void (^DoneHandler)(NSError *error,id result);
                     UserID: (NSInteger ) userID
                    EventID: (NSString *) eventID
                 completion:(DoneHandler) done;
+
+- (void) fetchVerificationCodeForPhoneNumber: (NSString *) userPhoneNumber Action: (NSString *) action Code:(NSString *) code completion:(DoneHandler) done;
 
 
 @end

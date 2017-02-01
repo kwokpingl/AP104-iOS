@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "75DE44760AE88F4FF8D813DBC480C20B7C3488DC",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "75DE44760AE88F4FF8D813DBC480C20B7C3488DC" : 9223372036854775807,
+    "3F37AEACD8326F2E266B78BF2A3ED2ED304A34B4" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "14DFF2D8-62DB-4ACD-8A5F-BF3B076FDD0D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "75DE44760AE88F4FF8D813DBC480C20B7C3488DC" : "AP104-iOS\/",
+    "3F37AEACD8326F2E266B78BF2A3ED2ED304A34B4" : ".."
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ActiveAging_v1.0",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ActiveAging_v1.0.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/kwokpingl\/AP104-iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3F37AEACD8326F2E266B78BF2A3ED2ED304A34B4"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/kwokpingl\/AP104-iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "75DE44760AE88F4FF8D813DBC480C20B7C3488DC"
+    }
+  ]
+}

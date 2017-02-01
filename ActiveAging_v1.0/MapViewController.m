@@ -102,56 +102,56 @@ static dispatch_once_t onceToken;
     NSArray * group1 = @[
   @{USER_ID_KEY:@"100",
     USER_NAME_KEY:@"AlbertLEE",
-    USER_CUR_LAT:@"23",
-    USER_CUR_LON:@"120"},
+    USER_CUR_LAT_KEY:@"23",
+    USER_CUR_LON_KEY:@"120"},
   @{USER_ID_KEY:@"101",
     USER_NAME_KEY:@"AlexALA",
-    USER_CUR_LAT:@"34",
-    USER_CUR_LON:@"120"},
+    USER_CUR_LAT_KEY:@"34",
+    USER_CUR_LON_KEY:@"120"},
   @{USER_ID_KEY:@"102",
     USER_NAME_KEY:@"AmyMcDonald",
-    USER_CUR_LAT:@"34",
-    USER_CUR_LON:@"120"},
+    USER_CUR_LAT_KEY:@"34",
+    USER_CUR_LON_KEY:@"120"},
   @{USER_ID_KEY:@"103",
     USER_NAME_KEY:@"Adam",
-    USER_CUR_LAT:@"34",
-    USER_CUR_LON:@"120"}];
+    USER_CUR_LAT_KEY:@"34",
+    USER_CUR_LON_KEY:@"120"}];
     
     NSArray * group2 = @[
   @{USER_ID_KEY:@"104",
     USER_NAME_KEY:@"BenEthen",
-    USER_CUR_LAT:@"23",
-    USER_CUR_LON:@"120"},
+    USER_CUR_LAT_KEY:@"23",
+    USER_CUR_LON_KEY:@"120"},
   @{USER_ID_KEY:@"105",
     USER_NAME_KEY:@"BakeryLoaf",
-    USER_CUR_LAT:@"34",
-    USER_CUR_LON:@"120"},
+    USER_CUR_LAT_KEY:@"34",
+    USER_CUR_LON_KEY:@"120"},
   @{USER_ID_KEY:@"106",
     USER_NAME_KEY:@"BackStabber",
-    USER_CUR_LAT:@"34",
-    USER_CUR_LON:@"120"},
+    USER_CUR_LAT_KEY:@"34",
+    USER_CUR_LON_KEY:@"120"},
   @{USER_ID_KEY:@"107",
     USER_NAME_KEY:@"BackToSchool",
-    USER_CUR_LAT:@"34",
-    USER_CUR_LON:@"120"}];
+    USER_CUR_LAT_KEY:@"34",
+    USER_CUR_LON_KEY:@"120"}];
     
     NSArray * group3 = @[
   @{USER_ID_KEY:@"108",
     USER_NAME_KEY:@"CatLady",
-    USER_CUR_LAT:@"23",
-    USER_CUR_LON:@"120"},
+    USER_CUR_LAT_KEY:@"23",
+    USER_CUR_LON_KEY:@"120"},
   @{USER_ID_KEY:@"109",
     USER_NAME_KEY:@"CattaPuss",
-    USER_CUR_LAT:@"34",
-    USER_CUR_LON:@"120"},
+    USER_CUR_LAT_KEY:@"34",
+    USER_CUR_LON_KEY:@"120"},
   @{USER_ID_KEY:@"110",
     USER_NAME_KEY:@"CalvinKen",
-    USER_CUR_LAT:@"34",
-    USER_CUR_LON:@"120"},
+    USER_CUR_LAT_KEY:@"34",
+    USER_CUR_LON_KEY:@"120"},
   @{USER_ID_KEY:@"111",
     USER_NAME_KEY:@"CloverChan",
-    USER_CUR_LAT:@"34",
-    USER_CUR_LON:@"120"}];
+    USER_CUR_LAT_KEY:@"34",
+    USER_CUR_LON_KEY:@"120"}];
     
     
     
@@ -267,7 +267,7 @@ static dispatch_once_t onceToken;
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     
     cell.textLabel.text = tempArray[indexPath.row][USER_NAME_KEY];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"(%@,%@", tempArray[indexPath.row][USER_CUR_LAT], tempArray[indexPath.row][USER_CUR_LON]];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"(%@,%@", tempArray[indexPath.row][USER_CUR_LAT_KEY], tempArray[indexPath.row][USER_CUR_LON_KEY]];
     
     return cell;
 }
@@ -278,8 +278,8 @@ static dispatch_once_t onceToken;
     
     NSArray * memberArray = dummyDictionary[chosenGroup];
     
-    CLLocationDegrees lat = [memberArray[indexPath.row][USER_CUR_LAT] doubleValue];
-    CLLocationDegrees lon = [memberArray[indexPath.row][USER_CUR_LON] doubleValue];
+    CLLocationDegrees lat = [memberArray[indexPath.row][USER_CUR_LAT_KEY] doubleValue];
+    CLLocationDegrees lon = [memberArray[indexPath.row][USER_CUR_LON_KEY] doubleValue];
     CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lon);
     
     MKCoordinateSpan span = MKCoordinateSpanMake(0.3, 0.3);
@@ -310,8 +310,8 @@ static dispatch_once_t onceToken;
         CLLocationCoordinate2D location;
         MKPointAnnotation * friendPAnnotation;
         for (int i = 0; i < tempArray.count ; i++){
-            CLLocationDegrees lat = [tempArray[i][USER_CUR_LAT] doubleValue];
-            CLLocationDegrees lon = [tempArray[i][USER_CUR_LON] doubleValue];
+            CLLocationDegrees lat = [tempArray[i][USER_CUR_LAT_KEY] doubleValue];
+            CLLocationDegrees lon = [tempArray[i][USER_CUR_LON_KEY] doubleValue];
             
             location = CLLocationCoordinate2DMake(lat, lon);
             //        MKPinAnnotationView *

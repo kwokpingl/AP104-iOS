@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "SQLite3DBManager.h"
+#import "Definitions.h"
 
 #define SQLITE_FILENAME @"eventsList.sql"
 #define EVENTS_TABLE_NAME @"CalendarList"
@@ -29,6 +30,22 @@
 //    NSString * query = [NSString stringWithFormat:@"drop table %@", EVENTS_TABLE_NAME];
     
 //    [dbManager executeQuery:query];
+    
+    SQLite3DBManager * _sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
+    
+    // Create tables if not existed
+    // FOR CONTACTS
+    NSString * query = [NSString stringWithFormat: @"create table %@ (%@ int, %@ int, %@ text, %@ text, %@ text, %@ text, primary key(%@, %@))",CONTACT_LIST_TABLE,GROUP_ID_KEY, USER_ID_KEY, USER_CUR_LAT_KEY, USER_CUR_LON_KEY, USER_PHONENUMBER_KEY, USER_PIC_KEY, GROUP_ID_KEY, USER_ID_KEY];
+    [_sqlMgr executeQuery:query];
+    
+    // FOR GROUPS
+    query = [NSString stringWithFormat:@"create table %@ (%@ int primary key,%@ text,%@ int)", GROUP_LIST_TABLE, GROUP_ID_KEY, GROUP_NAME_KEY, USER_ROLE_KEY];
+    [_sqlMgr executeQuery:query];
+    
+    // FOR EMERGENCY CONTACTS
+    query = [NSString stringWithFormat:@"create table %@ (%@ int primary key autoincrement, %@ text, %@ text)",EMERGENCY_TABLE, EMERGENCY_ID_KEY, EMERGENCY_NAME_KEY, EMERGENCY_PHONE_KEY];
+    [_sqlMgr executeQuery:query];
+    
     return YES;
 }
 
