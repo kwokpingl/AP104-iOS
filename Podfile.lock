@@ -15,15 +15,32 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - FSCalendar (2.6.0)
+  - HexColors (2.2.1)
+  - LBBlurredImage (0.2.2)
+  - Mantle (2.1.0):
+    - Mantle/extobjc (= 2.1.0)
+  - Mantle/extobjc (2.1.0)
+  - ReactiveObjC (2.1.1)
+  - TSMessages (0.9.12):
+    - HexColors (~> 2.2.0)
 
 DEPENDENCIES:
   - AFNetworking
   - FSCalendar
+  - LBBlurredImage
+  - Mantle
+  - ReactiveObjC
+  - TSMessages
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   FSCalendar: c00fa5f4c3ec343ee6f7b804ae19322e9898bb84
+  HexColors: abfd172e329dab59888614ccba6f216cec59289d
+  LBBlurredImage: 700634c17922bc2d22343118e7deb6a3ca12db43
+  Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
+  ReactiveObjC: 05cc34afec2e598b17ebaf65bbddcfcfe7b14a09
+  TSMessages: c8cc7b80f2a833af533872cd02010cac061532cc
 
-PODFILE CHECKSUM: 9a91e13e3c66bba0141e1cf735b7774900561e3f
+PODFILE CHECKSUM: f7150b251a7ba99ed8c2ffb333dcc79315e193b1
 
 COCOAPODS: 1.1.1

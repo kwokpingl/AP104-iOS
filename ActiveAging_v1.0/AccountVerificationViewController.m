@@ -38,6 +38,7 @@
 - (void)viewDidAppear:(BOOL)animated{
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     imageView.image = [UIImage imageNamed:@"Cuties.jpg"];
+    
     [self.view addSubview:imageView];
     
     
