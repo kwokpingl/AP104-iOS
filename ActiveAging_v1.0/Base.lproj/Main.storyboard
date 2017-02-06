@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -70,67 +69,67 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22:22" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HfG-l1-uIo">
-                                <rect key="frame" x="0.0" y="114" width="375" height="48"/>
+                                <rect key="frame" x="119" y="309" width="256" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uqu-T7-1pG">
-                                <rect key="frame" x="125" y="619" width="125" height="48"/>
+                                <rect key="frame" x="125" y="599" width="125" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="緊急連絡"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="imD-qP-nm2">
-                                <rect key="frame" x="89" y="220.5" width="95" height="95"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="天氣"/>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="imD-qP-nm2">
+                                <rect key="frame" x="202" y="72" width="95" height="95"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" backgroundImage="ha1.png"/>
                                 <connections>
                                     <segue destination="YPt-bu-c9W" kind="show" id="kRK-lB-nTh"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5eV-35-wac">
-                                <rect key="frame" x="89.5" y="338.5" width="94.5" height="95.5"/>
+                                <rect key="frame" x="16.5" y="231.5" width="94.5" height="95.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="日曆"/>
+                                <state key="normal" title="日曆" backgroundImage="Sample Frame 2.png"/>
                                 <connections>
                                     <segue destination="S5h-75-FT3" kind="show" id="gtd-g1-Ab0"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SES-wc-SET">
-                                <rect key="frame" x="204" y="338.5" width="95" height="95.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="聯絡人"/>
+                                <rect key="frame" x="119" y="441.5" width="95" height="95.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <state key="normal" title="聯絡人" backgroundImage="Sample Frame 2.png"/>
                                 <connections>
                                     <segue destination="hJ2-3b-Vl9" kind="show" id="fGA-yn-b7T"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fgr-ks-YO9">
-                                <rect key="frame" x="204" y="454" width="95" height="95"/>
+                                <rect key="frame" x="264" y="482" width="95" height="95"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="設定"/>
+                                <state key="normal" title="設定" backgroundImage="Sample Frame 3.png"/>
                                 <connections>
                                     <segue destination="wm7-xh-D66" kind="show" id="4YV-XH-Zgp"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITB-8l-xUF">
-                                <rect key="frame" x="89.5" y="454" width="94.5" height="95"/>
+                                <rect key="frame" x="16.5" y="347" width="94.5" height="95"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="地圖"/>
+                                <state key="normal" title="地圖" backgroundImage="ha1.png"/>
                                 <connections>
                                     <segue destination="PbJ-CH-6fK" kind="show" id="gZT-DB-m5j"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d4f-TP-RYk">
-                                <rect key="frame" x="204" y="220.5" width="95" height="95"/>
+                                <rect key="frame" x="55" y="123" width="99" height="101"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="活動"/>
+                                <state key="normal" title="活動" backgroundImage="Sample Frame 3.png"/>
                                 <connections>
                                     <segue destination="K5F-df-ySg" kind="show" id="ASP-Xf-aQ0"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="97H-Zq-UY9">
-                                <rect key="frame" x="125" y="181" width="125" height="31.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="97H-Zq-UY9">
+                                <rect key="frame" x="172" y="251" width="125" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -138,44 +137,45 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Uqu-T7-1pG" firstAttribute="width" secondItem="hJt-oq-u9q" secondAttribute="width" multiplier="125:375" id="6S5-21-dES"/>
-                            <constraint firstItem="97H-Zq-UY9" firstAttribute="trailing" secondItem="Uqu-T7-1pG" secondAttribute="trailing" id="6b2-fR-4gR"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Fgr-ks-YO9" secondAttribute="trailing" constant="60" id="6fW-nx-l7g"/>
-                            <constraint firstItem="97H-Zq-UY9" firstAttribute="top" secondItem="HfG-l1-uIo" secondAttribute="bottom" constant="19" id="77i-at-xg4"/>
-                            <constraint firstItem="HfG-l1-uIo" firstAttribute="top" secondItem="BOF-DE-K14" secondAttribute="bottom" constant="50" id="8tB-yL-hdA"/>
-                            <constraint firstItem="d4f-TP-RYk" firstAttribute="leading" secondItem="imD-qP-nm2" secondAttribute="trailing" constant="20" id="Aha-OX-Ov2"/>
-                            <constraint firstItem="H0k-k9-duU" firstAttribute="top" secondItem="Uqu-T7-1pG" secondAttribute="bottom" id="L9E-pi-Pzi"/>
+                            <constraint firstItem="97H-Zq-UY9" firstAttribute="trailing" secondItem="Uqu-T7-1pG" secondAttribute="trailing" constant="47" id="6b2-fR-4gR"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Fgr-ks-YO9" secondAttribute="trailing" id="6fW-nx-l7g"/>
+                            <constraint firstItem="97H-Zq-UY9" firstAttribute="top" secondItem="HfG-l1-uIo" secondAttribute="bottom" constant="-106" id="77i-at-xg4"/>
+                            <constraint firstItem="HfG-l1-uIo" firstAttribute="top" secondItem="BOF-DE-K14" secondAttribute="bottom" constant="245" id="8tB-yL-hdA"/>
+                            <constraint firstItem="d4f-TP-RYk" firstAttribute="leading" secondItem="imD-qP-nm2" secondAttribute="trailing" constant="-242" id="Aha-OX-Ov2"/>
+                            <constraint firstItem="H0k-k9-duU" firstAttribute="top" secondItem="Uqu-T7-1pG" secondAttribute="bottom" constant="20" id="L9E-pi-Pzi"/>
                             <constraint firstItem="Fgr-ks-YO9" firstAttribute="width" secondItem="hJt-oq-u9q" secondAttribute="width" multiplier="95:375" id="LRO-fk-eyj"/>
                             <constraint firstItem="ITB-8l-xUF" firstAttribute="width" secondItem="Fgr-ks-YO9" secondAttribute="width" id="Qww-e0-1T9"/>
                             <constraint firstItem="5eV-35-wac" firstAttribute="width" secondItem="Fgr-ks-YO9" secondAttribute="width" id="RBH-Vv-yfE"/>
-                            <constraint firstItem="d4f-TP-RYk" firstAttribute="centerY" secondItem="imD-qP-nm2" secondAttribute="centerY" id="TKW-Gf-iEM"/>
-                            <constraint firstItem="d4f-TP-RYk" firstAttribute="width" secondItem="Fgr-ks-YO9" secondAttribute="width" id="TTk-61-F5H"/>
+                            <constraint firstItem="d4f-TP-RYk" firstAttribute="centerY" secondItem="imD-qP-nm2" secondAttribute="centerY" constant="54" id="TKW-Gf-iEM"/>
+                            <constraint firstItem="d4f-TP-RYk" firstAttribute="width" secondItem="Fgr-ks-YO9" secondAttribute="width" constant="4" id="TTk-61-F5H"/>
                             <constraint firstItem="Uqu-T7-1pG" firstAttribute="centerX" secondItem="hJt-oq-u9q" secondAttribute="centerX" id="VGR-ql-Yv9"/>
-                            <constraint firstItem="Fgr-ks-YO9" firstAttribute="leading" secondItem="ITB-8l-xUF" secondAttribute="trailing" constant="20" id="VYX-M5-aLc"/>
+                            <constraint firstItem="Fgr-ks-YO9" firstAttribute="leading" secondItem="ITB-8l-xUF" secondAttribute="trailing" constant="153" id="VYX-M5-aLc"/>
                             <constraint firstItem="Fgr-ks-YO9" firstAttribute="height" secondItem="hJt-oq-u9q" secondAttribute="height" multiplier="95:667" id="XGo-K6-4mB"/>
-                            <constraint firstItem="Fgr-ks-YO9" firstAttribute="centerX" secondItem="d4f-TP-RYk" secondAttribute="centerX" id="akh-rJ-DV7"/>
+                            <constraint firstItem="Fgr-ks-YO9" firstAttribute="centerX" secondItem="d4f-TP-RYk" secondAttribute="centerX" constant="207" id="akh-rJ-DV7"/>
                             <constraint firstItem="ITB-8l-xUF" firstAttribute="height" secondItem="Fgr-ks-YO9" secondAttribute="height" id="bS0-aZ-Zy1"/>
-                            <constraint firstItem="Uqu-T7-1pG" firstAttribute="top" secondItem="Fgr-ks-YO9" secondAttribute="bottom" constant="70" id="cVO-Wr-ei3"/>
-                            <constraint firstItem="Fgr-ks-YO9" firstAttribute="top" secondItem="SES-wc-SET" secondAttribute="bottom" constant="20" id="csQ-H7-CqU"/>
+                            <constraint firstItem="Uqu-T7-1pG" firstAttribute="top" secondItem="Fgr-ks-YO9" secondAttribute="bottom" constant="22" id="cVO-Wr-ei3"/>
+                            <constraint firstItem="Fgr-ks-YO9" firstAttribute="top" secondItem="SES-wc-SET" secondAttribute="bottom" constant="-55" id="csQ-H7-CqU"/>
                             <constraint firstItem="imD-qP-nm2" firstAttribute="width" secondItem="Fgr-ks-YO9" secondAttribute="width" id="hBl-Qx-Oha"/>
-                            <constraint firstItem="HfG-l1-uIo" firstAttribute="centerX" secondItem="97H-Zq-UY9" secondAttribute="centerX" id="lnW-Z9-icJ"/>
-                            <constraint firstItem="imD-qP-nm2" firstAttribute="top" secondItem="97H-Zq-UY9" secondAttribute="bottom" constant="8" symbolic="YES" id="m0o-nG-U45"/>
-                            <constraint firstItem="d4f-TP-RYk" firstAttribute="height" secondItem="Fgr-ks-YO9" secondAttribute="height" id="rzW-Hl-oSf"/>
-                            <constraint firstItem="Fgr-ks-YO9" firstAttribute="centerY" secondItem="ITB-8l-xUF" secondAttribute="centerY" id="syS-FT-4Hn"/>
+                            <constraint firstItem="HfG-l1-uIo" firstAttribute="centerX" secondItem="97H-Zq-UY9" secondAttribute="centerX" constant="12.5" id="lnW-Z9-icJ"/>
+                            <constraint firstItem="imD-qP-nm2" firstAttribute="top" secondItem="97H-Zq-UY9" secondAttribute="bottom" constant="-199" id="m0o-nG-U45"/>
+                            <constraint firstItem="d4f-TP-RYk" firstAttribute="height" secondItem="Fgr-ks-YO9" secondAttribute="height" constant="6" id="rzW-Hl-oSf"/>
+                            <constraint firstItem="Fgr-ks-YO9" firstAttribute="centerY" secondItem="ITB-8l-xUF" secondAttribute="centerY" constant="135" id="syS-FT-4Hn"/>
                             <constraint firstItem="SES-wc-SET" firstAttribute="width" secondItem="Fgr-ks-YO9" secondAttribute="width" id="wbn-WZ-vdt"/>
-                            <constraint firstItem="97H-Zq-UY9" firstAttribute="leading" secondItem="Uqu-T7-1pG" secondAttribute="leading" id="wc3-3P-lpK"/>
+                            <constraint firstItem="97H-Zq-UY9" firstAttribute="leading" secondItem="Uqu-T7-1pG" secondAttribute="leading" constant="47" id="wc3-3P-lpK"/>
                             <constraint firstItem="5eV-35-wac" firstAttribute="height" secondItem="Fgr-ks-YO9" secondAttribute="height" id="wdA-HM-Rhv"/>
                             <constraint firstItem="SES-wc-SET" firstAttribute="height" secondItem="Fgr-ks-YO9" secondAttribute="height" id="x6h-c3-fgg"/>
-                            <constraint firstItem="SES-wc-SET" firstAttribute="centerX" secondItem="d4f-TP-RYk" secondAttribute="centerX" id="x9q-XA-5oE"/>
-                            <constraint firstItem="HfG-l1-uIo" firstAttribute="leading" secondItem="hJt-oq-u9q" secondAttribute="leading" id="xoa-Rt-GgA"/>
+                            <constraint firstItem="SES-wc-SET" firstAttribute="centerX" secondItem="d4f-TP-RYk" secondAttribute="centerX" constant="62" id="x9q-XA-5oE"/>
+                            <constraint firstItem="HfG-l1-uIo" firstAttribute="leading" secondItem="hJt-oq-u9q" secondAttribute="leading" constant="119" id="xoa-Rt-GgA"/>
                             <constraint firstItem="ITB-8l-xUF" firstAttribute="centerX" secondItem="5eV-35-wac" secondAttribute="centerX" id="yEm-hT-8IJ"/>
                             <constraint firstItem="imD-qP-nm2" firstAttribute="height" secondItem="Fgr-ks-YO9" secondAttribute="height" id="zev-mG-IyN"/>
-                            <constraint firstItem="SES-wc-SET" firstAttribute="centerY" secondItem="5eV-35-wac" secondAttribute="centerY" id="zmh-LW-pDe"/>
+                            <constraint firstItem="SES-wc-SET" firstAttribute="centerY" secondItem="5eV-35-wac" secondAttribute="centerY" constant="210" id="zmh-LW-pDe"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="今天有啥好玩的呢?" id="FHj-f7-mVz"/>
                     <connections>
                         <outlet property="dateLabel" destination="97H-Zq-UY9" id="q8A-nd-BHf"/>
                         <outlet property="timeLabel" destination="HfG-l1-uIo" id="Brv-uk-L3c"/>
+                        <outlet property="weatherBtn" destination="imD-qP-nm2" id="O2Y-Cq-EYm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="14n-Mb-AIi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -634,4 +634,9 @@
             <point key="canvasLocation" x="3592.8000000000002" y="1268.8155922038982"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Sample Frame 2.png" width="1000" height="1000"/>
+        <image name="Sample Frame 3.png" width="1000" height="1000"/>
+        <image name="ha1.png" width="989" height="1000"/>
+    </resources>
 </document>

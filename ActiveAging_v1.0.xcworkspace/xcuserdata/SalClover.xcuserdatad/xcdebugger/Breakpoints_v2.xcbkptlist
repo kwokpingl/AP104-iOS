@@ -20,12 +20,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ActiveAging_v1.0/WeatherViewController.m"
-            timestampString = "507671246.126299"
+            timestampString = "508078089.91328"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "266"
-            endingLineNumber = "266"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "327"
+            endingLineNumber = "327"
+            landmarkName = "-configureDailyCell:weather:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

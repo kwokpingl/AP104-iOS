@@ -29,11 +29,15 @@
 // NSDateFormatter objects are expensive to initialize, but by placing them in -init you’ll ensure they’re initialized only once by your view controller
 -(id) init {
     if (self = [super init]) {
+        NSLocale * twLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
+        
         _hourlyFormatter = [NSDateFormatter new];
         _hourlyFormatter.dateFormat = @"h a";
+        _hourlyFormatter.locale = twLocale;
         
         _dailyFormatter = [NSDateFormatter new];
         _dailyFormatter.dateFormat =@"EEEE";
+        _dailyFormatter.locale = twLocale;
     }
     return self;
 }
@@ -42,14 +46,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    /*locationManager = [CLLocationManager new];
-    locationManager.delegate = self;
-    [locationManager requestAlwaysAuthorization];*/
     
 #pragma mark - set up Image View & table View
     //1
     self.screenHeight = [UIScreen mainScreen].bounds.size.height;
-    UIImage * background = [UIImage imageNamed:@"bg"];
+    UIImage * background = [UIImage imageNamed:@"LaunchScreen"];
     
     //2
     self.backgrounImageView = [[UIImageView alloc] initWithImage:background];
@@ -112,31 +113,31 @@
     //2 - bottom left
     UILabel * temperatureLabel = [[UILabel alloc] initWithFrame:temperatureFrame];
     temperatureLabel.backgroundColor = [UIColor clearColor];
-    temperatureLabel.textColor = [UIColor whiteColor];
+    temperatureLabel.textColor = [UIColor orangeColor];
     temperatureLabel.text = @"0°";
     temperatureLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:120];
     [header addSubview:temperatureLabel];
     
     UILabel * hiloLabel = [[UILabel alloc] initWithFrame: hiloFrame];
     hiloLabel.backgroundColor = [UIColor clearColor];
-    hiloLabel.textColor = [UIColor whiteColor];
+    hiloLabel.textColor = [UIColor orangeColor];
     hiloLabel.text = @"0° / 0°";
     hiloLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:28];
     [header addSubview:hiloLabel];
     
     // top
-//    UILabel * cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, 30)];
-//    cityLabel.backgroundColor = [UIColor clearColor];
-//    cityLabel.textColor = [UIColor whiteColor];
-//    cityLabel.text = @"Loading";
-//    cityLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
-//    cityLabel.textAlignment = NSTextAlignmentCenter;
-//    [header addSubview:cityLabel];
+    //    UILabel * cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, 30)];
+    //    cityLabel.backgroundColor = [UIColor clearColor];
+    //    cityLabel.textColor = [UIColor whiteColor];
+    //    cityLabel.text = @"Loading";
+    //    cityLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
+    //    cityLabel.textAlignment = NSTextAlignmentCenter;
+    //    [header addSubview:cityLabel];
     
     UILabel * conditionsLabel = [[UILabel alloc] initWithFrame:conditionsFrame];
     conditionsLabel.backgroundColor = [UIColor clearColor];
     conditionsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:45];
-    conditionsLabel.textColor = [UIColor whiteColor];
+    conditionsLabel.textColor = [UIColor orangeColor];
     [header addSubview: conditionsLabel];
     
     //3 - bottom left
@@ -152,14 +153,14 @@
       
       //2
       //Delivers any changes on the main thread since you’re updating the UI
-     deliverOn: RACScheduler.mainThreadScheduler]
+      deliverOn: RACScheduler.mainThreadScheduler]
      subscribeNext: ^(WeatherCondition * newCondition) {
          
          // 3
          //Updates the text labels with weather data; you’re using newCondition for the text and not the singleton. The subscriber parameter is guaranteed to be the new value
          temperatureLabel.text = [NSString stringWithFormat:@"%.0f°",newCondition.temperature.floatValue];
          conditionsLabel.text = [newCondition.condition capitalizedString];
-//         cityLabel.text = [newCondition.locationName capitalizedString];
+         //         cityLabel.text = [newCondition.locationName capitalizedString];
          
          // 4
          //Uses the mapped image file name to create an image and sets it as the icon for the view
@@ -171,18 +172,18 @@
     //The RAC(…) macro helps keep syntax clean. The returned value from the signal is assigned to the text key of the hiloLabel object
     RAC(hiloLabel, text) = [[RACSignal combineLatest:@[
                                                        
-                                                      //2
+                                                       //2
                                                        //Observe the high and low temperatures of the currentCondition key. Combine the signals and use the latest values for both. The signal fires when either key changes
-                                                      RACObserve([WeatherManager sharedManager], currentCondition.tempHigh),
-                                                      RACObserve([WeatherManager sharedManager], currentCondition.tempLow)]
+                                                       RACObserve([WeatherManager sharedManager], currentCondition.tempHigh),
+                                                       RACObserve([WeatherManager sharedManager], currentCondition.tempLow)]
                              
-                            //3
+                             //3
                              //Reduce the values from your combined signals into a single value; note that the parameter order matches the order of your signals
-                                             reduce:^(NSNumber * hi, NSNumber * low) {
-                                                 return [NSString stringWithFormat:@"%.0f°C / %.0f°C", hi.floatValue, low.floatValue];
-                                             }]
-    //4
-    deliverOn:RACScheduler.mainThreadScheduler];
+                                              reduce:^(NSNumber * hi, NSNumber * low) {
+                                                  return [NSString stringWithFormat:@"%.0f°C / %.0f°C", hi.floatValue, low.floatValue];
+                                              }]
+                            //4
+                            deliverOn:RACScheduler.mainThreadScheduler];
     //The code above binds high and low temperature values to the hiloLabel‘s text property
     
 #pragma mark - ReactiveCocoa observables to reload data
@@ -206,7 +207,7 @@
 } //end of viewDidLoad
 
 -(UIStatusBarStyle) preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;    
+    return UIStatusBarStyleLightContent;
 }
 
 -(void) viewWillLayoutSubviews {
@@ -226,7 +227,7 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-   //1
+    //1
     //add one more cell for the header
     if (section == 0) {
         return MIN([[WeatherManager sharedManager].hourlyForecast count], 6) + 1;
@@ -294,16 +295,35 @@
 - (void)configureHourlyCell:(UITableViewCell *)cell weather:(WeatherCondition *)weather {
     cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:30];
     cell.detailTextLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:30];
-    cell.textLabel.text = [self.hourlyFormatter stringFromDate:weather.date];
+    
+    NSLocale * twLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
+    
+    _hourlyFormatter = [NSDateFormatter new];
+    _hourlyFormatter.dateFormat = @"h a";
+    _hourlyFormatter.locale = twLocale;
+    
+    NSString * weatherDate = [_hourlyFormatter stringFromDate:weather.date];
+//    cell.textLabel.text = [_hourlyFormatter stringFromDate:weather.date];
+    cell.textLabel.text = weatherDate;
+    
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f°C",weather.temperature.floatValue];
     cell.imageView.image = [UIImage imageNamed:[weather imageName]];
     cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
 - (void)configureDailyCell:(UITableViewCell *)cell weather:(WeatherCondition *)weather {
+    
+    NSLocale * twLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
+    _dailyFormatter = [NSDateFormatter new];
+    _dailyFormatter.dateFormat =@"EEEE";
+    _dailyFormatter.locale = twLocale;
+    
+    NSString * dailyWeather = [_dailyFormatter stringFromDate:weather.date];
+    cell.textLabel.text = dailyWeather;
+    
     cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:25];
     cell.detailTextLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:25];
-    cell.textLabel.text = [self.dailyFormatter stringFromDate:weather.date];
+//    cell.textLabel.text = [self.dailyFormatter stringFromDate:weather.date];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f°C / %.0f°C",
                                  weather.tempHigh.floatValue,
                                  weather.tempLow.floatValue];
@@ -333,13 +353,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

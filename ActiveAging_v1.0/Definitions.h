@@ -9,7 +9,6 @@
 #ifndef Definitions_h
 #define Definitions_h
 
-
 #pragma mark - === URLs ===
 /// MARK: SERVER_BASIC
 //#define BASE_URL                @"http://activeaging.xp3.biz"

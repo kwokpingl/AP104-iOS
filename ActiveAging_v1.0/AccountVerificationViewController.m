@@ -39,7 +39,7 @@
 
 - (void)viewDidAppear:(BOOL)animated{
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    imageView.image = [UIImage imageNamed:@"Cuties.jpg"];
+    imageView.image = [UIImage imageNamed:@"LaunchScreen"];
     imageView.layer.zPosition = 0;
     [self.view addSubview:imageView];
     
@@ -94,6 +94,7 @@
                 [_userInfo setUserID:[userID integerValue]];
                 [timer fire];
             } else {
+
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [_welcomeLabel setText:@"發生錯誤\n請確定網路開啟\n再點選這裡登入"];
                     [_resetButton setHidden:false];
