@@ -34,6 +34,8 @@
 #define USER_EVENT_JOIN @"join"
 #define USER_EVENT_QUIT @"quit"
 
+#define USER_EVENT_STATUS_KEY   @"joinedEvents"
+
 
 /// MARK: VERIFICATION_CODE_URL
 #define VERIFICATION_CODE_URL          [BASE_URL stringByAppendingPathComponent:@"php/verificationCode.php"]
@@ -160,6 +162,9 @@
 #define keyAttrDescription  @"This is your login password for Acitve Aging"
 #define keyAttrService      @"biz.xp3.activeaging_test5"
 
+
+#define MAXIMUM_PERSONAL_GROUP 3
+#define MAXIMUM_MEMBER_PER_GROUP 20
 
 
 #endif /* Definitions_h */

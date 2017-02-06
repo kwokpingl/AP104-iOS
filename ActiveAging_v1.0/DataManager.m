@@ -87,9 +87,54 @@
 
 + (NSMutableArray *) fetchDatabaseFromTable: (NSString *) table{
     
-    SQLite3DBManager * sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
-    
     NSString * query = [NSString stringWithFormat:@"select * from %@", table];
+    
+    return [self getArrayUsingQuery:query];
+
+}
+
+
++ (NSMutableArray *) fetchUserInfoFromTableWithUserID: (NSInteger) userID{
+
+    NSString * query;
+    NSString * idString;
+    
+    // You can only search from CONTACT_LIST_TABLE
+    
+    idString = [NSString stringWithFormat:@"%ld", userID];
+    query = [NSString stringWithFormat:@"select * from `%@` where `%@` = '%@'", CONTACT_LIST_TABLE, USER_ID_KEY, idString];
+    
+    return  [self getArrayUsingQuery:query];
+}
+
++ (NSMutableArray *) fetchUserInfoFromTableWithGroupID: (NSInteger) groupID {
+    
+    NSString * query;
+    NSString * idString;
+    
+    // You can only search from CONTACT_LIST_TABLE
+    
+    idString = [NSString stringWithFormat:@"%ld", groupID];
+    query = [NSString stringWithFormat:@"select * from `%@` where `%@` = '%@'", CONTACT_LIST_TABLE, GROUP_ID_KEY, idString];
+    
+    return  [self getArrayUsingQuery:query];
+}
+
++ (NSMutableArray *) fetchGroupsFromTableWithRole: (NSInteger) role {
+    
+    NSString * query;
+    NSString * roleString;
+    
+    // You can only search from CONTACT_LIST_TABLE
+    
+    roleString = [NSString stringWithFormat:@"%ld", role];
+    query = [NSString stringWithFormat:@"select * from `%@` where `%@` = '%@'", GROUP_LIST_TABLE, USER_ROLE_KEY, roleString];
+    
+    return  [self getArrayUsingQuery:query];
+}
+
++ (NSMutableArray *) getArrayUsingQuery: (NSString *) query{
+    SQLite3DBManager * sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
     
     NSArray * dataFromTable = [sqlMgr loadDataFromDB:query];
     
@@ -107,16 +152,7 @@
         }
         [dataArray addObject:dataDictionary];
     }
-    
-//    NSLog(@"%@", dataFromTable);
-//    for (NSString * key in columnNames) {
-//        [dataDictionary setObject:dataFromTable[counter] forKey:key];
-//        counter ++;
-//    }
-    
     return dataArray;
 }
-
-
 
 @end

@@ -9,7 +9,8 @@
 #import "LocationManager.h"
 
 @interface LocationManager() <CLLocationManagerDelegate>
-
+@property (strong, nonatomic) CLLocationManager * manager;
+@property (strong, nonatomic) NSMutableArray * observers;
 @end
 
 @implementation LocationManager{
@@ -17,29 +18,39 @@
 }
 
 + (LocationManager *) shareInstance {
-    static LocationManager * instance = nil;
+    static LocationManager * shareInstance = nil;
     static dispatch_once_t oncetoken;
     dispatch_once(&oncetoken, ^{
-        instance = [[LocationManager alloc] init];
+        shareInstance = [[LocationManager alloc] init];
     });
     
-    return instance;
+    return shareInstance;
 }
 
 - (id) init {
     self = [super init];
     
-    if (!_locationMgr){
-        _locationMgr = [CLLocationManager new];
+    if (self){
         
-        if ([_locationMgr respondsToSelector:@selector(requestAlwaysAuthorization)]){
-            [_locationMgr requestAlwaysAuthorization];
+        CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+        
+        if (status == kCLAuthorizationStatusDenied && status == kCLAuthorizationStatusRestricted){
+        }
+        else{
+            _locationMgr = [CLLocationManager new];
+            [_locationMgr setDesiredAccuracy:kCLLocationAccuracyBest];
+            [_locationMgr setDistanceFilter:100]; // meters
+            [_locationMgr setAllowsBackgroundLocationUpdates:true];
+            
+            [_locationMgr setDelegate:self];
         }
         
-        [_locationMgr setDesiredAccuracy:kCLLocationAccuracyBest];
-        [_locationMgr setDistanceFilter:100]; // meters
-        [_locationMgr setAllowsBackgroundLocationUpdates:true];
-        [_locationMgr setDelegate:self];
+        if (status == kCLAuthorizationStatusNotDetermined){
+            if ([_locationMgr respondsToSelector:@selector(requestAlwaysAuthorization)]){
+                [_locationMgr requestAlwaysAuthorization];
+            }
+        } // NOT DETERMINED
+
         _numberOfObserver = 0;
     }
     return self;
@@ -66,6 +77,8 @@
     
     if ([self isValidLocation:location withOldLocation:_currentLocation]){
         _currentLocation = location;
+        
+        
     } else {
         NSLog(@"NOT VALID");
     }
@@ -135,6 +148,26 @@
     }
 }
 
+
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    if ([keyPath isEqualToString:@"currentLocation"]){
+        NSLog(@"Latitude %+.6f, Longitude %+.6f\n",
+                            _currentLocation.coordinate.latitude,
+                            _currentLocation.coordinate.longitude);
+            }
+}
+
+- (void)something{}
+
+
+#pragma mark - LOCATIONMANAGERDELEGATE
+
+
+
+#pragma mark - PRIVATE METHOD
+/// MARK: Validation_Checker
 - (BOOL) isValidLocation: (CLLocation *) newLocation withOldLocation: (CLLocation *) oldLocation{
     if (!newLocation){
         return false;
@@ -151,22 +184,11 @@
     }
     
     NSTimeInterval secondsAfterInitiation = [newLocation.timestamp timeIntervalSinceDate:locationMgrStartTime];
-    
     if (secondsAfterInitiation < 0){
         return false;
     }
     
-    
     return true;
-}
-
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    if ([keyPath isEqualToString:@"currentLocation"]){
-        NSLog(@"Latitude %+.6f, Longitude %+.6f\n",
-                            _currentLocation.coordinate.latitude,
-                            _currentLocation.coordinate.longitude);
-            }
 }
 
 @end

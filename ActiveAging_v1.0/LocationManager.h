@@ -10,6 +10,14 @@
 #import <CoreLocation/CoreLocation.h>
 #import <UIKit/UIKit.h>
 
+@protocol LocationManagerDelegate <NSObject>
+@required
+@optional
+- (void) tracingLocation: (CLLocation*) myLocation;
+
+@end
+
+
 @interface LocationManager : NSObject
 @property (nonatomic, strong) CLLocationManager * locationMgr;
 @property (nonatomic, strong) CLLocation * currentLocation;

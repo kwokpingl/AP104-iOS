@@ -12,6 +12,7 @@
 #import "UserInfo.h"
 //#import "EventDetailViewController.h"
 #import "EventDetailTableViewController.h"
+#import "ImageManager.h"
 
 
 @interface EventsViewController ()<UITableViewDelegate, UITableViewDataSource>{
@@ -47,17 +48,8 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    // start loading the data
-    [_serverMgr retrieveEventInfo:USER_EVENT_FETCH UserID:_userInfo.getUserID EventID:@"-1" completion:^(NSError *error, id result) {
-        if ([result[@"result"] boolValue]){
-            eventsDict = [[NSDictionary alloc] initWithDictionary:result[@"message"]];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [_tableView reloadData];
-            });
-        }
-    }];
-    
-    // then reload Table
+    // start loading the data and reload tableview
+    [self updateEvents];
 }
 
 
@@ -78,6 +70,15 @@
     cell.eventTitleLabel.text = eventsArray[indexPath.row][EVENT_TITLE_KEY];
     // also image
     
+    NSString * imageName = eventsArray[indexPath.row][EVENT_PIC_KEY];
+    
+    [ImageManager getEventImage:imageName completion:^(NSError *error, id result) {
+        if (!error){
+            cell.eventImgView.image = [UIImage imageWithData:result];
+        } else {
+            cell.eventImgView.image = nil;
+        }
+    }];
     
     return cell;
 }
@@ -88,7 +89,8 @@
     NSString * cellTitle = cell.eventTitleLabel.text;
     
     if ([cellTitle isEqualToString:eventsArray[indexPath.row][EVENT_TITLE_KEY]]){
-        cell.eventTitleLabel.text = eventsArray[indexPath.row][EVENT_REG_BEGIN_KEY];
+        NSString * message = [NSString stringWithFormat:@"報名日期: %@",eventsArray[indexPath.row][EVENT_REG_BEGIN_KEY]];
+        cell.eventTitleLabel.text = message;
     } else {
         cell.eventTitleLabel.text = eventsArray[indexPath.row][EVENT_TITLE_KEY];
     }
@@ -100,6 +102,7 @@
     
 }
 
+#pragma mark - BUTTONS --- NEED MODIFICATION
 - (IBAction)locationButtonPressed:(id)sender {
     // show a picker
     
@@ -119,28 +122,28 @@
     [_tableView reloadData];
 }
 
+#pragma mark - SEGUE
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"eventDetail"]){
         EventDetailTableViewController * vc = [segue destinationViewController];
-//        EventTableViewCell * cell = [_tableView dequeueReusableCellWithIdentifier:@"Cell"];
-//        NSIndexPath * indexPath = [_tableView indexPathForCell:cell];
         NSIndexPath * indexPath = (NSIndexPath *) sender;
-        vc.eventDetailDict = eventsArray[indexPath.row];
-        NSLog(@"");
+        vc.eventDetailDict = [NSMutableDictionary new];
+        [vc.eventDetailDict addEntriesFromDictionary:eventsArray[indexPath.row]];
     }
 }
 
 
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - PRIVATE METHOD
+- (void) updateEvents{
+    [_serverMgr retrieveEventInfo:USER_EVENT_FETCH UserID:_userInfo.getUserID EventID:@"-1" completion:^(NSError *error, id result) {
+        if ([result[@"result"] boolValue]){
+            eventsDict = [[NSDictionary alloc] initWithDictionary:result[@"message"]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_tableView reloadData];
+            });
+        }
+    }];
 }
-*/
+
 
 @end

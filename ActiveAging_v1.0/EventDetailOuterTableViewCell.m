@@ -7,9 +7,14 @@
 //
 
 #import "EventDetailOuterTableViewCell.h"
+#import "EventDetailInnerTableViewCell.h"
 #import <UIKit/UIKit.h>
 
 static int showDetail;
+
+@interface EventDetailOuterTableViewCell() <UITableViewDelegate,UITableViewDataSource>
+
+@end
 
 @implementation EventDetailOuterTableViewCell
 
@@ -35,6 +40,8 @@ static int showDetail;
     showDetail ++;
     if (showDetail > 1){
         showDetail = 0;
+//        _InnerTableView.delegate = self;
+//        _InnerTableView.dataSource = self;
     }
     _OuterBottomContentHeightContraint.priority = (showDetail==1)?250:999;
 }
@@ -44,9 +51,16 @@ static int showDetail;
     [super layoutSubviews];
 }
 
-
-
-
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    EventDetailInnerTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"innerCell"];
+//    
+//    cell.textLabel.text = @"NICE";
+//    return cell;
+//}
+//
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+//    return 10;
+//}
 
 
 

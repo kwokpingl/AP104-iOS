@@ -33,6 +33,12 @@ typedef enum {
     returnBarButton
 } barButtonItem;
 
+typedef enum {
+    personalGroup,
+    otherGroup,
+    emergencyGroup
+}groupType;
+
 static NSInteger layer;
 
 @interface ContactListViewController ()<UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, CLLocationManagerDelegate>{
@@ -40,20 +46,20 @@ static NSInteger layer;
     UserInfo * _userInfo;
     LocationManager * _locationMgr;
     
-//    SQLite3DBManager * _sqlMgr;
     CLLocationManager * clMgr;
     CLLocation * currentLocation;
     
+    // LISTS
     NSMutableArray * contactList;
-    NSMutableArray * groupList;
     NSMutableArray * personalGroupList;
     NSMutableArray * otherGroupList;
     NSMutableArray * emergencyList;
+    
     NSMutableArray * targetList;
     NSArray * pickerViewArray;
     NSString * targetKey;
     
-    // Keep Track
+    // Trackers
     NSInteger personalGroupNumber;
     NSInteger emergencyMemberNumber;
     NSInteger role;
@@ -68,7 +74,6 @@ static NSInteger layer;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     // Initiate Singletons
     _serverMgr = [ServerManager shareInstance];
     _userInfo = [UserInfo shareInstance];
@@ -76,8 +81,9 @@ static NSInteger layer;
 //    _sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
     
     // ask for PERMISSION
+    // set up CLLocation Manager
     if ([CLLocationManager locationServicesEnabled]){
-        _locationMgr = [LocationManager new];
+        _locationMgr = [LocationManager shareInstance];
     }
     else{
         [self presentViewController:[_locationMgr serviceEnableAlert] animated:true completion:nil];
@@ -92,8 +98,7 @@ static NSInteger layer;
     _pickerView.delegate = self;
     _pickerView.dataSource = self;
     
-    // init all Array
-    contactList = [NSMutableArray new];
+    // SETUP PICKER ARRAY
     pickerViewArray = @[@"個人群組",@"其他群組",@"緊急聯絡人"];
     personalGroupNumber = 0;
     
@@ -103,6 +108,7 @@ static NSInteger layer;
     
     [self reloadGroupList];
     
+    // SETUP NAVIGATION BAR
     UIBarButtonItem * returnBtn =
     [[UIBarButtonItem alloc] initWithTitle:@"<回首頁" style:UIBarButtonItemStylePlain target:self action:@selector(dismissView:)];
     [returnBtn setTag:returnBarButton];
@@ -116,6 +122,8 @@ static NSInteger layer;
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+    
+    // GET PICKERVIEW READY
     [_pickerView selectRow:0 inComponent:0 animated:true];
     [self pickerView:_pickerView didSelectRow:0 inComponent:0];
 }
@@ -157,7 +165,6 @@ static NSInteger layer;
         
         if ([targetList[indexPath.section][USER_ROLE_KEY] integerValue] == 1){
             [cell.subtitleLabel setText:@"刪除群組"];
-            
         }
         else if ([targetList[indexPath.section][USER_ROLE_KEY] integerValue] == -1){
             [cell.subtitleLabel setText:@"退出群組"];
@@ -277,7 +284,7 @@ static NSInteger layer;
 
 /// MARK: PICKERVIEW_WHEN_SELECTED
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    targetList = [NSMutableArray new];
+//    targetList = [NSMutableArray new];
     [self getGroup:row];
     [_tableView reloadData];
 }
@@ -288,57 +295,41 @@ static NSInteger layer;
 
 /// MARK: RELOAD_GROUP_LIST
 - (void) reloadGroupList{
-    groupList = [NSMutableArray new];
-    personalGroupList = [NSMutableArray new];
-    otherGroupList = [NSMutableArray new];
-    emergencyList = [NSMutableArray new];
+    personalGroupList = [[NSMutableArray alloc] initWithArray:[DataManager fetchGroupsFromTableWithRole:1]];
+    otherGroupList = [[NSMutableArray alloc] initWithArray:[DataManager fetchGroupsFromTableWithRole:-1]];
+    emergencyList = [[NSMutableArray alloc] initWithArray:[DataManager fetchDatabaseFromTable:EMERGENCY_TABLE]];
     contactList = [NSMutableArray new];
     
-    groupList = [DataManager fetchDatabaseFromTable:GROUP_LIST_TABLE];
-    
-    for (int i = 0; i < groupList.count; i++){
-        NSInteger tempRole = [groupList[i][USER_ROLE_KEY] integerValue];
-        
-        if (tempRole == 1){
-            [personalGroupList addObject:groupList[i]];
-            personalGroupNumber ++;
-        }
-        else{
-            [otherGroupList addObject:groupList[i]];
-        }
-    }
-    
-    emergencyList = [DataManager fetchDatabaseFromTable:EMERGENCY_TABLE];
-    
     contactList = [DataManager fetchDatabaseFromTable:CONTACT_LIST_TABLE];
+    
 }
 
 /// MARK: GET_THE_GROUP_LISTS
 - (void) getGroup: (NSInteger) group {
+    targetList = [NSMutableArray new];
     layer = 0;
     switch (group) {
-        case 0: // PersonalGroup
+        case personalGroup:
             targetKey = GROUP_NAME_KEY;
             [targetList addObjectsFromArray: personalGroupList];
             personalGroupNumber = targetList.count;
             break;
-        case 1: // OtherGroup
+        case otherGroup:
             targetKey = GROUP_NAME_KEY;
             [targetList addObjectsFromArray: otherGroupList];
             break;
-        case 2: // EmergencyGroup
+        case emergencyGroup:
             targetKey = USER_NAME_KEY;
             [targetList addObjectsFromArray: emergencyList];
             emergencyMemberNumber = targetList.count;
             break;
         default:
-            targetList = nil;
-            targetList = [NSMutableArray new];
+            NSLog(@"Something Wrong");
             break;
     }
     
-    if(group == 0 && personalGroupNumber < 3){
-        NSString * message = [NSString stringWithFormat:@"+ 尚可新增 %ld 群組", 3 - personalGroupNumber];
+    if(group == personalGroup && personalGroupNumber < 3){
+        NSString * message = [NSString stringWithFormat:@"+ 尚可新增 %ld 群組", MAXIMUM_PERSONAL_GROUP - personalGroupNumber];
         [targetList
          addObject:@{
                      GROUP_ID_KEY:@(0),
@@ -350,6 +341,7 @@ static NSInteger layer;
 
 /// MARK: GET_CONTACT_A_GROUP
 - (void) getContact: (NSInteger) groupRow{
+    
     NSString * groupName = targetList[groupRow][GROUP_NAME_KEY];
     NSInteger groupID = [targetList[groupRow][GROUP_ID_KEY] integerValue];
     role = [targetList[groupRow][USER_ROLE_KEY] integerValue];
@@ -358,11 +350,7 @@ static NSInteger layer;
     
     [self.navigationItem setTitle:groupName];
     
-    for (int i = 0; i < contactList.count; i++){
-        if ([contactList[i][GROUP_ID_KEY] integerValue] == groupID){
-            [targetList addObject:contactList[i]];
-        }
-    }
+    [targetList addObjectsFromArray:[DataManager fetchUserInfoFromTableWithGroupID:groupID]];
     
     if (role == 1){
         [targetList addObject:
@@ -455,6 +443,7 @@ static NSInteger layer;
     
 }
 
+// NOT REALLY DOING ANYTHING
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
     if ([keyPath isEqualToString:@"currentLocation"]){
         currentLocation = _locationMgr.currentLocation;

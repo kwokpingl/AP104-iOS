@@ -14,8 +14,10 @@
 
 @interface ImageManager : NSObject
 
-+ (void) getUserImage: (NSInteger) userID completion:(DoneHandler) done;
-+ (UIImage *) getEventImage: (NSString *) eventImageName;
++ (void) getUserImage: (NSInteger) userID
+           completion:(DoneHandler) done;
++ (void) getEventImage: (NSString *) eventImageName
+            completion:(DoneHandler) done;
 + (UIImage *) loadImageWithFileName: (NSString *) fileName;
 + (void) saveImageWithFileName: (NSString *)imageFileName ImageData:(NSData *) imageData;
 @end

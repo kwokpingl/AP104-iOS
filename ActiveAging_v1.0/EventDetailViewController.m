@@ -11,12 +11,15 @@
 #import "ServerManager.h"
 #import "UserInfo.h"
 #import "EventDetailSorter.h"
+#import "ImageManager.h"
 
 @interface EventDetailViewController () <UITableViewDelegate, UITableViewDataSource>{
     ServerManager * _serverMgr;
     UserInfo * _userInfo;
+    
     NSMutableDictionary * basedKeysMDict;
     NSMutableDictionary * sortedDetailMDict;
+    
     NSMutableArray * basedKeysMArray;
     
     NSInteger selectedIndex;
@@ -35,6 +38,8 @@
     _serverMgr = [ServerManager shareInstance];
     _userInfo = [UserInfo shareInstance];
     [_navigationItem setTitle:_eventDetailDict[EVENT_TITLE_KEY]];
+    
+    
     _eventDetailTableView.delegate = self;
     _eventDetailTableView.dataSource = self;
     
@@ -131,7 +136,7 @@
                                      }];
     
     // SET PICTURE
-
+    
 }
 
 /*

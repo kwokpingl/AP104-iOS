@@ -23,27 +23,10 @@
 }
 
 
-+ (UIImage *) getEventImage: (NSString *) eventImageName {
++ (void) getEventImage: (NSString *) eventImageName completion:(DoneHandler) done {
     
-    ServerManager * serverMgr = [ServerManager shareInstance];
+    [self getImageFromServer:EVENT_PIC_URL WithImageName:eventImageName completion:done];
     
-    dispatch_group_t group = dispatch_group_create();
-    
-    dispatch_group_enter(group);
-    
-    __block NSData * imageData;
-    
-    [serverMgr downloadPictureWithImgFileName:eventImageName FromURL:EVENT_PIC_URL completion:^(NSError *error, id result) {
-        if (error){
-            NSLog(@"ERROR IN DOWNLOAD IMAGE: %@", error);
-        }else {
-            imageData = result;
-        }
-        dispatch_group_leave(group);
-    }];
-    dispatch_group_wait(group, DISPATCH_TIME_NOW);
-    
-    return [UIImage imageWithData:imageData];
 }
 
 + (UIImage *) loadImageWithFileName: (NSString *) fileName{

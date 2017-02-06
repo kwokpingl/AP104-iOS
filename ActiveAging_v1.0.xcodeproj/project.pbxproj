@@ -443,8 +443,8 @@
 			children = (
 				E70C46AA1E365E750007FEC4 /* ViewController.h */,
 				E70C46AB1E365E750007FEC4 /* ViewController.m */,
-				E70C46AD1E365F360007FEC4 /* EventManager.m */,
 				E70C46AF1E365F410007FEC4 /* EventManager.h */,
+				E70C46AD1E365F360007FEC4 /* EventManager.m */,
 				E70C46B01E365F870007FEC4 /* EditEventViewController.h */,
 				3DFC71171E367771004D8975 /* CalEventsTableViewCell.h */,
 				3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */,

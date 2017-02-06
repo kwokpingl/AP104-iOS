@@ -13,23 +13,22 @@
 #import "EventManager.h"
 #import "EventDetailOuterTableViewCell.h"
 #import "EventDetailInnerTableViewCell.h"
+#import "ImageManager.h"
 
 @interface EventDetailTableViewController ()<UITableViewDelegate, UITableViewDataSource>{
     ServerManager * _serverMgr;
     UserInfo * _userInfo;
     EventManager * _eventManager;
-    NSMutableDictionary * basedKeysMDict;
+    NSMutableDictionary * newDetailKeyDict;
     NSMutableDictionary * sortedDetailMDict;
     NSMutableArray * sortedDetailMArray;
-    NSMutableArray * basedKeysMArray;
     
     NSInteger selectedIndex;
-    
-//    UIButton * joinButton;
-//    UIBarButtonItem * joinBarButton;
+    NSString * selectedCategory;
 }
 @property (weak, nonatomic) IBOutlet UITableView *outerTableView;
-//@property (weak, nonatomic) IBOutlet UITableView *innerTableView;
+@property (weak, nonatomic) IBOutlet UITableView *innerTableView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 
 
@@ -44,28 +43,19 @@
     _userInfo = [UserInfo shareInstance];
     _eventManager = [EventManager shareInstance];
     
-    [self.navigationItem setTitle:_eventDetailDict[EVENT_TITLE_KEY]];
+    
+    
+    
     
     // SET DELEGATE
     _outerTableView.delegate = self;
     _outerTableView.dataSource = self;
-//    _innerTableView.delegate = self;
-//    _innerTableView.dataSource = self;
     
+//    _outerTableView.estimatedRowHeight = 44;
     _outerTableView.rowHeight = UITableViewAutomaticDimension;
     selectedIndex = -1;
     
-//    joinButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [joinButton setTitle:@"有興趣" forState:UIControlStateNormal];
-//    [joinButton setTitleEdgeInsets:UIEdgeInsetsMake(5, 5, 5, 5)];
-//    [joinButton setTintColor:[UIColor blackColor]];
-//    [joinButton sizeToFit];
-//    [joinButton setFrame:CGRectMake(0, self.view.frame.size.width-40, 30, 30)];
-//    [joinButton addTarget:self action:@selector(joinBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-//    joinBarButton = [[UIBarButtonItem alloc] initWithCustomView:joinButton];
-//    self.navigationItem.leftBarButtonItem =joinBarButton;
-    
-    
+    [self setup];
     
 }
 
@@ -75,136 +65,193 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated{
-    [self setup];
+    
 }
 
 #pragma mark - TABLE_VIEW
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return newDetailKeyDict.count;
+}
+
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-//    _outerTableView.
-    return basedKeysMArray.count;
-    
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+//    if (tableView == _outerTableView){
     EventDetailOuterTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    
-    NSString * category = basedKeysMArray[indexPath.row];
-    NSDictionary * categoryDict = sortedDetailMArray[0][category];
-//    NSDictionary * categoryDict = categoryArray[0];
-    
-    NSString * tempStr = @"";
-    int i = 0;
-    for (NSString * key in categoryDict.allKeys){
-        NSString * value = categoryDict[key];
-        if (value != (NSString *)[NSNull null]){
-            
-            if([key isEqualToString:EVENT_START_KEY] || [key isEqualToString:EVENT_END_KEY]){
-                NSDateFormatter * dateFormat = [NSDateFormatter new];
-                [dateFormat setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
-                
-                NSDate * date = [dateFormat dateFromString:value];
-                [dateFormat setDateFormat:@"YYYY-MM-dd"];
-                value = [dateFormat stringFromDate:date];
-                value = [@""stringByAppendingString:value];
+
+    if (indexPath.row == 0){
+//        selectedCategory =
+        cell.OuterTopContentTitleLabel.text = newDetailKeyDict.allKeys[indexPath.section];
+    }
+    else if (indexPath.row == 1 ){
+        NSArray * categoryArray = [[NSArray alloc] initWithArray: newDetailKeyDict[selectedCategory]];
+        [cell.OuterTopContentTitleLabel setNumberOfLines:0];
+        NSString * result = [NSString new];
+        for (int i = 0; i<categoryArray.count; i++){
+            if ([categoryArray[i] isKindOfClass:[NSString class]]){
+                result = [result stringByAppendingString:categoryArray[i]];
+            }
+            else if ([categoryArray[i] isKindOfClass:[NSNumber class]]){
+                result = [result stringByAppendingString:[NSString stringWithFormat:@"%@" ,categoryArray[i]]];
             }
             
-            tempStr = [tempStr stringByAppendingString:[NSString stringWithFormat:@"%@ ", value]];
-            i++;
+            
+            result = [result stringByAppendingString:@"\n"];
         }
+        cell.OuterTopContentTitleLabel.text = result;
     }
-    [cell.OuterTopContentTitleLabel setLineBreakMode:NSLineBreakByClipping];
-    [cell.OuterContentView setAutoresizesSubviews:true];
-    cell.OuterTopContentTitleLabel.text = tempStr;
     
-    return cell;
-    
+        return cell;
+
+
 }
 
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (selectedIndex == indexPath.row){
+//    if (selectedIndex == indexPath.row){
+//        selectedIndex = -1;
+//    } else {
+//        selectedIndex = indexPath.row;
+//    }
+    
+    EventDetailOuterTableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if (indexPath.row== 0 && selectedIndex != indexPath.section){
+        selectedIndex = indexPath.section;
+        selectedCategory = cell.OuterTopContentTitleLabel.text;
+        
+    }else{
         selectedIndex = -1;
-    } else {
-        selectedIndex = indexPath.row;
     }
+    
+    [tableView reloadData];
     [_outerTableView beginUpdates];
     [_outerTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [_outerTableView endUpdates];
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (selectedIndex == indexPath.row){
-        return 100;
-    }else{
+    
+    if (indexPath.row == 0){
         return 40;
     }
+    else if (indexPath.row == 1 && indexPath.section == selectedIndex){
+        return 100;
+    }
+    return 0;
 }
 
 
-- (IBAction)joinBtnPressed:(id)sender {
+
+- (IBAction)joinBtnPressed:(UIBarButtonItem *)sender {
     // check calendar
     NSString * action;
     
-    // add events
-    if ([_joinButton.title isEqualToString:@"有興趣"]){
+    // add/delete events
+    
+    if ([sender.title isEqualToString:@"感興趣"]){
         action = USER_EVENT_JOIN;
+        
+        [_serverMgr retrieveEventInfo:action
+                               UserID:_userInfo.getUserID
+                              EventID:_eventDetailDict[EVENT_ID_KEY] completion:^(NSError *error, id result) {
+                                  NSString * alertTitle, * alertMessage;
+                                 
+                                  if ([result[ECHO_RESULT_KEY] boolValue]){
+                                      alertTitle = @"記錄成功";
+                                      alertMessage = @"請與舉辦單位聯繫以完成加入活動手續。";
+                                      
+                                      [self requestAccessToEventType];
+                                      NSDictionary * eventDetail = @{@"startDateTime":_eventDetailDict[EVENT_START_KEY],
+                                                                     @"endDateTime": _eventDetailDict[EVENT_END_KEY],
+                                                                     @"title": _eventDetailDict[EVENT_TITLE_KEY],
+                                                                     @"location": _eventDetailDict[EVENT_ADDRESS_KEY],
+                                                                     @"detail": _eventDetailDict[EVENT_DESCRIPTION_KEY]
+                                                                     };
+                                      [_eventManager newEventToBeAdded:eventDetail complete:^(NSMutableArray *eventArray) {
+                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                              [self isNewEventAdded:([eventArray[0] intValue] == 1)?true:false];
+                                          });
+                                          
+                                      }];// EVENT MANAGER
+                                      
+                                  }
+                                  else{
+                                      alertTitle = @"失敗";
+                                      alertMessage = @"請與開發者聯繫,並敘述發生的問題。";
+                                  }
+                                  
+                                  UIAlertController * alert = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+                                  UIAlertAction * ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                          [self returnButtonPressed];
+                                      });
+                                  }];
+                                  [alert addAction:ok];
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      [self presentViewController:alert animated:true completion:nil];
+                                  });
+                              }];
+        
     }else {
         action = USER_EVENT_QUIT;
-    }
         [_serverMgr retrieveEventInfo:action
-                                UserID:[_userInfo getUserID]
-                               EventID:_eventDetailDict[EVENT_ID_KEY]
-                            completion:^(NSError *error, id result) {
-                                NSString * alertTitle, * alertMessage;
-                                if ([result[@"result"] boolValue]){
-                                    
-                                    alertTitle = @"SUCCESS";
-                                    alertMessage = @"請與舉辦單位聯繫以完成加入活動手續。";
-                                    
-                                    if ([action isEqualToString:USER_EVENT_JOIN]){
-                                        [self requestAccessToEventType];
-                                        
-                                        NSDictionary * eventDetail = @{@"startDateTime":_eventDetailDict[EVENT_START_KEY],
-                                                                       @"endDateTime": _eventDetailDict[EVENT_END_KEY],
-                                                                       @"title": _eventDetailDict[EVENT_TITLE_KEY],
-                                                                       @"location": _eventDetailDict[EVENT_ADDRESS_KEY],
-                                                                       @"detail": _eventDetailDict[EVENT_DESCRIPTION_KEY]
-                                                                       };
-                                        [_eventManager newEventToBeAdded:eventDetail complete:^(NSMutableArray *eventArray) {
-                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                               [self isNewEventAdded:([eventArray[0] intValue] == 1)?true:false];
-                                            });
-                                            
-                                        }];
-                                    }
-                                    
-                                } else{
-                                    alertTitle = @"Failed";
-                                    alertMessage = @"Something went wrong";
-                                }
-                                
-                                UIAlertController * alert = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
-                                UIAlertAction * ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                                [alert addAction:ok];
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                    [self presentViewController:alert animated:true completion:nil];
-                                    if ([_joinButton.title isEqualToString:@"有興趣"]){
-                                        [_joinButton setTitle:@"沒興趣"];
-                                    } else {
-                                        [_joinButton setTitle:@"有興趣"];
-                                    }
-                                });
-        }];
-    
+                               UserID:_userInfo.getUserID
+                              EventID:_eventDetailDict[EVENT_ID_KEY] completion:^(NSError *error, id result) {
+                                  NSString * alertTitle, * alertMessage;
+                                  
+                                  if ([result[ECHO_RESULT_KEY] boolValue]){
+                                      alertTitle = @"成功退出";
+                                      alertMessage = @"系統以消除此項目";
+                                      
+                                      [self requestAccessToEventType];
+                                      NSDictionary * eventDetail = @{@"startDateTime":_eventDetailDict[EVENT_START_KEY],
+                                                                     @"endDateTime": _eventDetailDict[EVENT_END_KEY],
+                                                                     @"title": _eventDetailDict[EVENT_TITLE_KEY],
+                                                                     @"location": _eventDetailDict[EVENT_ADDRESS_KEY],
+                                                                     @"detail": _eventDetailDict[EVENT_DESCRIPTION_KEY]
+                                                                     };
+                                      [_eventManager eventToBeRemoved:eventDetail complete:^(NSMutableArray *eventArray) {
+                                          if ([eventArray.lastObject boolValue]){
+                                              NSLog(@"SUCCESS");
+                                          }
+                                          else{
+                                              NSLog(@"FAILED");
+                                          }
+                                      }];
+                                      
+                                  }
+                                  else{
+                                      alertTitle = @"失敗";
+                                      alertMessage = @"請與開發者聯繫,並敘述發生的問題。";
+                                  }
+                                  
+                                  UIAlertController * alert = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+                                  UIAlertAction * ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                         [self returnButtonPressed];
+                                      });
+                                  }];
+                                  [alert addAction:ok];
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      [self presentViewController:alert animated:true completion:nil];
+                                      
+                                  });
+                                  
+                              }];
+        
+    }
     
     
     
 }
 
 #pragma mark - CALENDAR METHODS
-// MARK: REQUEST_ACCESS_TO_EVENT_TYPE
+/// MARK: REQUEST_ACCESS_TO_EVENT_TYPE
 -(void) requestAccessToEventType {
     [_eventManager requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError * _Nullable error) {
         if (!granted)
@@ -226,7 +273,7 @@
     }];
 }
 
-// MARK: CHECK_IF_EVENT_IS_ADDED
+/// MARK: CHECK_IF_EVENT_IS_ADDED
 -(void) isNewEventAdded: (BOOL) isAdded {
     if (isAdded) {
         UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"耶！存好了。" message:@"您可以在月曆上瀏覽新增的活動喔。" preferredStyle:UIAlertControllerStyleAlert];
@@ -252,7 +299,7 @@
 
 
 #pragma mark - PRIVATE_METHOD
-// MARK: SETMETHOD
+/// MARK: SETMETHOD
 - (void) setup{
     // SETUP THE KEYS
     /*
@@ -263,7 +310,39 @@
      contact info 聯絡方式
      address 地址
      */
-    basedKeysMDict = [[NSMutableDictionary alloc]
+    
+    // SETUP IMAGE
+    _imageView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    
+    [ImageManager getEventImage:_eventDetailDict[EVENT_PIC_KEY] completion:^(NSError *error, id result) {
+        if (!error){
+            _imageView.image = [UIImage imageWithData:result];
+        }
+        else{
+            _imageView.image = nil;
+        }
+    }];
+    
+    [self.navigationItem setTitle:_eventDetailDict[EVENT_TITLE_KEY]];
+    
+    NSString * joinButtonName;
+    
+    if (_eventDetailDict[USER_EVENT_STATUS_KEY]){
+        joinButtonName = @"不感興趣";
+    } else {
+        joinButtonName = @"感興趣";
+    }
+    
+    
+    UIBarButtonItem * joinButtonItem = [[UIBarButtonItem alloc] initWithTitle:joinButtonName style:UIBarButtonItemStylePlain target:self action:@selector(joinBtnPressed:)];
+    [self.navigationItem setRightBarButtonItem:joinButtonItem];
+    
+    UIBarButtonItem * returnButton = [[UIBarButtonItem alloc] initWithTitle:@"<回上一頁" style:UIBarButtonItemStylePlain target:self action:@selector(returnButtonPressed)];
+    
+    [self.navigationItem setLeftBarButtonItem:returnButton];
+    
+    newDetailKeyDict = [[NSMutableDictionary alloc]
                       initWithDictionary:@{
                                            @"organization":@[EVENT_ORGNTION_KEY, EVENT_WEBPAGE_KEY],
                                            @"description":@[ EVENT_DESCRIPTION_KEY, EVENT_START_KEY, EVENT_END_KEY],
@@ -272,13 +351,17 @@
                                            @"address":@[EVENT_CITY_KEY, EVENT_ADDRESS_KEY, EVENT_LON_KEY, EVENT_LAT_KEY]
                                            }];
     
-    basedKeysMArray = [[NSMutableArray alloc] initWithArray:basedKeysMDict.allKeys];
-    
     // sort new dictionary
-    [EventDetailSorter returnArrayWithDictionaryFrom:_eventDetailDict KeyDictionary:basedKeysMDict complete:^(NSMutableArray *sortedArray) {
-        sortedDetailMArray = [[NSMutableArray alloc] initWithArray:sortedArray];
-        [_outerTableView reloadData];
+    [EventDetailSorter returnSortedDictionary:_eventDetailDict BasedDictionary:newDetailKeyDict complete:^(NSMutableDictionary *sortedDictionary) {
+        newDetailKeyDict = [[NSMutableDictionary alloc] initWithDictionary:sortedDictionary];
     }];
+     
+//     returnArrayWithDictionaryFrom:_eventDetailDict KeyDictionary:newDetailKeyDict complete:^(NSMutableArray *sortedArray) {
+//        sortedDetailMArray = [[NSMutableArray alloc] initWithArray:sortedArray];
+//        [_outerTableView reloadData];
+//    }];
+    
+    
     
     
 //    [EventDetailSorter
@@ -290,10 +373,19 @@
 //         [_innerTableView reloadData];
 //     }];
     
-    // SET PICTURE
     
 }
 
+
+- (void) returnButtonPressed {
+//    [self dismissViewControllerAnimated:true completion:nil];
+    // Due to SEGUE
+    [self.navigationController popViewControllerAnimated:true];
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    NSLog(@"GONE TABLE DETAIL");
+}
 
 
 

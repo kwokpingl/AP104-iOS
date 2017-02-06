@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface EventDetailTableViewController : UIViewController
-@property (nonatomic, strong) NSDictionary * eventDetailDict;
+@property (nonatomic, strong) NSMutableDictionary * eventDetailDict;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *joinButton;
 @property (nonatomic, strong) UIImage * eventImg;
 @end

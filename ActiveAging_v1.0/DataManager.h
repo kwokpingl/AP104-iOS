@@ -20,4 +20,10 @@
 
 + (NSMutableArray *) fetchDatabaseFromTable: (NSString *) table;
 
++ (NSMutableArray *) fetchUserInfoFromTableWithUserID: (NSInteger) userID;
+
++ (NSMutableArray *) fetchUserInfoFromTableWithGroupID: (NSInteger) groupID;
+
++ (NSMutableArray *) fetchGroupsFromTableWithRole: (NSInteger) role;
+
 @end

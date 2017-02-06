@@ -112,11 +112,44 @@ static EventManager * _store = nil;
          if (addEvent.startDate != e.startDate) {
              done([@[@(true)] mutableCopy]);
          } else {
-             done([@[@(false)] mutableCopy]);
+             done([@[@(false), e.eventIdentifier] mutableCopy]);
 //             [eventListVC isNewEventAdded:false];
          }
     }
-   }
+}
+
+- (void) eventToBeRemoved: (NSDictionary *) event complete:(Donehandler) done {
+    NSString * startDateTimeStr = event[@"startDateTime"];
+//    NSString * titleStr = event[@"title"];
+    NSString * endDateTimeStr = event[@"endDateTime"];
+//    NSString * detailStr = event[@"detail"];
+//    NSString * locationStr = event[@"location"];
+    
+    
+    NSDateFormatter * dateFormatter = [NSDateFormatter new];
+    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+    NSDate * startDateTime = [dateFormatter dateFromString:startDateTimeStr];
+    if (startDateTime == nil){
+        dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+        startDateTime = [dateFormatter dateFromString:startDateTimeStr];
+    }
+    NSDate * endDateTime = [dateFormatter dateFromString:endDateTimeStr];
+    
+//    EKEvent * targetEvent = [EKEvent eventWithEventStore:_store];
+    
+    
+    [self comparedWithStoredEvents:startDateTime newEventEndDateTime:endDateTime complete:^(NSMutableArray *eventArray) {
+        if ([eventArray[0] isEqual:@(0)]){
+            EKEvent * targetEvent = [self eventWithIdentifier:eventArray.lastObject];
+            [self removeEvent:targetEvent span:EKSpanThisEvent error:nil];
+            done([@[@"true"] mutableCopy]);
+        } else{
+            NSLog(@"NOTHING FOUND");
+            done([@[@"false"] mutableCopy]);
+        }
+    }];
+}
 
 -(void) newEventToBeAdded:(NSDictionary *)newEvent complete:(Donehandler)done {
     NSString * startDateTimeStr = newEvent[@"startDateTime"];

@@ -10,11 +10,12 @@
 #import "ServerManager.h"
 #import "SQLite3DBManager.h"
 #import <CoreLocation/CoreLocation.h>
+#import "LocationManager.h"
 #import <MapKit/MapKit.h>
 
 
 static dispatch_once_t onceToken;
-@interface MapViewController () <MKMapViewDelegate, CLLocationManagerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource>
+@interface MapViewController () <MKMapViewDelegate, CLLocationManagerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource, LocationManagerDelegate>
 @property (weak, nonatomic) IBOutlet MKMapView *mapview;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
 @property (weak, nonatomic) IBOutlet UIView *groupView;
@@ -27,6 +28,7 @@ static dispatch_once_t onceToken;
     ServerManager * _serverMgr;
     
     CLLocationManager * cllocationMgr;
+//    LocationManager * _locationMgr;
     MKAnnotationView * mkAnnotation;
     CLLocation * specificLocation;
     MKPolyline * polyLine;
@@ -42,31 +44,39 @@ static dispatch_once_t onceToken;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    cllocationMgr = [CLLocationManager new];
+
+    
+    
     [_mapview setShowsUserLocation:true];
+    
+    // NEED TO ALLOW USERS
+    // SETUP SHARE AMONG GROUPS
     shareLocation = false;
     
-//    UITapGestureRecognizer * tap = [UITapGestureRecognizer new];
-//    [tap addTarget:self action:@selector(endEditing)];
-//    [self.view addGestureRecognizer:tap];
-    
-    
     // REQUEST PERMISSION
-    if([cllocationMgr respondsToSelector:@selector(requestAlwaysAuthorization)]){
-        [cllocationMgr requestWhenInUseAuthorization];
-        _mapview.delegate = self;
-    }else{
-        UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"錯誤" message:@"請允許我們用您的定位系統以便讓您享用我們ＡＰＰ的完整服務" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction * ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:ok];
-        [self presentViewController:alert animated:YES completion:nil];
+    if ([CLLocationManager locationServicesEnabled]){
+        [LocationManager shareInstance];
+    }
+    else{
+        [self presentViewController:[[LocationManager shareInstance] serviceEnableAlert] animated:true completion:nil];
     }
     
-    [cllocationMgr setDesiredAccuracy:kCLLocationAccuracyBest];
-    [cllocationMgr setActivityType:CLActivityTypeAutomotiveNavigation];
-    [cllocationMgr setAllowsBackgroundLocationUpdates:true];
-    cllocationMgr.delegate = self;
-    [cllocationMgr startUpdatingLocation];
+//        cllocationMgr = [CLLocationManager new];
+//    if([cllocationMgr respondsToSelector:@selector(requestAlwaysAuthorization)]){
+//        [cllocationMgr requestWhenInUseAuthorization];
+//        _mapview.delegate = self;
+//    }else{
+//        UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"錯誤" message:@"請允許我們用您的定位系統以便讓您享用我們ＡＰＰ的完整服務" preferredStyle:UIAlertControllerStyleAlert];
+//        UIAlertAction * ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+//        [alert addAction:ok];
+//        [self presentViewController:alert animated:YES completion:nil];
+//    }
+    
+//    [cllocationMgr setDesiredAccuracy:kCLLocationAccuracyBest];
+//    [cllocationMgr setActivityType:CLActivityTypeAutomotiveNavigation];
+//    [cllocationMgr setAllowsBackgroundLocationUpdates:true];
+//    cllocationMgr.delegate = self;
+//    [cllocationMgr startUpdatingLocation];
     
     
     
@@ -168,7 +178,12 @@ static dispatch_once_t onceToken;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    [cllocationMgr startUpdatingLocation];
+    [[LocationManager shareInstance] startUpdatingLocation];
+    [[LocationManager shareInstance] addObserver:self forKeyPath:@"currentLocation" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    [[LocationManager shareInstance] removeObserver:self forKeyPath:@"currentLocation"];
 }
 
 
@@ -200,6 +215,26 @@ static dispatch_once_t onceToken;
 
 
 #pragma mark - CLLOCATION
+
+- (void)tracingLocation:(CLLocation *)myLocation{
+    CLLocationCoordinate2D myCoordinate = CLLocationCoordinate2DMake(myLocation.coordinate.latitude, myLocation.coordinate.longitude);
+    
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.01, 0.01);
+    
+    MKCoordinateRegion  region = MKCoordinateRegionMake(myCoordinate, span);
+    
+    dispatch_once(&onceToken, ^{
+        [_mapview setRegion:region];
+        [self showFriendAnnotation];
+    });
+}
+
+//- (void) setRegion{
+//    CLLocation * myLocation = [LocationManager shareInstance].currentLocation;
+//    
+//    
+//}
+
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
     CLLocation * myLocation = locations.lastObject;
     
@@ -339,5 +374,14 @@ static dispatch_once_t onceToken;
     // Pass the selected object to the new view controller.
 }
 */
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+//    if ([keyPath isEqualToString:@"currentLocation"]){
+//        NSLog(@"Latitude %+.6f, Longitude %+.6f\n",
+//              _locationMgr.currentLocation.coordinate.latitude,
+//              _locationMgr.currentLocation.coordinate.longitude);
+//    }
+}
 
 @end
