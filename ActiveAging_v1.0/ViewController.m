@@ -28,7 +28,6 @@ static void * __KVOContext;
     NSDate * maximumDate;
     NSDate * chosenDate;
     NSTimeZone * userTimeZone;
-//    FSCalendar * calendar;
     NSCalendar * gregorian;
     NSCalendar *lunarCalendar;
     NSArray<NSString *> *lunarChars;
@@ -62,6 +61,14 @@ static void * __KVOContext;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+#pragma mark - calendar appearance setup
+    _calendar.appearance.adjustsFontSizeToFitContentSize = false;
+    [_calendar.appearance setHeaderTitleFont:[UIFont systemFontOfSize:28]];
+    [_calendar.appearance setTitleFont:[UIFont systemFontOfSize:25]];
+    [_calendar.appearance setSubtitleFont:[UIFont systemFontOfSize:12]];
+    [_calendar.appearance setWeekdayFont:[UIFont systemFontOfSize:15]];
+    
+#pragma mark - date and data setup
     dateFormatter = [NSDateFormatter new];
     dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
@@ -73,7 +80,7 @@ static void * __KVOContext;
     
     [self requestAccessToEventType];
     
-    NSString * dateString = [dateFormatter stringFromDate:[NSDate date]];
+//    NSString * dateString = [dateFormatter stringFromDate:[NSDate date]];
     
 //    NSLog(@"%@", dateString);
     
@@ -95,7 +102,8 @@ static void * __KVOContext;
 #pragma mark - Calendar Scope set up
     [self.calendar addObserver:self forKeyPath:@"scope" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:__KVOContext];
     
-    self.calendar.scope = FSCalendarScopeWeek;
+//    self.calendar.scope = FSCalendarScopeWeek;
+    self.calendar.scope = FSCalendarScopeMonth;
     
     if ([self.extensionContext respondsToSelector:@selector(setWidgetLargestAvailableDisplayMode:)]) {
         
@@ -196,12 +204,14 @@ static void * __KVOContext;
         [calendar setCurrentPage:date animated:YES];
     }
     
-    NSString * te = [dateFormatter stringFromDate:date];
+//    NSString * te = [dateFormatter stringFromDate:date];
 //    NSLog(@"%@", te);
     [_eventManager sortTimeOrder:date complete:^(NSMutableArray *eventArray) {
         allEventsArray = [[NSMutableArray alloc] initWithArray:eventArray];
         [_tableView reloadData];
     }];
+    
+//     _calendar.appearance.eventSelectionColor = [UIColor purpleColor];
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
@@ -339,6 +349,7 @@ static void * __KVOContext;
         cell.eventTitle.text = new.title;
         cell.startTimeLabel.text = startDateString;
         cell.endtimeLabel.text = endDateString;
+        
     } else {
         cell.eventTitle.text = @"今天沒有任何活動唷。\n 養足精神，重新出發！";
         cell.startTimeLabel.text = @"";

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -89,18 +88,17 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5eV-35-wac">
-
-                                <rect key="frame" x="89.5" y="338.5" width="94.5" height="95.5"/>
+                                <rect key="frame" x="16.5" y="231.5" width="94.5" height="95.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="日曆"/>
+                                <state key="normal" title="日曆" backgroundImage="Sample Frame 2.png"/>
                                 <connections>
                                     <segue destination="S5h-75-FT3" kind="show" id="gtd-g1-Ab0"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SES-wc-SET">
-                                <rect key="frame" x="204" y="338.5" width="95" height="95.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="聯絡人"/>
+                                <rect key="frame" x="119" y="441.5" width="95" height="95.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <state key="normal" title="聯絡人" backgroundImage="Sample Frame 2.png"/>
                                 <connections>
                                     <segue destination="hJ2-3b-Vl9" kind="show" id="fGA-yn-b7T"/>
                                 </connections>
@@ -108,16 +106,15 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fgr-ks-YO9">
                                 <rect key="frame" x="264" y="482" width="95" height="95"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="設定"/>
+                                <state key="normal" title="設定" backgroundImage="Sample Frame 3.png"/>
                                 <connections>
                                     <segue destination="wm7-xh-D66" kind="show" id="4YV-XH-Zgp"/>
                                 </connections>
                             </button>
-
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITB-8l-xUF">
-                                <rect key="frame" x="89.5" y="454" width="94.5" height="95"/>
+                                <rect key="frame" x="16.5" y="347" width="94.5" height="95"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="地圖"/>
+                                <state key="normal" title="地圖" backgroundImage="ha1.png"/>
                                 <connections>
                                     <segue destination="PbJ-CH-6fK" kind="show" id="gZT-DB-m5j"/>
                                 </connections>
@@ -125,7 +122,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d4f-TP-RYk">
                                 <rect key="frame" x="55" y="123" width="99" height="101"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="活動"/>
+                                <state key="normal" title="活動" backgroundImage="Sample Frame 3.png"/>
                                 <connections>
                                     <segue destination="K5F-df-ySg" kind="show" id="ASP-Xf-aQ0"/>
                                 </connections>
@@ -136,14 +133,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITB-8l-xUF">
-                                <rect key="frame" x="16" y="347" width="95" height="95"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="地圖"/>
-                                <connections>
-                                    <segue destination="PbJ-CH-6fK" kind="show" id="gZT-DB-m5j"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -646,6 +635,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Sample Frame 2.png" width="1000" height="1000"/>
+        <image name="Sample Frame 3.png" width="1000" height="1000"/>
         <image name="ha1.png" width="989" height="1000"/>
     </resources>
 </document>

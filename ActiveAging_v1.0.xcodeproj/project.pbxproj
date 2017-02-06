@@ -47,13 +47,6 @@
 		3DFC71161E367369004D8975 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFC71151E367369004D8975 /* libsqlite3.tbd */; };
 		3DFC71191E367771004D8975 /* CalEventsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */; };
 		99CFA874AD9FCD28C26F7FB0 /* libPods-ActiveAging_v1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */; };
-		E700A1801E4732E90001725A /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E700A17F1E4732E90001725A /* 1.jpg */; };
-		E700A1991E4740790001725A /* ha1.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A1961E4740790001725A /* ha1.png */; };
-		E700A19A1E4740790001725A /* ha1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A1971E4740790001725A /* ha1@2x.png */; };
-		E700A19B1E4740790001725A /* ha1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A1981E4740790001725A /* ha1@3x.png */; };
-		E700A19F1E4748770001725A /* HaTime.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A19C1E4748770001725A /* HaTime.png */; };
-		E700A1A01E4748770001725A /* HaTime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A19D1E4748770001725A /* HaTime@2x.png */; };
-		E700A1A11E4748770001725A /* HaTime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A19E1E4748770001725A /* HaTime@3x.png */; };
 		AE09E5C61E470E640056110B /* EmergencyButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AE09E5C51E470E640056110B /* EmergencyButton.m */; };
 		AE09E5CD1E47571D0056110B /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE09E5CC1E47571D0056110B /* LocationManager.m */; };
 		AE0B0E551E46D69B00C4F076 /* SubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0B0E541E46D69B00C4F076 /* SubViewController.m */; };
@@ -61,6 +54,13 @@
 		AE240FE81E42111700AB6B33 /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE240FE71E42111700AB6B33 /* ContactTableViewCell.m */; };
 		AE46F48B1E43FE7F00ED51A1 /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE46F48A1E43FE7F00ED51A1 /* ImageManager.m */; };
 		AE46F48E1E4401D000ED51A1 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE46F48D1E4401D000ED51A1 /* DataManager.m */; };
+		E700A1801E4732E90001725A /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E700A17F1E4732E90001725A /* 1.jpg */; };
+		E700A1991E4740790001725A /* ha1.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A1961E4740790001725A /* ha1.png */; };
+		E700A19A1E4740790001725A /* ha1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A1971E4740790001725A /* ha1@2x.png */; };
+		E700A19B1E4740790001725A /* ha1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A1981E4740790001725A /* ha1@3x.png */; };
+		E700A19F1E4748770001725A /* HaTime.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A19C1E4748770001725A /* HaTime.png */; };
+		E700A1A01E4748770001725A /* HaTime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A19D1E4748770001725A /* HaTime@2x.png */; };
+		E700A1A11E4748770001725A /* HaTime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A19E1E4748770001725A /* HaTime@3x.png */; };
 		E70C46A51E3657F50007FEC4 /* SQLite3DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */; };
 		E70C46AC1E365E750007FEC4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46AB1E365E750007FEC4 /* ViewController.m */; };
 		E70C46AE1E365F360007FEC4 /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46AD1E365F360007FEC4 /* EventManager.m */; };
@@ -96,6 +96,15 @@
 		E7CED0211E426BD400561645 /* weather-tstorm.png in Resources */ = {isa = PBXBuildFile; fileRef = E7CED0071E426BD400561645 /* weather-tstorm.png */; };
 		E7CED0221E426BD400561645 /* weather-tstorm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7CED0081E426BD400561645 /* weather-tstorm@2x.png */; };
 		E7CED0241E426D9400561645 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7CED0231E426D9400561645 /* CoreGraphics.framework */; };
+		E7F8AE871E49060100379CD6 /* LaunchScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F8AE841E49060100379CD6 /* LaunchScreen.png */; };
+		E7F8AE881E49060100379CD6 /* LaunchScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F8AE851E49060100379CD6 /* LaunchScreen@2x.png */; };
+		E7F8AE891E49060100379CD6 /* LaunchScreen@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F8AE861E49060100379CD6 /* LaunchScreen@3x.png */; };
+		E7F8AE901E4909AE00379CD6 /* Sample Frame 2.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F8AE8A1E4909AE00379CD6 /* Sample Frame 2.png */; };
+		E7F8AE911E4909AE00379CD6 /* Sample Frame 2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F8AE8B1E4909AE00379CD6 /* Sample Frame 2@2x.png */; };
+		E7F8AE921E4909AE00379CD6 /* Sample Frame 2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F8AE8C1E4909AE00379CD6 /* Sample Frame 2@3x.png */; };
+		E7F8AE931E4909AE00379CD6 /* Sample Frame 3.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F8AE8D1E4909AE00379CD6 /* Sample Frame 3.png */; };
+		E7F8AE941E4909AE00379CD6 /* Sample Frame 3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F8AE8E1E4909AE00379CD6 /* Sample Frame 3@2x.png */; };
+		E7F8AE951E4909AE00379CD6 /* Sample Frame 3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F8AE8F1E4909AE00379CD6 /* Sample Frame 3@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -232,6 +241,15 @@
 		E7CED0071E426BD400561645 /* weather-tstorm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weather-tstorm.png"; sourceTree = "<group>"; };
 		E7CED0081E426BD400561645 /* weather-tstorm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weather-tstorm@2x.png"; sourceTree = "<group>"; };
 		E7CED0231E426D9400561645 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E7F8AE841E49060100379CD6 /* LaunchScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchScreen.png; sourceTree = "<group>"; };
+		E7F8AE851E49060100379CD6 /* LaunchScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreen@2x.png"; sourceTree = "<group>"; };
+		E7F8AE861E49060100379CD6 /* LaunchScreen@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreen@3x.png"; sourceTree = "<group>"; };
+		E7F8AE8A1E4909AE00379CD6 /* Sample Frame 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sample Frame 2.png"; sourceTree = "<group>"; };
+		E7F8AE8B1E4909AE00379CD6 /* Sample Frame 2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sample Frame 2@2x.png"; sourceTree = "<group>"; };
+		E7F8AE8C1E4909AE00379CD6 /* Sample Frame 2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sample Frame 2@3x.png"; sourceTree = "<group>"; };
+		E7F8AE8D1E4909AE00379CD6 /* Sample Frame 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sample Frame 3.png"; sourceTree = "<group>"; };
+		E7F8AE8E1E4909AE00379CD6 /* Sample Frame 3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sample Frame 3@2x.png"; sourceTree = "<group>"; };
+		E7F8AE8F1E4909AE00379CD6 /* Sample Frame 3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sample Frame 3@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -333,6 +351,9 @@
 			children = (
 				3D4521131E2ECDE0002E416C /* Cuties.jpg */,
 				3D81C4571E33509C00C8E22F /* Plus.png */,
+				E7F8AE841E49060100379CD6 /* LaunchScreen.png */,
+				E7F8AE851E49060100379CD6 /* LaunchScreen@2x.png */,
+				E7F8AE861E49060100379CD6 /* LaunchScreen@3x.png */,
 				3D50155E1E26079C006F5F20 /* AccountVerificationViewController.h */,
 				3D50155F1E26079C006F5F20 /* AccountVerificationViewController.m */,
 				3D4521191E2EFB67002E416C /* WelcomeViewController.h */,
@@ -446,6 +467,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AEA9FCB71E3CDA770053516E /* Time */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Time;
+			sourceTree = "<group>";
+		};
 		E700A1831E4739B40001725A /* Ha Btns */ = {
 			isa = PBXGroup;
 			children = (
@@ -455,13 +483,14 @@
 				E700A19C1E4748770001725A /* HaTime.png */,
 				E700A19D1E4748770001725A /* HaTime@2x.png */,
 				E700A19E1E4748770001725A /* HaTime@3x.png */,
+				E7F8AE8A1E4909AE00379CD6 /* Sample Frame 2.png */,
+				E7F8AE8B1E4909AE00379CD6 /* Sample Frame 2@2x.png */,
+				E7F8AE8C1E4909AE00379CD6 /* Sample Frame 2@3x.png */,
+				E7F8AE8D1E4909AE00379CD6 /* Sample Frame 3.png */,
+				E7F8AE8E1E4909AE00379CD6 /* Sample Frame 3@2x.png */,
+				E7F8AE8F1E4909AE00379CD6 /* Sample Frame 3@3x.png */,
 			);
 			name = "Ha Btns";
-		AEA9FCB71E3CDA770053516E /* Time */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Time;
 			sourceTree = "<group>";
 		};
 		E70C46A91E365E330007FEC4 /* Calendar */ = {
@@ -597,7 +626,9 @@
 			files = (
 				E700A1A01E4748770001725A /* HaTime@2x.png in Resources */,
 				E700A1801E4732E90001725A /* 1.jpg in Resources */,
+				E7F8AE871E49060100379CD6 /* LaunchScreen.png in Resources */,
 				3D50154E1E23AB42006F5F20 /* Calendar.storyboard in Resources */,
+				E7F8AE891E49060100379CD6 /* LaunchScreen@3x.png in Resources */,
 				E700A1A11E4748770001725A /* HaTime@3x.png in Resources */,
 				E7CED00D1E426BD400561645 /* weather-clear.png in Resources */,
 				E7CED00B1E426BD400561645 /* weather-broken.png in Resources */,
@@ -606,11 +637,13 @@
 				E7CED0191E426BD400561645 /* weather-rain.png in Resources */,
 				E7CED00E1E426BD400561645 /* weather-clear@2x.png in Resources */,
 				E7CED0211E426BD400561645 /* weather-tstorm.png in Resources */,
+				E7F8AE931E4909AE00379CD6 /* Sample Frame 3.png in Resources */,
 				E7CED01E1E426BD400561645 /* weather-shower@2x.png in Resources */,
 				E7CED0181E426BD400561645 /* weather-rain-night@2x.png in Resources */,
 				E7CED01F1E426BD400561645 /* weather-snow.png in Resources */,
 				E700A1991E4740790001725A /* ha1.png in Resources */,
 				E7CED0161E426BD400561645 /* weather-moon@2x.png in Resources */,
+				E7F8AE951E4909AE00379CD6 /* Sample Frame 3@3x.png in Resources */,
 				E7CED0141E426BD400561645 /* weather-mist@2x.png in Resources */,
 				E7CED0151E426BD400561645 /* weather-moon.png in Resources */,
 				E7CED01A1E426BD400561645 /* weather-rain@2x.png in Resources */,
@@ -619,6 +652,7 @@
 				3DB3221E1E1182DC002A9FD9 /* Weather.storyboard in Resources */,
 				3DB322121E114FF7002A9FD9 /* Assets.xcassets in Resources */,
 				E7CED0171E426BD400561645 /* weather-rain-night.png in Resources */,
+				E7F8AE921E4909AE00379CD6 /* Sample Frame 2@3x.png in Resources */,
 				E7CED01D1E426BD400561645 /* weather-shower.png in Resources */,
 				3D5015531E23ABED006F5F20 /* Contact.storyboard in Resources */,
 				E7CED00C1E426BD400561645 /* weather-broken@2x.png in Resources */,
@@ -626,12 +660,16 @@
 				E700A19B1E4740790001725A /* ha1@3x.png in Resources */,
 				E7CED0221E426BD400561645 /* weather-tstorm@2x.png in Resources */,
 				3D4521141E2ECDE0002E416C /* Cuties.jpg in Resources */,
+				E7F8AE911E4909AE00379CD6 /* Sample Frame 2@2x.png in Resources */,
+				E7F8AE881E49060100379CD6 /* LaunchScreen@2x.png in Resources */,
+				E7F8AE901E4909AE00379CD6 /* Sample Frame 2.png in Resources */,
 				3DB322101E114FF7002A9FD9 /* Main.storyboard in Resources */,
 				E700A19A1E4740790001725A /* ha1@2x.png in Resources */,
 				E7CED0111E426BD400561645 /* weather-few.png in Resources */,
 				E7CED00F1E426BD400561645 /* weather-few-night.png in Resources */,
 				E700A19F1E4748770001725A /* HaTime.png in Resources */,
 				E7CED01B1E426BD400561645 /* weather-scattered.png in Resources */,
+				E7F8AE941E4909AE00379CD6 /* Sample Frame 3@2x.png in Resources */,
 				3D81C4581E33509C00C8E22F /* Plus.png in Resources */,
 				E7CED0091E426BD400561645 /* bg.png in Resources */,
 				E7CED0121E426BD400561645 /* weather-few@2x.png in Resources */,
