@@ -10,7 +10,8 @@
 #define Definitions_h
 
 // MARK: SERVER_BASIC
-#define BASE_URL                @"http://activeaging.xp3.biz"
+//#define BASE_URL                @"http://activeaging.xp3.biz"
+#define BASE_URL                @"http://192.168.43.109/ActiveAging"
 #define LOGIN_URL               [BASE_URL stringByAppendingPathComponent:@"php/login.php"]
 #define DATA_KEY                @"data"
 

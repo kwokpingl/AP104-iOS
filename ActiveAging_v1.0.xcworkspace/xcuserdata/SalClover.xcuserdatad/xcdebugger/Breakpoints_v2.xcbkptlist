@@ -16,16 +16,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ActiveAging_v1.0/WeatherViewController.m"
-            timestampString = "507671246.126299"
+            filePath = "ActiveAging_v1.0/ViewController.m"
+            timestampString = "507710627.751881"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "266"
-            endingLineNumber = "266"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
+            landmarkName = "-calendar:didSelectDate:atMonthPosition:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

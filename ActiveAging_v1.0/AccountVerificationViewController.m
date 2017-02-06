@@ -63,6 +63,7 @@
                 [timer fire];
             } else {
                 [_welcomeLabel setText:@"Something Wrong"];
+//                [_keyChainManager deleteKeychain:_userInfo.getUsername Password:_userInfo.getPassword];
             }
         }];
         

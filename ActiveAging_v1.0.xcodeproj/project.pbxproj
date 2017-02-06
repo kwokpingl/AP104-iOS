@@ -48,6 +48,13 @@
 		3DFC71161E367369004D8975 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFC71151E367369004D8975 /* libsqlite3.tbd */; };
 		3DFC71191E367771004D8975 /* CalEventsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */; };
 		99CFA874AD9FCD28C26F7FB0 /* libPods-ActiveAging_v1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */; };
+		E700A1801E4732E90001725A /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E700A17F1E4732E90001725A /* 1.jpg */; };
+		E700A1991E4740790001725A /* ha1.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A1961E4740790001725A /* ha1.png */; };
+		E700A19A1E4740790001725A /* ha1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A1971E4740790001725A /* ha1@2x.png */; };
+		E700A19B1E4740790001725A /* ha1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A1981E4740790001725A /* ha1@3x.png */; };
+		E700A19F1E4748770001725A /* HaTime.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A19C1E4748770001725A /* HaTime.png */; };
+		E700A1A01E4748770001725A /* HaTime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A19D1E4748770001725A /* HaTime@2x.png */; };
+		E700A1A11E4748770001725A /* HaTime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A19E1E4748770001725A /* HaTime@3x.png */; };
 		E70C46A51E3657F50007FEC4 /* SQLite3DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */; };
 		E70C46AC1E365E750007FEC4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46AB1E365E750007FEC4 /* ViewController.m */; };
 		E70C46AE1E365F360007FEC4 /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46AD1E365F360007FEC4 /* EventManager.m */; };
@@ -156,6 +163,13 @@
 		957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ActiveAging_v1.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B227D972DDCA904F9E93DF17 /* Pods-ActiveAging_v1.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.release.xcconfig"; sourceTree = "<group>"; };
 		B79FEDE8AEA70ECDDC3931BC /* Pods-ActiveAging_v1.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.debug.xcconfig"; sourceTree = "<group>"; };
+		E700A17F1E4732E90001725A /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
+		E700A1961E4740790001725A /* ha1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ha1.png; sourceTree = "<group>"; };
+		E700A1971E4740790001725A /* ha1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ha1@2x.png"; sourceTree = "<group>"; };
+		E700A1981E4740790001725A /* ha1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ha1@3x.png"; sourceTree = "<group>"; };
+		E700A19C1E4748770001725A /* HaTime.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HaTime.png; sourceTree = "<group>"; };
+		E700A19D1E4748770001725A /* HaTime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HaTime@2x.png"; sourceTree = "<group>"; };
+		E700A19E1E4748770001725A /* HaTime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HaTime@3x.png"; sourceTree = "<group>"; };
 		E70C46A31E3657F50007FEC4 /* SQLite3DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLite3DBManager.h; sourceTree = "<group>"; };
 		E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLite3DBManager.m; sourceTree = "<group>"; };
 		E70C46AA1E365E750007FEC4 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -338,6 +352,7 @@
 				3D4521281E2EFC3F002E416C /* MainMenu */,
 				3D5015571E23D459006F5F20 /* Login Page */,
 				EC1309681E2CCCAE00D21982 /* Maps */,
+				E700A1831E4739B40001725A /* Ha Btns */,
 				3DB322081E114FF7002A9FD9 /* AppDelegate.h */,
 				3DB322091E114FF7002A9FD9 /* AppDelegate.m */,
 				E70C46A31E3657F50007FEC4 /* SQLite3DBManager.h */,
@@ -400,9 +415,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E700A1831E4739B40001725A /* Ha Btns */ = {
+			isa = PBXGroup;
+			children = (
+				E700A1961E4740790001725A /* ha1.png */,
+				E700A1971E4740790001725A /* ha1@2x.png */,
+				E700A1981E4740790001725A /* ha1@3x.png */,
+				E700A19C1E4748770001725A /* HaTime.png */,
+				E700A19D1E4748770001725A /* HaTime@2x.png */,
+				E700A19E1E4748770001725A /* HaTime@3x.png */,
+			);
+			name = "Ha Btns";
+			sourceTree = "<group>";
+		};
 		E70C46A91E365E330007FEC4 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				E700A17F1E4732E90001725A /* 1.jpg */,
 				E70C46AA1E365E750007FEC4 /* ViewController.h */,
 				E70C46AB1E365E750007FEC4 /* ViewController.m */,
 				E70C46AD1E365F360007FEC4 /* EventManager.m */,
@@ -530,7 +559,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E700A1A01E4748770001725A /* HaTime@2x.png in Resources */,
+				E700A1801E4732E90001725A /* 1.jpg in Resources */,
 				3D50154E1E23AB42006F5F20 /* Calendar.storyboard in Resources */,
+				E700A1A11E4748770001725A /* HaTime@3x.png in Resources */,
 				E7CED00D1E426BD400561645 /* weather-clear.png in Resources */,
 				E7CED00B1E426BD400561645 /* weather-broken.png in Resources */,
 				3D5015501E23ABC2006F5F20 /* Map.storyboard in Resources */,
@@ -541,6 +573,7 @@
 				E7CED01E1E426BD400561645 /* weather-shower@2x.png in Resources */,
 				E7CED0181E426BD400561645 /* weather-rain-night@2x.png in Resources */,
 				E7CED01F1E426BD400561645 /* weather-snow.png in Resources */,
+				E700A1991E4740790001725A /* ha1.png in Resources */,
 				E7CED0161E426BD400561645 /* weather-moon@2x.png in Resources */,
 				E7CED0141E426BD400561645 /* weather-mist@2x.png in Resources */,
 				E7CED0151E426BD400561645 /* weather-moon.png in Resources */,
@@ -554,11 +587,14 @@
 				3D5015531E23ABED006F5F20 /* Contact.storyboard in Resources */,
 				E7CED00C1E426BD400561645 /* weather-broken@2x.png in Resources */,
 				E7CED0101E426BD400561645 /* weather-few-night@2x.png in Resources */,
+				E700A19B1E4740790001725A /* ha1@3x.png in Resources */,
 				E7CED0221E426BD400561645 /* weather-tstorm@2x.png in Resources */,
 				3D4521141E2ECDE0002E416C /* Cuties.jpg in Resources */,
 				3DB322101E114FF7002A9FD9 /* Main.storyboard in Resources */,
+				E700A19A1E4740790001725A /* ha1@2x.png in Resources */,
 				E7CED0111E426BD400561645 /* weather-few.png in Resources */,
 				E7CED00F1E426BD400561645 /* weather-few-night.png in Resources */,
+				E700A19F1E4748770001725A /* HaTime.png in Resources */,
 				E7CED01B1E426BD400561645 /* weather-scattered.png in Resources */,
 				3D81C4581E33509C00C8E22F /* Plus.png in Resources */,
 				E7CED0091E426BD400561645 /* bg.png in Resources */,

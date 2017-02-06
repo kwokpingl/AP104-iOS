@@ -29,11 +29,15 @@
 // NSDateFormatter objects are expensive to initialize, but by placing them in -init you’ll ensure they’re initialized only once by your view controller
 -(id) init {
     if (self = [super init]) {
+        NSLocale * twLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
+        
         _hourlyFormatter = [NSDateFormatter new];
         _hourlyFormatter.dateFormat = @"h a";
+        _hourlyFormatter.locale = twLocale;
         
         _dailyFormatter = [NSDateFormatter new];
         _dailyFormatter.dateFormat =@"EEEE";
+        _dailyFormatter.locale = twLocale;
     }
     return self;
 }
@@ -113,7 +117,7 @@
     UILabel * temperatureLabel = [[UILabel alloc] initWithFrame:temperatureFrame];
     temperatureLabel.backgroundColor = [UIColor clearColor];
     temperatureLabel.textColor = [UIColor whiteColor];
-    temperatureLabel.text = @"0°";
+    temperatureLabel.text = @"0°C";
     temperatureLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:120];
     [header addSubview:temperatureLabel];
     
