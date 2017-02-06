@@ -24,7 +24,6 @@
 		3D5015501E23ABC2006F5F20 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D50154F1E23ABC2006F5F20 /* Map.storyboard */; };
 		3D5015531E23ABED006F5F20 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D5015511E23ABED006F5F20 /* Contact.storyboard */; };
 		3D5015601E26079C006F5F20 /* AccountVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D50155F1E26079C006F5F20 /* AccountVerificationViewController.m */; };
-		3D5015661E2607E4006F5F20 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5015651E2607E4006F5F20 /* DataManager.m */; };
 		3D81C4581E33509C00C8E22F /* Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D81C4571E33509C00C8E22F /* Plus.png */; };
 		3D81C45B1E34629A00C8E22F /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */; };
 		3D81C45E1E34643800C8E22F /* EventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D81C45D1E34643800C8E22F /* EventsViewController.m */; };
@@ -48,8 +47,13 @@
 		3DFC71161E367369004D8975 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFC71151E367369004D8975 /* libsqlite3.tbd */; };
 		3DFC71191E367771004D8975 /* CalEventsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */; };
 		99CFA874AD9FCD28C26F7FB0 /* libPods-ActiveAging_v1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */; };
+		AE09E5C61E470E640056110B /* EmergencyButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AE09E5C51E470E640056110B /* EmergencyButton.m */; };
+		AE09E5CD1E47571D0056110B /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE09E5CC1E47571D0056110B /* LocationManager.m */; };
+		AE0B0E551E46D69B00C4F076 /* SubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0B0E541E46D69B00C4F076 /* SubViewController.m */; };
 		AE240FE51E41B2C900AB6B33 /* ContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE240FE41E41B2C900AB6B33 /* ContactListViewController.m */; };
 		AE240FE81E42111700AB6B33 /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE240FE71E42111700AB6B33 /* ContactTableViewCell.m */; };
+		AE46F48B1E43FE7F00ED51A1 /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE46F48A1E43FE7F00ED51A1 /* ImageManager.m */; };
+		AE46F48E1E4401D000ED51A1 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE46F48D1E4401D000ED51A1 /* DataManager.m */; };
 		E70C46A51E3657F50007FEC4 /* SQLite3DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */; };
 		E70C46AC1E365E750007FEC4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46AB1E365E750007FEC4 /* ViewController.m */; };
 		E70C46AE1E365F360007FEC4 /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46AD1E365F360007FEC4 /* EventManager.m */; };
@@ -118,8 +122,6 @@
 		3D5015521E23ABED006F5F20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Contact.storyboard; sourceTree = "<group>"; };
 		3D50155E1E26079C006F5F20 /* AccountVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountVerificationViewController.h; sourceTree = "<group>"; };
 		3D50155F1E26079C006F5F20 /* AccountVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountVerificationViewController.m; sourceTree = "<group>"; };
-		3D5015641E2607E4006F5F20 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
-		3D5015651E2607E4006F5F20 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		3D81C4571E33509C00C8E22F /* Plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Plus.png; sourceTree = "<group>"; };
 		3D81C4591E34629A00C8E22F /* EventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableViewCell.h; sourceTree = "<group>"; };
 		3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableViewCell.m; sourceTree = "<group>"; };
@@ -156,10 +158,20 @@
 		3DFC71171E367771004D8975 /* CalEventsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalEventsTableViewCell.h; sourceTree = "<group>"; };
 		3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalEventsTableViewCell.m; sourceTree = "<group>"; };
 		957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ActiveAging_v1.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE09E5C41E470E640056110B /* EmergencyButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyButton.h; sourceTree = "<group>"; };
+		AE09E5C51E470E640056110B /* EmergencyButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyButton.m; sourceTree = "<group>"; };
+		AE09E5CB1E47571D0056110B /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
+		AE09E5CC1E47571D0056110B /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
+		AE0B0E531E46D69B00C4F076 /* SubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubViewController.h; sourceTree = "<group>"; };
+		AE0B0E541E46D69B00C4F076 /* SubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubViewController.m; sourceTree = "<group>"; };
 		AE240FE31E41B2C900AB6B33 /* ContactListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListViewController.h; sourceTree = "<group>"; };
 		AE240FE41E41B2C900AB6B33 /* ContactListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListViewController.m; sourceTree = "<group>"; };
 		AE240FE61E42111700AB6B33 /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		AE240FE71E42111700AB6B33 /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
+		AE46F4891E43FE7F00ED51A1 /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
+		AE46F48A1E43FE7F00ED51A1 /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
+		AE46F48C1E4401D000ED51A1 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		AE46F48D1E4401D000ED51A1 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		B227D972DDCA904F9E93DF17 /* Pods-ActiveAging_v1.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.release.xcconfig"; sourceTree = "<group>"; };
 		B79FEDE8AEA70ECDDC3931BC /* Pods-ActiveAging_v1.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.debug.xcconfig"; sourceTree = "<group>"; };
 		E70C46A31E3657F50007FEC4 /* SQLite3DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLite3DBManager.h; sourceTree = "<group>"; };
@@ -296,6 +308,8 @@
 				AE240FE41E41B2C900AB6B33 /* ContactListViewController.m */,
 				AE240FE61E42111700AB6B33 /* ContactTableViewCell.h */,
 				AE240FE71E42111700AB6B33 /* ContactTableViewCell.m */,
+				AE0B0E531E46D69B00C4F076 /* SubViewController.h */,
+				AE0B0E541E46D69B00C4F076 /* SubViewController.m */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -351,8 +365,8 @@
 				EC1309681E2CCCAE00D21982 /* Maps */,
 				3DB322081E114FF7002A9FD9 /* AppDelegate.h */,
 				3DB322091E114FF7002A9FD9 /* AppDelegate.m */,
-				E70C46A31E3657F50007FEC4 /* SQLite3DBManager.h */,
-				E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */,
+				AE09E5CB1E47571D0056110B /* LocationManager.h */,
+				AE09E5CC1E47571D0056110B /* LocationManager.m */,
 				3DB3220E1E114FF7002A9FD9 /* Main.storyboard */,
 				3D5015511E23ABED006F5F20 /* Contact.storyboard */,
 				3D50154D1E23AB42006F5F20 /* Calendar.storyboard */,
@@ -364,14 +378,20 @@
 				3DB322161E114FF7002A9FD9 /* Info.plist */,
 				3D4521151E2ED0DE002E416C /* Definitions.h */,
 				3DB322051E114FF7002A9FD9 /* Supporting Files */,
-				3D5015641E2607E4006F5F20 /* DataManager.h */,
-				3D5015651E2607E4006F5F20 /* DataManager.m */,
+				E70C46A31E3657F50007FEC4 /* SQLite3DBManager.h */,
+				E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */,
+				AE46F48C1E4401D000ED51A1 /* DataManager.h */,
+				AE46F48D1E4401D000ED51A1 /* DataManager.m */,
+				AE46F4891E43FE7F00ED51A1 /* ImageManager.h */,
+				AE46F48A1E43FE7F00ED51A1 /* ImageManager.m */,
 				3D4521161E2ED2F5002E416C /* ServerManager.h */,
 				3D4521171E2ED2F5002E416C /* ServerManager.m */,
 				3D4521101E2EC1C6002E416C /* UserInfo.h */,
 				3D4521111E2EC1C6002E416C /* UserInfo.m */,
 				3D45210D1E2EC189002E416C /* KeychainManager.h */,
 				3D45210E1E2EC189002E416C /* KeychainManager.m */,
+				AE09E5C41E470E640056110B /* EmergencyButton.h */,
+				AE09E5C51E470E640056110B /* EmergencyButton.m */,
 			);
 			path = ActiveAging_v1.0;
 			sourceTree = "<group>";
@@ -646,14 +666,15 @@
 				3D4521121E2EC1C6002E416C /* UserInfo.m in Sources */,
 				AE240FE81E42111700AB6B33 /* ContactTableViewCell.m in Sources */,
 				3D45211B1E2EFB67002E416C /* WelcomeViewController.m in Sources */,
-				3D5015661E2607E4006F5F20 /* DataManager.m in Sources */,
 				E7CECFEC1E426B2800561645 /* WeatherViewController.m in Sources */,
 				3D5015601E26079C006F5F20 /* AccountVerificationViewController.m in Sources */,
 				3D81C45E1E34643800C8E22F /* EventsViewController.m in Sources */,
 				3D45212B1E2F09BD002E416C /* HomePageViewController.m in Sources */,
+				AE0B0E551E46D69B00C4F076 /* SubViewController.m in Sources */,
 				E7CECFE81E426B2800561645 /* WeatherClient.m in Sources */,
 				3DA5E5121E37AF5600D50E7C /* MapViewController.m in Sources */,
 				3D4521271E2EFC08002E416C /* PhotoViewController.m in Sources */,
+				AE09E5CD1E47571D0056110B /* LocationManager.m in Sources */,
 				3DFC71101E364312004D8975 /* EventDetailInnerTableViewCell.m in Sources */,
 				E70C46AC1E365E750007FEC4 /* ViewController.m in Sources */,
 				E7CECFE91E426B2800561645 /* WeatherCondition.m in Sources */,
@@ -665,8 +686,11 @@
 				3DFC710D1E3642E8004D8975 /* EventDetailOuterTableViewCell.m in Sources */,
 				E7CECFEA1E426B2800561645 /* WeatherDailyForecast.m in Sources */,
 				3D45210F1E2EC189002E416C /* KeychainManager.m in Sources */,
+				AE46F48B1E43FE7F00ED51A1 /* ImageManager.m in Sources */,
 				3DFC71191E367771004D8975 /* CalEventsTableViewCell.m in Sources */,
+				AE09E5C61E470E640056110B /* EmergencyButton.m in Sources */,
 				E7CECFEB1E426B2800561645 /* WeatherManager.m in Sources */,
+				AE46F48E1E4401D000ED51A1 /* DataManager.m in Sources */,
 				3DA5E51C1E37B88C00D50E7C /* GroupsTableViewCell.m in Sources */,
 				E70C46AE1E365F360007FEC4 /* EventManager.m in Sources */,
 				3D4521321E2F3159002E416C /* SetupViewController.m in Sources */,

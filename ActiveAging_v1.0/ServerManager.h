@@ -19,11 +19,6 @@ typedef void (^DoneHandler)(NSError *error,id result);
 
 + (instancetype) shareInstance;
 
-- (void) loginAuthorization:(NSString *) authorization
-                   UserName:(NSString *) userName
-            UserPhoneNumber:(NSString *) userPhoneNumber
-                     Action: (NSString *) action
-                 completion:(DoneHandler) done;
 
 - (void) uploadPictureWithData: (NSData *) data
                  Authorization:(NSString *) authorization
@@ -36,7 +31,21 @@ typedef void (^DoneHandler)(NSError *error,id result);
                    EventID: (NSString *) eventID
                 completion:(DoneHandler) done;
 
+- (void) downloadPictureWithImgFileName: (NSString *) imgFileName
+                                FromURL: (NSString *) fileURL
+                             completion: (DoneHandler) done;
+
+#pragma mark - REGISTER/LOGIN
 - (void) fetchVerificationCodeForPhoneNumber: (NSString *) userPhoneNumber Action: (NSString *) action Code:(NSString *) code completion:(DoneHandler) done;
 
+- (void) loginAuthorization:(NSString *) authorization
+                   UserName:(NSString *) userName
+            UserPhoneNumber:(NSString *) userPhoneNumber
+                     Action: (NSString *) action
+                 completion:(DoneHandler) done;
+
+#pragma mark - GROUP
+- (void) retrieveGroupInfo: (NSInteger ) userID
+                completion:(DoneHandler) done;
 
 @end

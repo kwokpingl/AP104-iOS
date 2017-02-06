@@ -21,7 +21,7 @@ static ServerManager * serverMgr = nil;
 
 
 #pragma mark - USER_METHODS_AFN
-// MARK: LOGIN_METHOD
+/// MARK: LOGIN_METHOD
 - (void) loginAuthorization:(NSString *)authorization UserName:(NSString *)userName UserPhoneNumber:(NSString *)userPhoneNumber Action: (NSString *) action completion: (DoneHandler) done{
     NSDictionary * jsonObj = @{AUTHORIZATION_KEY: authorization,
                                USER_NAME_KEY:userName,
@@ -34,7 +34,7 @@ static ServerManager * serverMgr = nil;
 }
 
 
-// MARK: UPLOAD_PICTURE
+/// MARK: UPLOAD_PICTURE
 - (void) uploadPictureWithData: (NSData *) data Authorization:
 (NSString *) authorization
 UserName:(NSString *) userName
@@ -53,11 +53,16 @@ completion:(DoneHandler)done{
 }
 
 
-// MARK: RETRIEVE_USERINFO
+/// MARK: RETRIEVE_GROUPS
+- (void) retrieveGroupInfo: (NSInteger )userID completion:(DoneHandler) done{
+    NSDictionary * jsonObj = @{USER_ID_KEY: @(userID),ACTION_KEY:GROUP_ACTION_FETCH};
+    [self doPost:USER_GROUP_URL parameters:jsonObj completion:done];
+}
+
+- (void) addGroupMember{}
 
 
-
-// MARK: RETRIEVE_EVENTS
+/// MARK: RETRIEVE_EVENTS
 - (void) retrieveEventInfo:(NSString *)action
                     UserID:(NSInteger )userID
                    EventID:(NSString *)eventID
@@ -83,7 +88,24 @@ completion:(DoneHandler)done{
       completion:done];
 }
 
-//- (void) 
+/// MARK: DOWNLOAD_PICTURE_FROM_SERVER
+- (void) downloadPictureWithImgFileName: (NSString *) imgFileName
+                                FromURL: (NSString *) fileURL
+                          completion: (DoneHandler) done{
+    AFHTTPSessionManager * manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"image/jpeg"];
+    NSString * imageURLString = [fileURL stringByAppendingPathComponent:imgFileName];
+    [manager GET:imageURLString
+      parameters:nil
+        progress:nil
+         success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+             done(nil,responseObject);
+         }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             done(error,nil);
+         }];
+}
 
 
 #pragma mark - PRIVATE_METHODS
@@ -138,8 +160,7 @@ completion:(DoneHandler)done{
     NSDictionary * finalDic = @{DATA_KEY: jsonStr};
     
     sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    
-//    [sessionManager.requestSerializer setTimeoutInterval:20.0];
+
     
     // now set the picture
     [sessionManager POST:UPLOAD_PIC_URL

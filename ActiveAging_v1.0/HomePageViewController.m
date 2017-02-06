@@ -33,14 +33,14 @@
     timeFormatter.dateStyle = NSDateFormatterNoStyle;
     timeFormatter.timeStyle = NSDateFormatterShortStyle;
     timeFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
-    NSLog(@"%@", [timeFormatter stringFromDate:now]);
+//    NSLog(@"%@", [timeFormatter stringFromDate:now]);
     
     _timeLabel.text = [timeFormatter stringFromDate:now];
     
     dateFormatter.dateStyle = NSDateFormatterLongStyle;
     dateFormatter.timeStyle = NSDateFormatterNoStyle;
     dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
-    NSLog(@"%@", [dateFormatter stringFromDate:now]);
+//    NSLog(@"%@", [dateFormatter stringFromDate:now]);
     
     _dateLabel.text = [dateFormatter stringFromDate:now];
 }

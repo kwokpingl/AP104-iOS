@@ -11,6 +11,7 @@
 #import "UserInfo.h"
 #import "ServerManager.h"
 #import "WelcomeViewController.h"
+#import "DataManager.h"
 
 
 @interface AccountVerificationViewController (){
@@ -64,6 +65,10 @@
 - (void) segueSwitching{
     [timer invalidate];
     if (foundKeychain){
+        
+        [DataManager prepareDatabase];
+        [DataManager updateContactDatabase];
+        
         [self performSegueWithIdentifier:@"Login" sender:self];
     } else {
         [self performSegueWithIdentifier:@"SignUp" sender:self];
@@ -90,7 +95,7 @@
                 [timer fire];
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [_welcomeLabel setText:@"錯誤發生\n請點按此重設"];
+                    [_welcomeLabel setText:@"發生錯誤\n請確定網路開啟\n再點選這裡登入"];
                     [_resetButton setHidden:false];
                 });
             }
@@ -107,7 +112,7 @@
 }
 
 - (void) resetButtonPressed{
-    [_keychainMgr deleteKeychain:_userInfo.getUsername Password:_userInfo.getPassword];
+//    [_keychainMgr deleteKeychain:_userInfo.getUsername Password:_userInfo.getPassword];
     [self checkKeyChain];
 }
 
