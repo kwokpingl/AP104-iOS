@@ -30,7 +30,7 @@
         //Set the documents directory path to the historyDirectory properly
         NSArray * paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true);
         self.eventsDirectory = [paths objectAtIndex:0];
-        
+        NSLog(@"DIRECTORY: %@", self.eventsDirectory);
         //Keep the database filename
         self.databaseFilename = dbFilename;
     }

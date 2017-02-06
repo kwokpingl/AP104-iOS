@@ -44,42 +44,15 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - BUTTONS
 - (IBAction)finishButtonPressed:(id)sender {
     // disable the button
     [_finishedButton setEnabled: false];
     // UPLOAD PHOTO
     // compress photo
     NSData * imgData = UIImageJPEGRepresentation(_photoImageView.image, 0.7);
-    
-    // SEND
-    [_serverMgr uploadPictureWithData:imgData Authorization:@"user" UserName:_userInfo.getUsername UserPhoneNumber:_userInfo.getPassword completion:^(NSError *error, id result) {
-        if ([result[@"result"] boolValue]){
-            NSLog(@"SUCCESS: %@", result[@"message"]);
-            
-            [_userInfo setProfileImage:_photoImageView.image];
-            
-            [_keychainMgr setKeychainObject:_userInfo.getUsername forKey:_userInfo.getPassword];
-            
-            UIViewController * vc = [self.storyboard
-                                     instantiateViewControllerWithIdentifier:@"AccountVerificationViewController"];
-            [self presentViewController:vc animated:true completion:nil];
-            
-        } else {
-            NSLog(@"FAILED: %@", result[@"error"]);
-            // TEMP
-            [_userInfo setProfileImage:_photoImageView.image];
-            
-            [_keychainMgr setKeychainObject:_userInfo.getUsername forKey:_userInfo.getPassword];
-            
-            
-            UIViewController * vc = [self.storyboard
-                  instantiateViewControllerWithIdentifier:@"AccountVerificationViewController"];
-            [self presentViewController:vc animated:true completion:nil];
-        }
-        
-        
-    }];
-    
+    [self uploadImage:imgData];
 }
 
 - (IBAction)addPhotoButtonPressed:(id)sender {
@@ -103,6 +76,8 @@
     
 }
 
+#pragma mark - IMAGE-PICKER
+// MARK: CONTROLLER
 - (void) launchPickerWithType: (UIImagePickerControllerSourceType) type {
     if (![UIImagePickerController isSourceTypeAvailable:type]){
         return;
@@ -142,6 +117,28 @@
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     [picker dismissViewControllerAnimated:true completion:nil];
+}
+
+#pragma mark - PRIVATE METHOD
+- (void) uploadImage: (NSData *) imgData{
+    [_serverMgr uploadPictureWithData:imgData Authorization:@"user" UserName:_userInfo.getUsername UserPhoneNumber:_userInfo.getPassword completion:^(NSError *error, id result) {
+        if ([result[@"result"] boolValue]){
+            NSLog(@"SUCCESS: %@", result[@"message"]);
+            
+            [_userInfo setProfileImage:_photoImageView.image];
+            
+            UIViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AccountVerificationViewController"];
+            [self presentViewController:vc animated:true completion:nil];
+            
+        } else {
+            NSLog(@"FAILED: %@", result[@"error"]);
+            // TEMP
+            [_userInfo setProfileImage:_photoImageView.image];
+            
+        }
+        
+        
+    }];
 }
 
 @end

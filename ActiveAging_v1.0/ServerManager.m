@@ -9,19 +9,19 @@
 #import "ServerManager.h"
 #import <AFNetworking.h>
 
-static ServerManager * serverMng = nil;
+static ServerManager * serverMgr = nil;
 
 @implementation ServerManager
 + (instancetype) shareInstance{
-    if (serverMng == nil){
-        serverMng = [ServerManager new];
+    if (serverMgr == nil){
+        serverMgr = [ServerManager new];
     }
-    return serverMng;
+    return serverMgr;
 }
 
 
 #pragma mark - USER_METHODS_AFN
-// MARK: LOGIN_METHOD
+/// MARK: LOGIN_METHOD
 - (void) loginAuthorization:(NSString *)authorization UserName:(NSString *)userName UserPhoneNumber:(NSString *)userPhoneNumber Action: (NSString *) action completion: (DoneHandler) done{
     NSDictionary * jsonObj = @{AUTHORIZATION_KEY: authorization,
                                USER_NAME_KEY:userName,
@@ -34,7 +34,7 @@ static ServerManager * serverMng = nil;
 }
 
 
-// MARK: UPLOAD_PICTURE
+/// MARK: UPLOAD_PICTURE
 - (void) uploadPictureWithData: (NSData *) data Authorization:
 (NSString *) authorization
 UserName:(NSString *) userName
@@ -53,11 +53,16 @@ completion:(DoneHandler)done{
 }
 
 
-// MARK: RETRIEVE_USERINFO
+/// MARK: RETRIEVE_GROUPS
+- (void) retrieveGroupInfo: (NSInteger )userID completion:(DoneHandler) done{
+    NSDictionary * jsonObj = @{USER_ID_KEY: @(userID),ACTION_KEY:GROUP_ACTION_FETCH};
+    [self doPost:USER_GROUP_URL parameters:jsonObj completion:done];
+}
+
+- (void) addGroupMember{}
 
 
-
-// MARK: RETRIEVE_EVENTS
+/// MARK: RETRIEVE_EVENTS
 - (void) retrieveEventInfo:(NSString *)action
                     UserID:(NSInteger )userID
                    EventID:(NSString *)eventID
@@ -67,7 +72,39 @@ completion:(DoneHandler)done{
                                ACTION_KEY: action
                                };
     
-    [self doPost:EVENTS_REGISTER_URL parameters:jsonObj completion:done];
+    [self doPost:EVENTS_REGISTER_URL
+      parameters:jsonObj
+      completion:done];
+}
+
+
+- (void) fetchVerificationCodeForPhoneNumber: (NSString *) userPhoneNumber Action:(NSString *)action Code: (NSString *) code completion:(DoneHandler)done{
+    
+    // this will need USER_PHONENUMBER and USERNAME
+    NSDictionary * jsonObj = @{USER_PHONENUMBER_KEY: userPhoneNumber, ACTION_KEY: action, VERIFICATION_KEY: code};
+    
+    [self doPost:VERIFICATION_CODE_URL
+      parameters:jsonObj
+      completion:done];
+}
+
+/// MARK: DOWNLOAD_PICTURE_FROM_SERVER
+- (void) downloadPictureWithImgFileName: (NSString *) imgFileName
+                                FromURL: (NSString *) fileURL
+                          completion: (DoneHandler) done{
+    AFHTTPSessionManager * manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"image/jpeg"];
+    NSString * imageURLString = [fileURL stringByAppendingPathComponent:imgFileName];
+    [manager GET:imageURLString
+      parameters:nil
+        progress:nil
+         success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+             done(nil,responseObject);
+         }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+             done(error,nil);
+         }];
 }
 
 
@@ -123,6 +160,7 @@ completion:(DoneHandler)done{
     NSDictionary * finalDic = @{DATA_KEY: jsonStr};
     
     sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+
     
     // now set the picture
     [sessionManager POST:UPLOAD_PIC_URL
@@ -149,6 +187,11 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
     }];
     
 }
+
+
+
+
+
 
 #pragma mark - STILL_WORKING_ON
 // MARK: RETRIEVE_INFO

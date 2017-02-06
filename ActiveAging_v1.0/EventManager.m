@@ -61,7 +61,7 @@ static EventManager * _store = nil;
                                                             calendars:calendarArray];
         
     events = [_store eventsMatchingPredicate:predicate];
-        
+    
     //Sort Data in order
     timeFormatter = [NSDateFormatter new];
     timeFormatter.dateFormat = @"HH:mm";
@@ -69,7 +69,7 @@ static EventManager * _store = nil;
     amString = [timeFormatter stringFromDate:amTime];
     pmString = [timeFormatter stringFromDate:pmTime];
     
-    NSLog(@"am: %@\npm: %@\n", amString, pmString);
+//    NSLog(@"am: %@\npm: %@\n", amString, pmString);
 
     _eventsObtained = [NSMutableDictionary new];
 

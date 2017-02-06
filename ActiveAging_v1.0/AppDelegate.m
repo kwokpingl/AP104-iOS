@@ -7,7 +7,9 @@
 //
 
 #import "AppDelegate.h"
-#import "SQLite3DBManager.h"
+//#import "SQLite3DBManager.h"
+#import "Definitions.h"
+#import "DataManager.h"
 
 #define SQLITE_FILENAME @"eventsList.sql"
 #define EVENTS_TABLE_NAME @"CalendarList"
@@ -21,14 +23,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+
     
-//    SQLite3DBManager * dbManager = [[SQLite3DBManager alloc] initWithDatabaseFilename:SQLITE_FILENAME];
-//    
-//    NSString * query = [NSString stringWithFormat:@"create table %@ (id integer primary key autoincrement, title text, startDateTime text, endDateTime text, detail text, location text)", EVENTS_TABLE_NAME];
     
-//    NSString * query = [NSString stringWithFormat:@"drop table %@", EVENTS_TABLE_NAME];
     
-//    [dbManager executeQuery:query];
     return YES;
 }
 

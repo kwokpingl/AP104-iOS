@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_TW</string>
+	<key>CFBundleDisplayName</key>
+	<string></string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -54,10 +56,14 @@
 	</dict>
 	<key>NSCalendarsUsageDescription</key>
 	<string>這APP必須使用日歷服務才能完整地為您服務</string>
+	<key>NSCameraUsageDescription</key>
+	<string>請允許使用您的照相機</string>
 	<key>NSContactsUsageDescription</key>
 	<string>這APP必須使用您的連絡人才能完整地呈現功能</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>這APP必須使用定位服務才能正常運行</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>請允許使用您的麥克風</string>
 	<key>NSMotionUsageDescription</key>
 	<string>這APP必須使用您的運動傳感器</string>
 	<key>NSPhotoLibraryUsageDescription</key>

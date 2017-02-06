@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -88,7 +89,8 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5eV-35-wac">
-                                <rect key="frame" x="16" y="232" width="95" height="95"/>
+
+                                <rect key="frame" x="89.5" y="338.5" width="94.5" height="95.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="日曆"/>
                                 <connections>
@@ -96,7 +98,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SES-wc-SET">
-                                <rect key="frame" x="119" y="442" width="95" height="95"/>
+                                <rect key="frame" x="204" y="338.5" width="95" height="95.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="聯絡人"/>
                                 <connections>
@@ -109,6 +111,15 @@
                                 <state key="normal" title="設定"/>
                                 <connections>
                                     <segue destination="wm7-xh-D66" kind="show" id="4YV-XH-Zgp"/>
+                                </connections>
+                            </button>
+
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITB-8l-xUF">
+                                <rect key="frame" x="89.5" y="454" width="94.5" height="95"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="地圖"/>
+                                <connections>
+                                    <segue destination="PbJ-CH-6fK" kind="show" id="gZT-DB-m5j"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d4f-TP-RYk">
@@ -377,9 +388,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xBE-Tp-aMJ">
-                                <rect key="frame" x="188" y="559" width="171" height="48"/>
+                                <rect key="frame" x="219" y="559" width="140" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="還差一點點&gt;"/>
+                                <state key="normal" title="還差一些&gt;"/>
                                 <connections>
                                     <action selector="nextButtonPressed:" destination="IUe-yt-ACD" eventType="touchUpInside" id="EQx-ah-yZ0"/>
                                 </connections>
@@ -396,22 +407,43 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JwT-pX-t4c">
+                                <rect key="frame" x="16" y="236" width="343" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pvA-kz-Nwn">
+                                <rect key="frame" x="16" y="559" width="140" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="&lt;回上一頁"/>
+                                <connections>
+                                    <action selector="returnButtonPressed:" destination="IUe-yt-ACD" eventType="touchUpInside" id="qeW-S6-IWB"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="ptt-GV-VJA" firstAttribute="top" secondItem="pvA-kz-Nwn" secondAttribute="bottom" constant="60" id="4AL-Cp-PuT"/>
                             <constraint firstItem="O37-2q-gDM" firstAttribute="top" secondItem="zgM-wI-mCl" secondAttribute="bottom" constant="100" id="5yL-re-01X"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="JwT-pX-t4c" secondAttribute="trailing" id="MNp-oo-Yad"/>
+                            <constraint firstItem="pvA-kz-Nwn" firstAttribute="leading" secondItem="qev-Od-Jxw" secondAttribute="leadingMargin" id="Mmc-VR-ukA"/>
                             <constraint firstItem="zgM-wI-mCl" firstAttribute="leading" secondItem="qev-Od-Jxw" secondAttribute="leadingMargin" id="Rl8-6t-xWb"/>
                             <constraint firstAttribute="trailingMargin" secondItem="zgM-wI-mCl" secondAttribute="trailing" id="Vs7-19-GRq"/>
                             <constraint firstAttribute="trailingMargin" secondItem="xBE-Tp-aMJ" secondAttribute="trailing" id="aoV-YT-JGV"/>
                             <constraint firstItem="O37-2q-gDM" firstAttribute="leading" secondItem="qev-Od-Jxw" secondAttribute="leadingMargin" constant="20" id="bd3-jP-gzN"/>
+                            <constraint firstItem="JwT-pX-t4c" firstAttribute="top" secondItem="O37-2q-gDM" secondAttribute="bottom" constant="20" id="dnE-7X-UDn"/>
                             <constraint firstItem="zgM-wI-mCl" firstAttribute="top" secondItem="Ubt-GG-lvW" secondAttribute="bottom" constant="30" id="hY8-GW-ciA"/>
                             <constraint firstAttribute="trailingMargin" secondItem="O37-2q-gDM" secondAttribute="trailing" constant="20" id="l7P-hb-ezU"/>
+                            <constraint firstItem="JwT-pX-t4c" firstAttribute="leading" secondItem="qev-Od-Jxw" secondAttribute="leadingMargin" id="qLm-iW-vBg"/>
                             <constraint firstItem="ptt-GV-VJA" firstAttribute="top" secondItem="xBE-Tp-aMJ" secondAttribute="bottom" constant="60" id="yw3-tH-xso"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="請輸入驗證碼" id="nxw-eA-Bb3"/>
                     <connections>
+                        <outlet property="messageLabel" destination="JwT-pX-t4c" id="1l0-A2-7CR"/>
                         <outlet property="nextButton" destination="xBE-Tp-aMJ" id="OHt-qg-0m3"/>
+                        <outlet property="returnButton" destination="pvA-kz-Nwn" id="ZUp-pg-9xr"/>
                         <outlet property="verificationCodeTextField" destination="O37-2q-gDM" id="PQV-8l-liW"/>
                         <segue destination="xZH-mc-ysR" kind="show" identifier="InputPhoto" id="CCp-yb-DyX"/>
                     </connections>
@@ -441,7 +473,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xYR-br-ilR">
-                                <rect key="frame" x="56" y="202.5" width="262.5" height="262.5"/>
+                                <rect key="frame" x="56.5" y="202.5" width="262.5" height="262.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="xYR-br-ilR" secondAttribute="height" id="i2Z-8y-a4M"/>
                                 </constraints>
@@ -455,7 +487,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XZZ-vq-uNS">
-                                <rect key="frame" x="56" y="202" width="262.5" height="262.5"/>
+                                <rect key="frame" x="56.5" y="202" width="262.5" height="262"/>
                                 <connections>
                                     <action selector="addPhotoButtonPressed:" destination="xZH-mc-ysR" eventType="touchUpInside" id="sVU-fS-Umb"/>
                                 </connections>
@@ -558,13 +590,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tAS-mT-jeh">
-                                <rect key="frame" x="113" y="104" width="150" height="150"/>
+                                <rect key="frame" x="112.5" y="104" width="150" height="150.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="tAS-mT-jeh" secondAttribute="height" multiplier="1:1" id="BOp-xB-Gty"/>
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="VJA-Xn-0Af">
-                                <rect key="frame" x="16" y="284" width="343" height="48"/>
+                                <rect key="frame" x="16" y="284.5" width="343" height="48"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wii-3Z-k1b">
                                         <rect key="frame" x="0.0" y="0.0" width="176.5" height="48"/>
@@ -580,12 +612,12 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vw5-jz-n9N">
-                                <rect key="frame" x="298" y="452" width="61" height="48"/>
+                                <rect key="frame" x="298" y="452.5" width="61" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="更改"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j8Z-Il-mIb">
-                                <rect key="frame" x="16" y="452" width="122" height="48"/>
+                                <rect key="frame" x="16" y="452.5" width="122" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="刪除帳號"/>
                                 <connections>

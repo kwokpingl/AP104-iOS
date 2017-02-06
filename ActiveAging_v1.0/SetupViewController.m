@@ -15,6 +15,7 @@
 @interface SetupViewController (){
     KeychainManager * _keychainMgr;
     UserInfo * _userInfo;
+    ServerManager * _serverMgr;
 }
 
 @end
@@ -26,6 +27,7 @@
     // Do any additional setup after loading the view.
     _keychainMgr = [KeychainManager sharedInstance];
     _userInfo = [UserInfo shareInstance];
+    _serverMgr = [ServerManager shareInstance];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -41,9 +43,21 @@
     }];
     UIAlertAction * cancel = [UIAlertAction actionWithTitle:@"" style:UIAlertActionStyleCancel handler:nil];
     [_keychainMgr deleteKeychain:_userInfo.getUsername Password:_userInfo.getPassword];
+    [_serverMgr loginAuthorization:@"user" UserName:_userInfo.getUsername UserPhoneNumber:_userInfo.getPassword Action:ACTION_DELETE completion:^(NSError *error, id result) {
+        
+        if ([result[@"result"] boolValue]){
+            NSLog(@"SUCCESS: %@", result[@"message"]);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AccountVerificationViewController"];
+                [self presentViewController:vc animated:true completion:nil];
+            });
+        }
+        else{
+            NSLog(@"Error: %@", error);
+        }
+        
+    }];
     
-    UIViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AccountVerificationViewController"];
-    [self presentViewController:vc animated:true completion:nil];
 }
 
 

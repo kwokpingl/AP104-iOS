@@ -75,7 +75,7 @@ static void * __KVOContext;
     
     NSString * dateString = [dateFormatter stringFromDate:[NSDate date]];
     
-    NSLog(@"%@", dateString);
+//    NSLog(@"%@", dateString);
     
     chosenDate = [NSDate date];
     
@@ -197,7 +197,7 @@ static void * __KVOContext;
     }
     
     NSString * te = [dateFormatter stringFromDate:date];
-    NSLog(@"%@", te);
+//    NSLog(@"%@", te);
     [_eventManager sortTimeOrder:date complete:^(NSMutableArray *eventArray) {
         allEventsArray = [[NSMutableArray alloc] initWithArray:eventArray];
         [_tableView reloadData];
@@ -206,7 +206,7 @@ static void * __KVOContext;
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"%s %@", __FUNCTION__, [dateFormatter stringFromDate:calendar.currentPage]);
+//    NSLog(@"%s %@", __FUNCTION__, [dateFormatter stringFromDate:calendar.currentPage]);
 }
 
 - (void)dealloc

@@ -42,7 +42,8 @@
     _lastnameTextField.delegate     = self;
     _firstnameTextField.delegate    = self;
     _phoneNumberTextField.delegate  = self;
-        // KEYBOARD_TYPE
+    
+    // KEYBOARD_TYPE
     _firstnameTextField.keyboardType = UIKeyboardTypeAlphabet;
     _firstnameTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
     _lastnameTextField.keyboardType = UIKeyboardTypeAlphabet;
@@ -75,7 +76,7 @@
 }
 
 - (IBAction)nextButtonPressed:(id)sender {
-    [self validation:ACTION_ADD];
+//    [self validation:ACTION_ADD];
     [self performSegueWithIdentifier:@"confirmation" sender:self];
 }
 
