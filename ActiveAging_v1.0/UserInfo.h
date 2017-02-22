@@ -20,5 +20,6 @@
 - (NSString *) getPassword;
 - (UIImage *) getProfileImage;
 - (NSInteger) getUserID;
-
+- (BOOL) isShareLocation;
+- (void) changeShareLocation;
 @end

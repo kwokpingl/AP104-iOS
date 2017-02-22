@@ -13,6 +13,7 @@
 /// MARK: SERVER_BASIC
 //#define BASE_URL                @"http://activeaging.xp3.biz"
 #define BASE_URL        @"http://192.168.43.109/ActiveAging"
+//#define BASE_URL        @"http://localhost:8888//ActiveAging"
 
 /// MARK: USER_ID URL
 #define LOGIN_URL               [BASE_URL stringByAppendingPathComponent:@"php/login.php"]
@@ -165,6 +166,19 @@
 #define MAXIMUM_PERSONAL_GROUP 3
 #define MAXIMUM_MEMBER_PER_GROUP 20
 
+/// MARK: LOGIN_PAGE
+#define PHONE_NUMBER_REX @"[0][9][0-9]{8}"
+#define PHONE_NUMBER_LENGTH 10
+
+
+/// MARK: CLLocation
+#define DISTANCE_FILTER_30M 30
+
+/// MARK: DATE_FORMAT
+#define DATE_FORMAT @"YYYY-MM-dd HH-mm-ss"
+
+/// MARK: USERDEFAULTS
+#define SHOULD_SHARE_LOCATION_KEY @"shareLocation";
 
 #endif /* Definitions_h */
 

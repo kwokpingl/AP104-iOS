@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3D02065C1E35956600DCED4D /* EventDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D02065B1E35956600DCED4D /* EventDetailTableViewCell.m */; };
 		3D02065F1E35B56500DCED4D /* EventDetailSorter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D02065E1E35B56500DCED4D /* EventDetailSorter.m */; };
 		3D45210F1E2EC189002E416C /* KeychainManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D45210E1E2EC189002E416C /* KeychainManager.m */; };
 		3D4521121E2EC1C6002E416C /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D4521111E2EC1C6002E416C /* UserInfo.m */; };
@@ -27,33 +26,40 @@
 		3D81C4581E33509C00C8E22F /* Plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D81C4571E33509C00C8E22F /* Plus.png */; };
 		3D81C45B1E34629A00C8E22F /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */; };
 		3D81C45E1E34643800C8E22F /* EventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D81C45D1E34643800C8E22F /* EventsViewController.m */; };
-		3D81C4611E34646500C8E22F /* EventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D81C4601E34646500C8E22F /* EventDetailViewController.m */; };
 		3DA5E5121E37AF5600D50E7C /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5E5111E37AF5600D50E7C /* MapViewController.m */; };
 		3DA5E5141E37AFC400D50E7C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA5E5131E37AFC400D50E7C /* MapKit.framework */; };
 		3DA5E5161E37AFCD00D50E7C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA5E5151E37AFCD00D50E7C /* CoreLocation.framework */; };
-		3DA5E5191E37B87300D50E7C /* groupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5E5181E37B87300D50E7C /* groupView.m */; };
-		3DA5E51C1E37B88C00D50E7C /* GroupsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5E51B1E37B88C00D50E7C /* GroupsTableViewCell.m */; };
 		3DB322071E114FF7002A9FD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB322061E114FF7002A9FD9 /* main.m */; };
 		3DB3220A1E114FF7002A9FD9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB322091E114FF7002A9FD9 /* AppDelegate.m */; };
 		3DB322101E114FF7002A9FD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB3220E1E114FF7002A9FD9 /* Main.storyboard */; };
 		3DB322121E114FF7002A9FD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DB322111E114FF7002A9FD9 /* Assets.xcassets */; };
 		3DB322151E114FF7002A9FD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB322131E114FF7002A9FD9 /* LaunchScreen.storyboard */; };
 		3DB3221E1E1182DC002A9FD9 /* Weather.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB3221C1E1182DC002A9FD9 /* Weather.storyboard */; };
-		3DFC71071E362CF2004D8975 /* EventDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC71061E362CF2004D8975 /* EventDetailTableViewController.m */; };
-		3DFC710D1E3642E8004D8975 /* EventDetailOuterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC710C1E3642E8004D8975 /* EventDetailOuterTableViewCell.m */; };
-		3DFC71101E364312004D8975 /* EventDetailInnerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC710F1E364312004D8975 /* EventDetailInnerTableViewCell.m */; };
 		3DFC71121E367354004D8975 /* libAFNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFC71111E367354004D8975 /* libAFNetworking.a */; };
 		3DFC71141E36735A004D8975 /* libFSCalendar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFC71131E36735A004D8975 /* libFSCalendar.a */; };
 		3DFC71161E367369004D8975 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFC71151E367369004D8975 /* libsqlite3.tbd */; };
 		3DFC71191E367771004D8975 /* CalEventsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */; };
 		99CFA874AD9FCD28C26F7FB0 /* libPods-ActiveAging_v1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */; };
+		AE09A0351E506D1D00F55B46 /* TimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE09A0341E506D1D00F55B46 /* TimeViewController.m */; };
+		AE09A0381E506D3000F55B46 /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE09A0371E506D3000F55B46 /* LocationViewController.m */; };
 		AE09E5C61E470E640056110B /* EmergencyButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AE09E5C51E470E640056110B /* EmergencyButton.m */; };
 		AE09E5CD1E47571D0056110B /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE09E5CC1E47571D0056110B /* LocationManager.m */; };
 		AE0B0E551E46D69B00C4F076 /* SubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0B0E541E46D69B00C4F076 /* SubViewController.m */; };
+		AE10E2D51E50245400BEC03D /* OrganizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE10E2D41E50245400BEC03D /* OrganizationViewController.m */; };
+		AE10E2DB1E50247100BEC03D /* DescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE10E2DA1E50247100BEC03D /* DescriptionViewController.m */; };
+		AE1250B41E540266000CDAD6 /* DateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1250B31E540266000CDAD6 /* DateManager.m */; };
+		AE1251CD1E53418D0096B7A2 /* MapManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1251CC1E53418D0096B7A2 /* MapManager.m */; };
+		AE130A541E4FFC3700141C97 /* EventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE130A531E4FFC3700141C97 /* EventDetailViewController.m */; };
+		AE1D3F4D1E52BB100011C6F8 /* CallButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AE1D3F4C1E52BB100011C6F8 /* CallButton.m */; };
 		AE240FE51E41B2C900AB6B33 /* ContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE240FE41E41B2C900AB6B33 /* ContactListViewController.m */; };
 		AE240FE81E42111700AB6B33 /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE240FE71E42111700AB6B33 /* ContactTableViewCell.m */; };
 		AE46F48B1E43FE7F00ED51A1 /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE46F48A1E43FE7F00ED51A1 /* ImageManager.m */; };
 		AE46F48E1E4401D000ED51A1 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE46F48D1E4401D000ED51A1 /* DataManager.m */; };
+		AEBADDA31E55234B00492049 /* CustomAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBADDA21E55234B00492049 /* CustomAnnotationView.m */; };
+		AED95D871E58996000F68D18 /* MemberDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED95D861E58996000F68D18 /* MemberDetailViewController.m */; };
+		AED95D8A1E58A03800F68D18 /* TrackerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AED95D891E58A03800F68D18 /* TrackerButton.m */; };
+		AED95D8D1E59375400F68D18 /* MemberAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = AED95D8C1E59375400F68D18 /* MemberAnnotationView.m */; };
+		AED95D901E599CA300F68D18 /* MemberPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = AED95D8F1E599CA300F68D18 /* MemberPointAnnotation.m */; };
 		E700A1801E4732E90001725A /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E700A17F1E4732E90001725A /* 1.jpg */; };
 		E700A1991E4740790001725A /* ha1.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A1961E4740790001725A /* ha1.png */; };
 		E700A19A1E4740790001725A /* ha1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E700A1971E4740790001725A /* ha1@2x.png */; };
@@ -108,8 +114,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3D02065A1E35956600DCED4D /* EventDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailTableViewCell.h; sourceTree = "<group>"; };
-		3D02065B1E35956600DCED4D /* EventDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailTableViewCell.m; sourceTree = "<group>"; };
 		3D02065D1E35B56500DCED4D /* EventDetailSorter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailSorter.h; sourceTree = "<group>"; };
 		3D02065E1E35B56500DCED4D /* EventDetailSorter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailSorter.m; sourceTree = "<group>"; };
 		3D45210D1E2EC189002E416C /* KeychainManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainManager.h; sourceTree = "<group>"; };
@@ -143,16 +147,10 @@
 		3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableViewCell.m; sourceTree = "<group>"; };
 		3D81C45C1E34643800C8E22F /* EventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsViewController.h; sourceTree = "<group>"; };
 		3D81C45D1E34643800C8E22F /* EventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsViewController.m; sourceTree = "<group>"; };
-		3D81C45F1E34646500C8E22F /* EventDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailViewController.h; sourceTree = "<group>"; };
-		3D81C4601E34646500C8E22F /* EventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailViewController.m; sourceTree = "<group>"; };
 		3DA5E5101E37AF5600D50E7C /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		3DA5E5111E37AF5600D50E7C /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		3DA5E5131E37AFC400D50E7C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3DA5E5151E37AFCD00D50E7C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		3DA5E5171E37B87300D50E7C /* groupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = groupView.h; sourceTree = "<group>"; };
-		3DA5E5181E37B87300D50E7C /* groupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = groupView.m; sourceTree = "<group>"; };
-		3DA5E51A1E37B88C00D50E7C /* GroupsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsTableViewCell.h; sourceTree = "<group>"; };
-		3DA5E51B1E37B88C00D50E7C /* GroupsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsTableViewCell.m; sourceTree = "<group>"; };
 		3DB322021E114FF7002A9FD9 /* ActiveAging_v1.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ActiveAging_v1.0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DB322061E114FF7002A9FD9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3DB322081E114FF7002A9FD9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -162,24 +160,34 @@
 		3DB322141E114FF7002A9FD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3DB322161E114FF7002A9FD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3DB3221D1E1182DC002A9FD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Weather.storyboard; sourceTree = "<group>"; };
-		3DFC71051E362CF2004D8975 /* EventDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailTableViewController.h; sourceTree = "<group>"; };
-		3DFC71061E362CF2004D8975 /* EventDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailTableViewController.m; sourceTree = "<group>"; };
-		3DFC710B1E3642E8004D8975 /* EventDetailOuterTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailOuterTableViewCell.h; sourceTree = "<group>"; };
-		3DFC710C1E3642E8004D8975 /* EventDetailOuterTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailOuterTableViewCell.m; sourceTree = "<group>"; };
-		3DFC710E1E364312004D8975 /* EventDetailInnerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailInnerTableViewCell.h; sourceTree = "<group>"; };
-		3DFC710F1E364312004D8975 /* EventDetailInnerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailInnerTableViewCell.m; sourceTree = "<group>"; };
 		3DFC71111E367354004D8975 /* libAFNetworking.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAFNetworking.a; path = "../../../../Library/Developer/Xcode/DerivedData/ActiveAging_v1.0-akretxhkamdzlqapaijbnsaixlcq/Build/Products/Debug-iphonesimulator/AFNetworking/libAFNetworking.a"; sourceTree = "<group>"; };
 		3DFC71131E36735A004D8975 /* libFSCalendar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFSCalendar.a; path = "../../../../Library/Developer/Xcode/DerivedData/ActiveAging_v1.0-akretxhkamdzlqapaijbnsaixlcq/Build/Products/Debug-iphonesimulator/FSCalendar/libFSCalendar.a"; sourceTree = "<group>"; };
 		3DFC71151E367369004D8975 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		3DFC71171E367771004D8975 /* CalEventsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalEventsTableViewCell.h; sourceTree = "<group>"; };
 		3DFC71181E367771004D8975 /* CalEventsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalEventsTableViewCell.m; sourceTree = "<group>"; };
 		957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ActiveAging_v1.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE09A0331E506D1D00F55B46 /* TimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeViewController.h; sourceTree = "<group>"; };
+		AE09A0341E506D1D00F55B46 /* TimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeViewController.m; sourceTree = "<group>"; };
+		AE09A0361E506D2F00F55B46 /* LocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
+		AE09A0371E506D3000F55B46 /* LocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationViewController.m; sourceTree = "<group>"; };
 		AE09E5C41E470E640056110B /* EmergencyButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyButton.h; sourceTree = "<group>"; };
 		AE09E5C51E470E640056110B /* EmergencyButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyButton.m; sourceTree = "<group>"; };
 		AE09E5CB1E47571D0056110B /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
 		AE09E5CC1E47571D0056110B /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		AE0B0E531E46D69B00C4F076 /* SubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubViewController.h; sourceTree = "<group>"; };
 		AE0B0E541E46D69B00C4F076 /* SubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubViewController.m; sourceTree = "<group>"; };
+		AE10E2D31E50245400BEC03D /* OrganizationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrganizationViewController.h; sourceTree = "<group>"; };
+		AE10E2D41E50245400BEC03D /* OrganizationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrganizationViewController.m; sourceTree = "<group>"; };
+		AE10E2D91E50247100BEC03D /* DescriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DescriptionViewController.h; sourceTree = "<group>"; };
+		AE10E2DA1E50247100BEC03D /* DescriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DescriptionViewController.m; sourceTree = "<group>"; };
+		AE1250B21E540266000CDAD6 /* DateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateManager.h; sourceTree = "<group>"; };
+		AE1250B31E540266000CDAD6 /* DateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateManager.m; sourceTree = "<group>"; };
+		AE1251CB1E53418D0096B7A2 /* MapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapManager.h; sourceTree = "<group>"; };
+		AE1251CC1E53418D0096B7A2 /* MapManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapManager.m; sourceTree = "<group>"; };
+		AE130A521E4FFC3700141C97 /* EventDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailViewController.h; sourceTree = "<group>"; };
+		AE130A531E4FFC3700141C97 /* EventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailViewController.m; sourceTree = "<group>"; };
+		AE1D3F4B1E52BB100011C6F8 /* CallButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallButton.h; sourceTree = "<group>"; };
+		AE1D3F4C1E52BB100011C6F8 /* CallButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallButton.m; sourceTree = "<group>"; };
 		AE240FE31E41B2C900AB6B33 /* ContactListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListViewController.h; sourceTree = "<group>"; };
 		AE240FE41E41B2C900AB6B33 /* ContactListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListViewController.m; sourceTree = "<group>"; };
 		AE240FE61E42111700AB6B33 /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
@@ -188,6 +196,16 @@
 		AE46F48A1E43FE7F00ED51A1 /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
 		AE46F48C1E4401D000ED51A1 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		AE46F48D1E4401D000ED51A1 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
+		AEBADDA11E55234B00492049 /* CustomAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAnnotationView.h; sourceTree = "<group>"; };
+		AEBADDA21E55234B00492049 /* CustomAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAnnotationView.m; sourceTree = "<group>"; };
+		AED95D851E58996000F68D18 /* MemberDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberDetailViewController.h; sourceTree = "<group>"; };
+		AED95D861E58996000F68D18 /* MemberDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberDetailViewController.m; sourceTree = "<group>"; };
+		AED95D881E58A03800F68D18 /* TrackerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackerButton.h; sourceTree = "<group>"; };
+		AED95D891E58A03800F68D18 /* TrackerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackerButton.m; sourceTree = "<group>"; };
+		AED95D8B1E59375400F68D18 /* MemberAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberAnnotationView.h; sourceTree = "<group>"; };
+		AED95D8C1E59375400F68D18 /* MemberAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberAnnotationView.m; sourceTree = "<group>"; };
+		AED95D8E1E599CA300F68D18 /* MemberPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberPointAnnotation.h; sourceTree = "<group>"; };
+		AED95D8F1E599CA300F68D18 /* MemberPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberPointAnnotation.m; sourceTree = "<group>"; };
 		B227D972DDCA904F9E93DF17 /* Pods-ActiveAging_v1.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.release.xcconfig"; sourceTree = "<group>"; };
 		B79FEDE8AEA70ECDDC3931BC /* Pods-ActiveAging_v1.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ActiveAging_v1.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ActiveAging_v1.0/Pods-ActiveAging_v1.0.debug.xcconfig"; sourceTree = "<group>"; };
 		E700A17F1E4732E90001725A /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
@@ -300,15 +318,8 @@
 		3D4521331E2F40E5002E416C /* Events */ = {
 			isa = PBXGroup;
 			children = (
-				3DFC71041E362CC4004D8975 /* Testing */,
-				3D81C4591E34629A00C8E22F /* EventTableViewCell.h */,
-				3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */,
-				3D81C45C1E34643800C8E22F /* EventsViewController.h */,
-				3D81C45D1E34643800C8E22F /* EventsViewController.m */,
-				3D81C45F1E34646500C8E22F /* EventDetailViewController.h */,
-				3D81C4601E34646500C8E22F /* EventDetailViewController.m */,
-				3D02065A1E35956600DCED4D /* EventDetailTableViewCell.h */,
-				3D02065B1E35956600DCED4D /* EventDetailTableViewCell.m */,
+				AE1250AF1E53EF5E000CDAD6 /* EventsViewer */,
+				AE11E1DE1E546BBC00F960C4 /* EventDetail */,
 				3D02065D1E35B56500DCED4D /* EventDetailSorter.h */,
 				3D02065E1E35B56500DCED4D /* EventDetailSorter.m */,
 			);
@@ -401,6 +412,12 @@
 				E700A1831E4739B40001725A /* Ha Btns */,
 				3DB322081E114FF7002A9FD9 /* AppDelegate.h */,
 				3DB322091E114FF7002A9FD9 /* AppDelegate.m */,
+				AEBADDA11E55234B00492049 /* CustomAnnotationView.h */,
+				AEBADDA21E55234B00492049 /* CustomAnnotationView.m */,
+				AE1250B21E540266000CDAD6 /* DateManager.h */,
+				AE1250B31E540266000CDAD6 /* DateManager.m */,
+				AE1251CB1E53418D0096B7A2 /* MapManager.h */,
+				AE1251CC1E53418D0096B7A2 /* MapManager.m */,
 				AE09E5CB1E47571D0056110B /* LocationManager.h */,
 				AE09E5CC1E47571D0056110B /* LocationManager.m */,
 				3DB3220E1E114FF7002A9FD9 /* Main.storyboard */,
@@ -426,6 +443,10 @@
 				3D4521111E2EC1C6002E416C /* UserInfo.m */,
 				3D45210D1E2EC189002E416C /* KeychainManager.h */,
 				3D45210E1E2EC189002E416C /* KeychainManager.m */,
+				AED95D881E58A03800F68D18 /* TrackerButton.h */,
+				AED95D891E58A03800F68D18 /* TrackerButton.m */,
+				AE1D3F4B1E52BB100011C6F8 /* CallButton.h */,
+				AE1D3F4C1E52BB100011C6F8 /* CallButton.m */,
 				AE09E5C41E470E640056110B /* EmergencyButton.h */,
 				AE09E5C51E470E640056110B /* EmergencyButton.m */,
 			);
@@ -440,19 +461,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		3DFC71041E362CC4004D8975 /* Testing */ = {
-			isa = PBXGroup;
-			children = (
-				3DFC71051E362CF2004D8975 /* EventDetailTableViewController.h */,
-				3DFC71061E362CF2004D8975 /* EventDetailTableViewController.m */,
-				3DFC710B1E3642E8004D8975 /* EventDetailOuterTableViewCell.h */,
-				3DFC710C1E3642E8004D8975 /* EventDetailOuterTableViewCell.m */,
-				3DFC710E1E364312004D8975 /* EventDetailInnerTableViewCell.h */,
-				3DFC710F1E364312004D8975 /* EventDetailInnerTableViewCell.m */,
-			);
-			name = Testing;
-			sourceTree = "<group>";
-		};
 		78CF3B493146A2D7E53ECE39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -465,6 +473,34 @@
 				957C86A710CE53D2D16C9E1E /* libPods-ActiveAging_v1.0.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE11E1DE1E546BBC00F960C4 /* EventDetail */ = {
+			isa = PBXGroup;
+			children = (
+				AE10E2D31E50245400BEC03D /* OrganizationViewController.h */,
+				AE10E2D41E50245400BEC03D /* OrganizationViewController.m */,
+				AE10E2D91E50247100BEC03D /* DescriptionViewController.h */,
+				AE10E2DA1E50247100BEC03D /* DescriptionViewController.m */,
+				AE09A0331E506D1D00F55B46 /* TimeViewController.h */,
+				AE09A0341E506D1D00F55B46 /* TimeViewController.m */,
+				AE09A0361E506D2F00F55B46 /* LocationViewController.h */,
+				AE09A0371E506D3000F55B46 /* LocationViewController.m */,
+			);
+			name = EventDetail;
+			sourceTree = "<group>";
+		};
+		AE1250AF1E53EF5E000CDAD6 /* EventsViewer */ = {
+			isa = PBXGroup;
+			children = (
+				3D81C4591E34629A00C8E22F /* EventTableViewCell.h */,
+				3D81C45A1E34629A00C8E22F /* EventTableViewCell.m */,
+				3D81C45C1E34643800C8E22F /* EventsViewController.h */,
+				3D81C45D1E34643800C8E22F /* EventsViewController.m */,
+				AE130A521E4FFC3700141C97 /* EventDetailViewController.h */,
+				AE130A531E4FFC3700141C97 /* EventDetailViewController.m */,
+			);
+			name = EventsViewer;
 			sourceTree = "<group>";
 		};
 		AEA9FCB71E3CDA770053516E /* Time */ = {
@@ -554,10 +590,12 @@
 			children = (
 				3DA5E5101E37AF5600D50E7C /* MapViewController.h */,
 				3DA5E5111E37AF5600D50E7C /* MapViewController.m */,
-				3DA5E5171E37B87300D50E7C /* groupView.h */,
-				3DA5E5181E37B87300D50E7C /* groupView.m */,
-				3DA5E51A1E37B88C00D50E7C /* GroupsTableViewCell.h */,
-				3DA5E51B1E37B88C00D50E7C /* GroupsTableViewCell.m */,
+				AED95D851E58996000F68D18 /* MemberDetailViewController.h */,
+				AED95D861E58996000F68D18 /* MemberDetailViewController.m */,
+				AED95D8E1E599CA300F68D18 /* MemberPointAnnotation.h */,
+				AED95D8F1E599CA300F68D18 /* MemberPointAnnotation.m */,
+				AED95D8B1E59375400F68D18 /* MemberAnnotationView.h */,
+				AED95D8C1E59375400F68D18 /* MemberAnnotationView.m */,
 			);
 			name = Maps;
 			sourceTree = "<group>";
@@ -739,40 +777,46 @@
 				AE240FE81E42111700AB6B33 /* ContactTableViewCell.m in Sources */,
 				3D45211B1E2EFB67002E416C /* WelcomeViewController.m in Sources */,
 				E7CECFEC1E426B2800561645 /* WeatherViewController.m in Sources */,
+				AE09A0351E506D1D00F55B46 /* TimeViewController.m in Sources */,
 				3D5015601E26079C006F5F20 /* AccountVerificationViewController.m in Sources */,
+				AEBADDA31E55234B00492049 /* CustomAnnotationView.m in Sources */,
 				3D81C45E1E34643800C8E22F /* EventsViewController.m in Sources */,
 				3D45212B1E2F09BD002E416C /* HomePageViewController.m in Sources */,
 				AE0B0E551E46D69B00C4F076 /* SubViewController.m in Sources */,
 				E7CECFE81E426B2800561645 /* WeatherClient.m in Sources */,
+				AE130A541E4FFC3700141C97 /* EventDetailViewController.m in Sources */,
 				3DA5E5121E37AF5600D50E7C /* MapViewController.m in Sources */,
+				AE10E2D51E50245400BEC03D /* OrganizationViewController.m in Sources */,
+				AE1D3F4D1E52BB100011C6F8 /* CallButton.m in Sources */,
 				3D4521271E2EFC08002E416C /* PhotoViewController.m in Sources */,
 				AE09E5CD1E47571D0056110B /* LocationManager.m in Sources */,
-				3DFC71101E364312004D8975 /* EventDetailInnerTableViewCell.m in Sources */,
+				AE09A0381E506D3000F55B46 /* LocationViewController.m in Sources */,
 				E70C46AC1E365E750007FEC4 /* ViewController.m in Sources */,
 				E7CECFE91E426B2800561645 /* WeatherCondition.m in Sources */,
 				3D4521241E2EFBD3002E416C /* ConfirmationViewController.m in Sources */,
 				3D4521181E2ED2F5002E416C /* ServerManager.m in Sources */,
-				3DA5E5191E37B87300D50E7C /* groupView.m in Sources */,
 				3DB3220A1E114FF7002A9FD9 /* AppDelegate.m in Sources */,
+				AED95D901E599CA300F68D18 /* MemberPointAnnotation.m in Sources */,
 				3D02065F1E35B56500DCED4D /* EventDetailSorter.m in Sources */,
-				3DFC710D1E3642E8004D8975 /* EventDetailOuterTableViewCell.m in Sources */,
+				AED95D8A1E58A03800F68D18 /* TrackerButton.m in Sources */,
 				E7CECFEA1E426B2800561645 /* WeatherDailyForecast.m in Sources */,
 				3D45210F1E2EC189002E416C /* KeychainManager.m in Sources */,
+				AE10E2DB1E50247100BEC03D /* DescriptionViewController.m in Sources */,
+				AED95D8D1E59375400F68D18 /* MemberAnnotationView.m in Sources */,
 				AE46F48B1E43FE7F00ED51A1 /* ImageManager.m in Sources */,
 				3DFC71191E367771004D8975 /* CalEventsTableViewCell.m in Sources */,
 				AE09E5C61E470E640056110B /* EmergencyButton.m in Sources */,
 				E7CECFEB1E426B2800561645 /* WeatherManager.m in Sources */,
 				AE46F48E1E4401D000ED51A1 /* DataManager.m in Sources */,
-				3DA5E51C1E37B88C00D50E7C /* GroupsTableViewCell.m in Sources */,
+				AE1250B41E540266000CDAD6 /* DateManager.m in Sources */,
+				AE1251CD1E53418D0096B7A2 /* MapManager.m in Sources */,
 				E70C46AE1E365F360007FEC4 /* EventManager.m in Sources */,
 				3D4521321E2F3159002E416C /* SetupViewController.m in Sources */,
 				3DB322071E114FF7002A9FD9 /* main.m in Sources */,
+				AED95D871E58996000F68D18 /* MemberDetailViewController.m in Sources */,
 				E70C46A51E3657F50007FEC4 /* SQLite3DBManager.m in Sources */,
 				3D81C45B1E34629A00C8E22F /* EventTableViewCell.m in Sources */,
-				3D81C4611E34646500C8E22F /* EventDetailViewController.m in Sources */,
 				AE240FE51E41B2C900AB6B33 /* ContactListViewController.m in Sources */,
-				3DFC71071E362CF2004D8975 /* EventDetailTableViewController.m in Sources */,
-				3D02065C1E35956600DCED4D /* EventDetailTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

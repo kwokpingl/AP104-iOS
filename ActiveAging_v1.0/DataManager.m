@@ -43,6 +43,7 @@
     [sqlMgr executeQuery:query];
 }
 
+
 + (void) updateContactDatabase{
     ServerManager * serverMgr = [ServerManager shareInstance];
     UserInfo * userInfo = [UserInfo shareInstance];
@@ -85,6 +86,8 @@
 }
 
 
+#pragma mark - RETRIEVE INFO
+/// MARK: with_TABLE_name
 + (NSMutableArray *) fetchDatabaseFromTable: (NSString *) table{
     
     NSString * query = [NSString stringWithFormat:@"select * from %@", table];
@@ -93,7 +96,7 @@
 
 }
 
-
+/// MARK: with_USERID
 + (NSMutableArray *) fetchUserInfoFromTableWithUserID: (NSInteger) userID{
 
     NSString * query;
@@ -107,6 +110,7 @@
     return  [self getArrayUsingQuery:query];
 }
 
+/// MARK: with_GROUPID
 + (NSMutableArray *) fetchUserInfoFromTableWithGroupID: (NSInteger) groupID {
     
     NSString * query;
@@ -120,6 +124,7 @@
     return  [self getArrayUsingQuery:query];
 }
 
+/// MARK: with_ROLE
 + (NSMutableArray *) fetchGroupsFromTableWithRole: (NSInteger) role {
     
     NSString * query;
@@ -133,6 +138,8 @@
     return  [self getArrayUsingQuery:query];
 }
 
+#pragma mark - PRIVATE METHODs
+/// MARK: RETURN_INFO_in_ARRAY
 + (NSMutableArray *) getArrayUsingQuery: (NSString *) query{
     SQLite3DBManager * sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
     

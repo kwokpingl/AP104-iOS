@@ -10,9 +10,9 @@
 #import "EventTableViewCell.h"
 #import "ServerManager.h" // retrieveEventInfo
 #import "UserInfo.h"
-//#import "EventDetailViewController.h"
-#import "EventDetailTableViewController.h"
+#import "EventDetailViewController.h"
 #import "ImageManager.h"
+#import "DateManager.h"
 
 
 @interface EventsViewController ()<UITableViewDelegate, UITableViewDataSource>{
@@ -40,6 +40,11 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     currentPage = @"notJoined";
+    
+    self.tableView.tableFooterView = [UITableView new];
+    
+    UIBarButtonItem * backButton = [[UIBarButtonItem alloc] initWithTitle:@"回活動頁面" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self.navigationItem setBackBarButtonItem:backButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,6 +55,8 @@
 -(void)viewDidAppear:(BOOL)animated{
     // start loading the data and reload tableview
     [self updateEvents];
+    [_tableView setEstimatedRowHeight:100];
+    [_tableView setRowHeight:UITableViewAutomaticDimension];
 }
 
 
@@ -63,17 +70,45 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    EventTableViewCell * cell = [_tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    EventTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     
-    [cell setAccessoryType:UITableViewCellAccessoryDetailDisclosureButton];
+//    cell.preservesSuperviewLayoutMargins = false;
+//    cell.separatorInset = UIEdgeInsetsZero;
+//    cell.layoutMargins = UIEdgeInsetsZero;
+
     
+    // EVENT TITLE
+    [cell.eventTitleLabel setNumberOfLines:0];
     cell.eventTitleLabel.text = eventsArray[indexPath.row][EVENT_TITLE_KEY];
-    // also image
     
+    // EVENT ORGANIZATION
+    [cell.eventOrganizationLabel setNumberOfLines:0];
+    [cell.eventOrganizationLabel sizeToFit];
+    [cell.eventOrganizationLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    [cell.eventOrganizationLabel setTextAlignment:NSTextAlignmentLeft];
+    [cell.eventOrganizationLabel.layer setBorderWidth:0.3];
+    [[cell.eventOrganizationLabel layer] setCornerRadius:3.0];
+    [cell.eventOrganizationLabel setText:eventsArray[indexPath.row][EVENT_ORGNTION_KEY]];
+    
+    // EVENT DATE
+    NSDateFormatter * formatter = [NSDateFormatter new];
+    [formatter setDateFormat:DATE_FORMAT];
+    NSString * formattedDate;
+    formattedDate = [DateManager convertDateOnly:eventsArray[indexPath.row][EVENT_START_KEY] withFormatter:formatter];
+
+    [cell.eventRegistrationDateLabel setTextColor:[UIColor blueColor]];
+    [cell.eventRegistrationDateLabel setText:formattedDate];
+    
+    // SET IMAGE
     NSString * imageName = eventsArray[indexPath.row][EVENT_PIC_KEY];
     
     [ImageManager getEventImage:imageName completion:^(NSError *error, id result) {
         if (!error){
+            [cell.eventImgView setContentMode:UIViewContentModeScaleAspectFit];
+            [cell.eventImgView.layer setCornerRadius:cell.eventImgView.frame.size.width/2.0];
+//            [cell.eventImgView.layer setMasksToBounds:true];
+            [cell.eventImgView setClipsToBounds:true];
             cell.eventImgView.image = [UIImage imageWithData:result];
         } else {
             cell.eventImgView.image = nil;
@@ -83,24 +118,18 @@
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
-    EventTableViewCell * cell = [_tableView cellForRowAtIndexPath:indexPath];
-    
-    NSString * cellTitle = cell.eventTitleLabel.text;
-    
-    if ([cellTitle isEqualToString:eventsArray[indexPath.row][EVENT_TITLE_KEY]]){
-        NSString * message = [NSString stringWithFormat:@"報名日期: %@",eventsArray[indexPath.row][EVENT_REG_BEGIN_KEY]];
-        cell.eventTitleLabel.text = message;
-    } else {
-        cell.eventTitleLabel.text = eventsArray[indexPath.row][EVENT_TITLE_KEY];
-    }
-}
+
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    [self performSegueWithIdentifier:@"eventDetail" sender:indexPath];
-    
+//    [self performSegueWithIdentifier:@"eventDetail" sender:indexPath];
+    EventDetailViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"EventDetailViewController"];
+    vc.eventDetailDict = [NSMutableDictionary new];
+    [vc.navigationItem setLeftItemsSupplementBackButton:true];
+    [vc.eventDetailDict addEntriesFromDictionary:eventsArray[indexPath.row]];
+    [self.navigationController pushViewController:vc animated:true];
 }
+
 
 #pragma mark - BUTTONS --- NEED MODIFICATION
 - (IBAction)locationButtonPressed:(id)sender {
@@ -125,7 +154,7 @@
 #pragma mark - SEGUE
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([segue.identifier isEqualToString:@"eventDetail"]){
-        EventDetailTableViewController * vc = [segue destinationViewController];
+        EventDetailViewController * vc = [segue destinationViewController];
         NSIndexPath * indexPath = (NSIndexPath *) sender;
         vc.eventDetailDict = [NSMutableDictionary new];
         [vc.eventDetailDict addEntriesFromDictionary:eventsArray[indexPath.row]];

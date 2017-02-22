@@ -11,12 +11,15 @@
 #import "ServerManager.h"
 #import "KeychainManager.h"
 #import "AccountVerificationViewController.h"
+#import "ImageManager.h"
 
 @interface SetupViewController (){
     KeychainManager * _keychainMgr;
     UserInfo * _userInfo;
     ServerManager * _serverMgr;
 }
+@property (weak, nonatomic) IBOutlet UIImageView *userImageView;
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 
 @end
 
@@ -28,6 +31,18 @@
     _keychainMgr = [KeychainManager sharedInstance];
     _userInfo = [UserInfo shareInstance];
     _serverMgr = [ServerManager shareInstance];
+    
+    
+    [ImageManager getUserImage:_userInfo.getUserID completion:^(NSError *error, id result) {
+        if (!error){
+            _userImageView.image = [UIImage imageWithData:result];
+        }
+        else{
+            _userImageView.image  = nil;
+        }
+    }];
+    
+    _userNameLabel.text = _userInfo.getUsername;
 }
 
 - (void)didReceiveMemoryWarning {

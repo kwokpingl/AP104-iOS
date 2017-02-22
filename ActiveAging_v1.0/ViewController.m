@@ -60,6 +60,7 @@ static void * __KVOContext;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    self.tableView.tableFooterView = [UITableView new];
     
 #pragma mark - calendar appearance setup
     _calendar.appearance.adjustsFontSizeToFitContentSize = false;
@@ -137,6 +138,9 @@ static void * __KVOContext;
         {
             NSLog(@"%@", error);
         }
+        
+        _eventManager.eventsAccessGranted = true;
+        
     }];
 }
 
@@ -355,6 +359,7 @@ static void * __KVOContext;
         cell.startTimeLabel.text = @"";
         cell.endtimeLabel.text = @"";
     }
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }
 
@@ -389,6 +394,8 @@ static void * __KVOContext;
         if (allEventsArray.count != 0){
             editEventViewController.event = allEventsArray[indexPath.row];
         }
+        
+        
         
         //Allow event editing
         editEventViewController.allowsEditing = true;

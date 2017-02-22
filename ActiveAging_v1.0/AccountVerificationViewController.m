@@ -12,6 +12,7 @@
 #import "ServerManager.h"
 #import "WelcomeViewController.h"
 #import "DataManager.h"
+#import "Definitions.h"
 
 
 @interface AccountVerificationViewController (){
@@ -90,6 +91,15 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [_welcomeLabel setText:[NSString stringWithFormat:@"歡迎回來%@", [_userInfo getUsername]]];
                 });
+                NSArray * allKeys = [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys];
+                
+                if (![allKeys containsObject:@"shareLocation"]){
+                    [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:@"shareLocation"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+                
+                NSLog(@"SHARE_LOCATION? :%d", [[[NSUserDefaults standardUserDefaults] objectForKey:@"shareLocation"] boolValue]);
+                
                 NSString * userID = result[@"message"];
                 [_userInfo setUserID:[userID integerValue]];
                 [timer fire];
@@ -98,6 +108,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [_welcomeLabel setText:@"發生錯誤\n請確定網路開啟\n再點選這裡登入"];
                     [_resetButton setHidden:false];
+//                    [_keychainMgr deleteKeychain:_userInfo.getUsername Password:_userInfo.getPassword];
                 });
             }
         }];
@@ -116,15 +127,5 @@
 //    [_keychainMgr deleteKeychain:_userInfo.getUsername Password:_userInfo.getPassword];
     [self checkKeyChain];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

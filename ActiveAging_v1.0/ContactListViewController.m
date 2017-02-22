@@ -81,16 +81,11 @@ static NSInteger layer;
 //    _sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
     
     // ask for PERMISSION
-    // set up CLLocation Manager
-    if ([CLLocationManager locationServicesEnabled]){
-        _locationMgr = [LocationManager shareInstance];
-    }
-    else{
-        [self presentViewController:[_locationMgr serviceEnableAlert] animated:true completion:nil];
-    }
+    _locationMgr = [LocationManager shareInstance];
     
-    [_locationMgr startUpdatingLocation];
-    [_locationMgr addObserver:self forKeyPath:@"currentLocation" options:NSKeyValueObservingOptionNew context:nil];
+    if (_locationMgr.accessGranted){
+        [_locationMgr startUpdatingLocation];
+    }
     
     // SETUP DELEGATE / DATASOURCE
     _tableView.delegate = self;
@@ -129,8 +124,7 @@ static NSInteger layer;
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
-    [_locationMgr removeObserver:self forKeyPath:@"currentLocation"];
-    [_locationMgr stopUpdatingLocation];
+//    [_locationMgr stopUpdatingLocation];
 }
 
 #pragma mark - === TABLEVIEW ===
@@ -443,15 +437,6 @@ static NSInteger layer;
     
 }
 
-// NOT REALLY DOING ANYTHING
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    if ([keyPath isEqualToString:@"currentLocation"]){
-        currentLocation = _locationMgr.currentLocation;
-        NSLog(@"Latitude %+.6f, Longitude %+.6f\n",
-              currentLocation.coordinate.latitude,
-              currentLocation.coordinate.longitude);
-    }
-}
 
 #pragma mark - DATABASE METHODS
 

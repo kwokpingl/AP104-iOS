@@ -69,6 +69,10 @@ completion:(DoneHandler)done{
                 completion:(DoneHandler)done{
     
     NSInteger num_EventID = [eventID integerValue];
+    
+//    NSString * userIDString = [NSString stringWithFormat:@"%ld",userID];
+//    NSString * eventIDString = [NSString stringWithFormat:@"ld",num];
+    
     NSDictionary * jsonObj = @{USER_ID_KEY: @(userID),
                                EVENT_ID_KEY:@(num_EventID),
                                ACTION_KEY: action

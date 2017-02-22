@@ -8,14 +8,20 @@
 
 #import "HomePageViewController.h"
 #import "WeatherManager.h"
+#import "EmergencyButton.h"
 
 @interface HomePageViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *weatherBtn;
+@property (weak, nonatomic) IBOutlet UIButton *activityBtn;
+@property (weak, nonatomic) IBOutlet UIButton *calendarBtn;
+@property (weak, nonatomic) IBOutlet UIButton *contactBtn;
+@property (weak, nonatomic) IBOutlet UIButton *settingsBtn;
+@property (weak, nonatomic) IBOutlet UIButton *mapBtn;
+@property (weak, nonatomic) IBOutlet EmergencyButton *emergencyBtn;
 
 @end
 
@@ -44,6 +50,9 @@
      }];
     
     [[WeatherManager sharedManager] findCurrentLocation];
+    
+    
+    
 }
 
 -(void) showClock {
@@ -76,6 +85,8 @@
 //    NSLog(@"%@", [dateFormatter stringFromDate:now]);
     
     _dateLabel.text = [dateFormatter stringFromDate:now];
+    
+    [self setup];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,14 +94,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void) setup{
+    [_timeLabel setFrame:CGRectMake(0, 0, self.view.frame.size.width/2.0, self.view.frame.size.height/5.0)];
+    [_timeLabel setBounds:CGRectMake(self.view.frame.size.width/2.0, self.view.frame.size.height/4, _timeLabel.frame.size.width, _timeLabel.frame.size.height)];
 }
-*/
+
 
 @end
