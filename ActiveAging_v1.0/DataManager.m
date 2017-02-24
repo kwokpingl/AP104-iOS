@@ -38,6 +38,9 @@
     query = [NSString stringWithFormat:@"create table %@ (%@ int primary key,%@ text,%@ int)", GROUP_LIST_TABLE, GROUP_ID_KEY, GROUP_NAME_KEY, USER_ROLE_KEY];
     [sqlMgr executeQuery:query];
     
+    // FOR EVENTS
+//    query = [NSString stringWithFormat:@"create table %@ (%@ int primary key, %@ text, %@ "]
+    
     // FOR EMERGENCY CONTACTS
     query = [NSString stringWithFormat:@"create table %@ (%@ integer primary key autoincrement, %@ text, %@ text)",EMERGENCY_TABLE, USER_ID_KEY, USER_NAME_KEY, USER_PHONENUMBER_KEY];
     [sqlMgr executeQuery:query];

@@ -59,7 +59,7 @@
         <!--今天有啥好玩的呢?-->
         <scene sceneID="GpT-D7-Yhx">
             <objects>
-                <viewController id="n5L-fl-gzX" customClass="HomePageViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomePageViewController" id="n5L-fl-gzX" customClass="HomePageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BOF-DE-K14"/>
                         <viewControllerLayoutGuide type="bottom" id="H0k-k9-duU"/>
@@ -69,7 +69,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22:22" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HfG-l1-uIo">
-                                <rect key="frame" x="119" y="309" width="256" height="48"/>
+                                <rect key="frame" x="119" y="265" width="256" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -80,7 +80,7 @@
                                 <state key="normal" title="緊急連絡"/>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="imD-qP-nm2">
-                                <rect key="frame" x="202" y="72" width="95" height="95"/>
+                                <rect key="frame" x="202" y="28" width="95" height="95"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <state key="normal" backgroundImage="ha1.png"/>
                                 <connections>
@@ -120,7 +120,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d4f-TP-RYk">
-                                <rect key="frame" x="55" y="123" width="99" height="101"/>
+                                <rect key="frame" x="55" y="79" width="99" height="101"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="活動" backgroundImage="Sample Frame 3.png"/>
                                 <connections>
@@ -128,7 +128,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="97H-Zq-UY9">
-                                <rect key="frame" x="172" y="251" width="125" height="20"/>
+                                <rect key="frame" x="172" y="207" width="125" height="20"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -542,12 +542,34 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="n5L-fl-gzX" kind="relationship" relationship="rootViewController" id="XBF-BE-9x3"/>
+                        <segue destination="SGd-w6-zIu" kind="relationship" relationship="rootViewController" id="n6D-d6-xFR"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oFm-87-ZXI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1372" y="1001"/>
+            <point key="canvasLocation" x="841" y="1001"/>
+        </scene>
+        <!--Welcome Back View Controller-->
+        <scene sceneID="itj-zm-Vs5">
+            <objects>
+                <viewController id="SGd-w6-zIu" customClass="WelcomeBackViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yAA-N3-1ea"/>
+                        <viewControllerLayoutGuide type="bottom" id="kOZ-Vn-CzW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="a0g-r8-N2s">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="x6z-eE-TAa"/>
+                    <connections>
+                        <segue destination="n5L-fl-gzX" kind="showDetail" id="3th-kv-S2l"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b7u-JS-QdD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1570" y="1002"/>
         </scene>
         <!--Weather-->
         <scene sceneID="qSy-2e-6DX">

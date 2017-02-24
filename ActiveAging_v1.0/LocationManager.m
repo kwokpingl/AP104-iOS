@@ -10,6 +10,8 @@
 #import "ServerManager.h"
 #import "UserInfo.h"
 
+#define AVERAGE_STRIDE_LENGTH (30*0.0254)
+
 static LocationManager * _myLocationMgr;
 
 @interface LocationManager() <CLLocationManagerDelegate>
@@ -128,8 +130,9 @@ static LocationManager * _myLocationMgr;
     CLLocation * targetLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
     
     double distanceMeter = [_location distanceFromLocation:targetLocation];
-    double distanceKilo = distanceMeter/1000.0;
-    return distanceKilo;
+//    double distanceKilo = distanceMeter/1000.0;
+    double distanceInSteps = distanceMeter / AVERAGE_STRIDE_LENGTH;
+    return distanceInSteps;
 }
 
 

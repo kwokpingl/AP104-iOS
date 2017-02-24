@@ -9,7 +9,6 @@
 #import "MemberDetailViewController.h"
 #import "CallButton.h"
 #import "ImageManager.h"
-#import "TrackerButton.h"
 
 @interface MemberDetailViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *cancelBtn;
@@ -37,6 +36,7 @@
         else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_imageView setImage:[UIImage imageWithData:result]];
+                [_imageView setContentMode:UIViewContentModeScaleAspectFit];
             });
         }
         
@@ -44,6 +44,7 @@
     UIImage * image = [UIImage imageNamed:@"callBtn"];
     [_cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
     [_callingBtn setBackgroundImage:image forState:UIControlStateNormal];
+    [_callingBtn setContentMode:UIViewContentModeScaleAspectFit];
     [_callingBtn setTitle:@"" forState:UIControlStateNormal];
     [_trackerBtn setTitle:@"導航" forState:UIControlStateNormal];
     [_trackerBtn addTarget:self action:@selector(showTracker) forControlEvents:UIControlEventTouchUpInside];

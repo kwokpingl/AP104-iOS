@@ -10,7 +10,7 @@
 #import "Definitions.h"
 #import <MapKit/MapKit.h>
 #import "LocationManager.h"
-#import "MapManager.h"
+#import "MKMapView+Autoadjustment.h"
 
 @interface LocationViewController () <CLLocationManagerDelegate, MKMapViewDelegate, LocationManagerDelegate>{
     LocationManager * locationMgr;
@@ -92,8 +92,6 @@
         eventCoordinate = CLLocationCoordinate2DMake([lat doubleValue], [lon doubleValue]);
         if (CLLocationCoordinate2DIsValid(eventCoordinate)){
             
-            MKCoordinateRegion region = [MapManager setRegionBetweenA:eventCoordinate andB:locationMgr.location.coordinate];
-            
             eventAnnotation = [[MKPointAnnotation alloc] init];
             [eventAnnotation setCoordinate:eventCoordinate];
             [eventAnnotation setTitle:_eventDetailDict[EVENT_TITLE_KEY]];
@@ -102,11 +100,10 @@
             
             [_mapView setShowsUserLocation:true];
             [_mapView addAnnotation:eventAnnotation];
-            //            [_mapView addOverlay:<#(nonnull id<MKOverlay>)#>]
-            [_mapView setRegion:region animated:true];
+            [_mapView setRegionBetweenA:eventCoordinate andB:locationMgr.location.coordinate];
             
             double distance = [locationMgr distanceFromLocationUsingLongitude:[lon doubleValue] Latitude:[lat doubleValue]];
-            NSString * unit = @"公里";
+            NSString * unit = @"步";
             
             [_distanceLabel setAdjustsFontSizeToFitWidth:true];
             [_distanceLabel setNumberOfLines:0];

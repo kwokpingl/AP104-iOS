@@ -12,13 +12,13 @@
 #import "SQLite3DBManager.h"
 #import "LocationManager.h"
 #import "ImageManager.h"
-#import "MapManager.h"
 #import "UserInfo.h"
 #import "ContactTableViewCell.h"
 #import "MemberDetailViewController.h"
 #import "MemberAnnotationView.h"
 #import "MemberPointAnnotation.h"
 #import <MapKit/MapKit.h>
+#import "MKMapView+Autoadjustment.h"
 
 
 
@@ -29,6 +29,8 @@ typedef enum : NSUInteger {
     activities,
 } GeneralGroups;
 
+typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nullable error);
+
 @interface MapViewController () <MKMapViewDelegate,UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource, LocationManagerDelegate, MemberDetailViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet MKMapView *mapview;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
@@ -36,6 +38,7 @@ typedef enum : NSUInteger {
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *memberDetailView;
 @property (weak, nonatomic) IBOutlet UISwitch *shareLocationSwitch;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *directionStyleSwitcher;
 
 @property (strong, nonatomic) NSArray * generalGroupList;
 @property (strong, nonatomic) NSMutableArray * groupList;
@@ -60,53 +63,40 @@ typedef enum : NSUInteger {
     UserInfo * _userInfo;
     CLLocation * specificLocation;
     MKPolyline * polyLine;
+    MKDirectionsTransportType transportationType;
     
     BOOL shareLocation;
-    NSArray * dummyArray;
-    NSDictionary * dummyDictionary;
-    NSString * chosenGroup;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    // SETUP SINGLETONs
     _locationMgr = [LocationManager shareInstance];
     if (_locationMgr.accessGranted){
         [_locationMgr startUpdatingLocation];
     }
-    
     _locationMgr.delegate = self;
-    
     _userInfo = [UserInfo shareInstance];
     
-    shareLocation = [[[NSUserDefaults standardUserDefaults] objectForKey:@"shareLocation"] boolValue];
-    [_shareLocationSwitch setOn:shareLocation];
     
+    // Prepare data
+    [DataManager updateContactDatabase];
+    shareLocation = [[[NSUserDefaults standardUserDefaults]
+                      objectForKey:@"shareLocation"] boolValue];
+    
+    // SETUP VIEWS
     [_mapview setShowsUserLocation:true];
     [_mapview setDelegate:self];
-    
-    // SETUP PICKERVIEW
-    _pickerview.delegate = self;
-    _pickerview.dataSource = self;
-    
-    // SETUP TABLEVIEW
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    
-    
-    // SETUP GROUP_VIEW
+    [_pickerview setDelegate:self];
+    [_pickerview setDataSource:self];
+    [_tableView setDelegate:self];
+    [_tableView setDataSource:self];
     [_groupView setHidden:true];
-    [DataManager updateContactDatabase];
-    
-    // SETUP MEMBER_DETAIL_VIEW
     [_memberDetailView setHidden:true];
+    [_shareLocationSwitch setOn:shareLocation];
     
     [self setupInfo];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -114,13 +104,14 @@ typedef enum : NSUInteger {
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    [_mapview setRegion:[MapManager locatePointA:_locationMgr.location.coordinate]];
+    [_mapview locatePointA:_locationMgr.location.coordinate];
 }
 
 
 #pragma mark - LOCATION MANAGER
 - (void) locationControllerDidUpdateLocation: (CLLocation *) location{
     
+    // Update the database
     [DataManager updateContactDatabase];
     
     if ([_currentVC isKindOfClass:[MemberDetailViewController class]] && ![_memberDetailView isHidden]){
@@ -145,6 +136,7 @@ typedef enum : NSUInteger {
 #pragma mark - MAP
 /// MARK: ANNOTATION
 -(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
+    // return nil if annotation @ userLocation
     if (annotation == mapView.userLocation){
         return nil;
     }
@@ -157,14 +149,15 @@ typedef enum : NSUInteger {
 
 -(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay{
     MKPolylineRenderer * line = [[MKPolylineRenderer alloc] initWithPolyline:overlay];
-    [line setLineWidth:7.0];
-    [line setStrokeColor:[UIColor redColor]];
+    [line setLineWidth:5.0];
+    [line setStrokeColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.5]];
     return line;
 }
 
 -(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
-    MKCoordinateRegion region = [MapManager setRegionBetweenA:[view.annotation coordinate] andB:_locationMgr.location.coordinate];
-    [_mapview setRegion:region];
+    
+    [_mapview setRegionBetweenA:[view.annotation coordinate] andB:_locationMgr.location.coordinate];
+    
     _targetLocation = view.annotation.coordinate;
     [self showDirection:_targetLocation];
 }
@@ -175,16 +168,17 @@ typedef enum : NSUInteger {
 }
 
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-    if (component == 0){
+    if (component == 0)
+    {
         return _generalGroupList.count;
     }
     return _targetGroupList.count;
 }
 
-
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
     
-    if (component == 0){
+    if (component == 0)
+    {
         return _generalGroupList[row];
     }
     return _targetGroupList[row][GROUP_NAME_KEY];
@@ -194,7 +188,9 @@ typedef enum : NSUInteger {
     
     [_mapview removeAnnotations:_mapview.annotations];
     
-    if (component == 0){
+    if (component == 0)
+    {
+        // User pick the GENERAL group
         _targetGroupList = [NSMutableArray new];
         [_targetGroupList addObject:@{GROUP_ID_KEY:@(0),
                                       GROUP_NAME_KEY: @"請選組",
@@ -211,12 +207,11 @@ typedef enum : NSUInteger {
                 break;
             default:
                 _targetGroupList = [NSMutableArray new];
-                [_mapview setRegion:[MapManager locatePointA:_locationMgr.location.coordinate]];
+                [_mapview locatePointA:_locationMgr.location.coordinate];
                 break;
         }
         [_pickerview reloadComponent:1];
         [_pickerview selectRow:0 inComponent:1 animated:true];
-//        [_tableView setHidden:true];
     }
     else{
         _targetFriendList = [NSMutableArray new];
@@ -227,11 +222,13 @@ typedef enum : NSUInteger {
             {
                 _targetFriendList = [NSMutableArray new];
                 [_groupView setHidden:true];
+                [_directionStyleSwitcher setHidden:false];
             }
             else
             {
                 [_targetFriendList addObjectsFromArray:_friendListDict[@(groupID)]];
                 [_groupView setHidden:false];
+                [_directionStyleSwitcher setHidden:true];
                 [_tableView reloadData];
             }
         }
@@ -252,17 +249,44 @@ typedef enum : NSUInteger {
     
     
     cell.titleLabel.text = _targetFriendList[indexPath.row][USER_NAME_KEY];
+    [cell.titleLabel setNumberOfLines:0];
     if (indexPath.row == 0){
         cell.subtitleLabel.text = @"";
     }
     else{
-        if (_targetFriendList[indexPath.row][USER_CUR_LON_KEY] != [NSNull null] && _targetFriendList[indexPath.row][USER_CUR_LAT_KEY] != [NSNull null]){
+        if (_targetFriendList[indexPath.row][USER_CUR_LON_KEY] != [NSNull null]
+            && _targetFriendList[indexPath.row][USER_CUR_LAT_KEY] != [NSNull null]){
             
             CLLocationDegrees lon = [_targetFriendList[indexPath.row][USER_CUR_LON_KEY] doubleValue];
             CLLocationDegrees lat = [_targetFriendList[indexPath.row][USER_CUR_LAT_KEY] doubleValue];
             
-            double distance = [_locationMgr distanceFromLocationUsingLongitude:lon Latitude:lat];
-            cell.subtitleLabel.text = [NSString stringWithFormat:@"距離 : %.2f 公里",distance ];
+            CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lon);
+            
+            [self getETA:location withDonehandler:^(MKETAResponse * _Nullable response, NSError * _Nullable error) {
+                NSString * expectedTime = @"";
+                if (error){
+                    expectedTime = @"UNKNONW";
+                }
+                else{
+                    
+                    NSTimeInterval minutes = response.expectedTravelTime/60.0;
+                    
+                    if (minutes>= 60.0){
+                        
+                        expectedTime = [NSString stringWithFormat:@"距離 %d 小時 %d分鐘",
+                                        (int)minutes/60, (int)minutes%60];
+                    }
+                    
+                    else if (minutes < 60) {
+                        expectedTime = [NSString stringWithFormat:@"距離 %d 分鐘", (int) minutes];
+                    }
+                    else {
+                        expectedTime = @"太遠了";
+                    }
+                    [cell.subtitleLabel setNumberOfLines:0];
+                    cell.subtitleLabel.text = expectedTime;
+                }
+            }];
         }
         else {
             cell.subtitleLabel.text = @"UNKNOWN";
@@ -281,9 +305,7 @@ typedef enum : NSUInteger {
     UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
     
     // show all people, change the span and center below
-    
-    
-    
+
     if (indexPath.row == 0)
     {
         // show most people in the map together
@@ -294,7 +316,7 @@ typedef enum : NSUInteger {
         
         [coordinates addObject:@[@(_locationMgr.location.coordinate.latitude), @(_locationMgr.location.coordinate.longitude)]];
         
-        [_mapview setRegion:[MapManager recenterMap:coordinates]];
+        [_mapview recenterMap:coordinates];
         [_mapview removeOverlay:_routeOverlay];
     }
     else
@@ -303,10 +325,8 @@ typedef enum : NSUInteger {
             lon = [_targetFriendList[indexPath.row][USER_CUR_LON_KEY] doubleValue];
             lat = [_targetFriendList[indexPath.row][USER_CUR_LAT_KEY] doubleValue];
             _targetLocation = CLLocationCoordinate2DMake(lat, lon);
+            [_mapview setRegionBetweenA:_targetLocation andB:_locationMgr.location.coordinate];
             
-            MKCoordinateRegion region = [MapManager setRegionBetweenA:_targetLocation andB:_locationMgr.location.coordinate];
-            
-            [_mapview setRegion:region];
             [self showDirection:_targetLocation];
             
             MemberDetailViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"MemberDetailViewController"];
@@ -319,7 +339,7 @@ typedef enum : NSUInteger {
     }
     [_mapview removeAnnotations:_mapview.annotations];
     [self showFriendAnnotation];
-    NSLog(@"%ld", _mapview.annotations.count);
+    [_directionStyleSwitcher setHidden:false];
     
 }
 
@@ -350,8 +370,20 @@ typedef enum : NSUInteger {
     }
 }
 
+- (IBAction)travelTypeSwitching:(UISegmentedControl *)sender {
+    if (sender.selectedSegmentIndex == 0){
+        transportationType = MKDirectionsTransportTypeWalking;
+    }
+    else{
+        transportationType = MKDirectionsTransportTypeAutomobile;
+    }
+    if (CLLocationCoordinate2DIsValid(_targetLocation)){
+        [self showDirection:_targetLocation];
+    }
+}
 
 #pragma mark - PRIVATE METHODS
+/// MARK: MAP_RELATED
 - (void) showFriendAnnotation {
     if (_targetFriendList.count > 0){
         
@@ -387,6 +419,7 @@ typedef enum : NSUInteger {
     MKMapItem * destinationMapItem = [[MKMapItem alloc] initWithPlacemark:destinationPlacemark];
     [directionRequest setSource:sourceMapItem];
     [directionRequest setDestination:destinationMapItem];
+    [directionRequest setTransportType:transportationType];
     
     MKDirections * directions = [[MKDirections alloc] initWithRequest:directionRequest];
     [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse * _Nullable response, NSError * _Nullable error) {
@@ -417,6 +450,19 @@ typedef enum : NSUInteger {
 
 }
 
+/// GET ESTIMATED TIME of ARRIVAL
+- (void) getETA : (CLLocationCoordinate2D) destination withDonehandler: (MKETAHandler) handler {
+    MKDirectionsRequest * directionRequest = [MKDirectionsRequest new];
+    [directionRequest setSource:[MKMapItem mapItemForCurrentLocation]];
+    MKPlacemark * destinationPlacemark = [[MKPlacemark alloc] initWithCoordinate:destination];
+    MKMapItem * destinationMapItem = [[MKMapItem alloc] initWithPlacemark:destinationPlacemark];
+    [directionRequest setDestination:destinationMapItem];
+    [directionRequest setTransportType:transportationType];
+    MKDirections * directions = [[MKDirections alloc] initWithRequest:directionRequest];
+    [directions calculateETAWithCompletionHandler:handler];
+}
+
+#pragma mark - SETUPs
 - (void) setupInfo {
     // 0. setup GENERAL GROUP LIST
     _generalGroupList = @[@"請選擇",
@@ -451,20 +497,23 @@ typedef enum : NSUInteger {
     }
 }
 
-
 - (void) setSubView: (UIViewController *) vc {
-    for (UIView * view in [_memberDetailView subviews]){
+    for (UIView * view in [_memberDetailView subviews])
+    {
         [view removeFromSuperview];
     }
     
-    if (_currentVC){
+    if (_currentVC)
+    {
         [_currentVC willMoveToParentViewController:nil];
     }
-    else{
+    else
+    {
         [vc willMoveToParentViewController:self];
         
         [self addChildViewController:vc];
     }
+    
     [vc.view setFrame:(CGRect){{0,0},_memberDetailView.frame.size}];
     [_memberDetailView addSubview:vc.view];
     [_memberDetailView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
