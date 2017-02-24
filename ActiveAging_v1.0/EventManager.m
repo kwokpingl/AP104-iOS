@@ -39,6 +39,8 @@ static EventManager * _store = nil;
 #pragma mark - sortTimeOrder
 -(void) sortTimeOrder: (NSDate *) dateSelected complete:(Donehandler)done{
     
+    if (_eventsAccessGranted) {
+        
     NSCalendar * calendar = [NSCalendar currentCalendar];
     
     NSDate * amDate = [calendar dateBySettingHour:0 minute:0 second:0 ofDate:dateSelected options:0];
@@ -51,7 +53,9 @@ static EventManager * _store = nil;
     _defaultCalendar = _store.defaultCalendarForNewEvents;
     
     //Only search the default calendar for our events
+
     calendarArray = @[self.defaultCalendar];
+    }
 }
 
 -(void) amTime: (NSDate *)amTime pmTime: (NSDate *)pmTime complete:(Donehandler)done {
@@ -76,6 +80,7 @@ static EventManager * _store = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
          int counter = 0;
         NSMutableArray * test  = [NSMutableArray new];
+        
             for (EKEvent * e in events) {
                 [test addObject:e];
                 

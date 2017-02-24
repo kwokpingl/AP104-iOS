@@ -37,8 +37,10 @@
          
          NSString * temp = [NSString stringWithFormat:@"%.0f°C",newCondition.temperature.floatValue];
          [_weatherBtn setTitle:temp forState:UIControlStateNormal];
-
-         [_weatherBtn setImage: [UIImage imageNamed:[newCondition imageName]]forState:UIControlStateNormal];
+         
+         UIImage * image = [[UIImage imageNamed:[newCondition imageName]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+         
+         [_weatherBtn setImage: image forState:UIControlStateNormal];
          _weatherBtn.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
          _weatherBtn.titleLabel.numberOfLines = 0;
      }];

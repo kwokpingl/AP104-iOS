@@ -68,8 +68,6 @@
 	<string>這APP必須使用您的運動傳感器</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>這APP必須使用您的圖庫才能完整呈現全部功能</string>
-	<key>NSRemindersUsageDescription</key>
-	<string>這APP必須使用reminder才能正常運行</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

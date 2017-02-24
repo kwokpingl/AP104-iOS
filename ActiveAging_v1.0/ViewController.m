@@ -14,6 +14,8 @@
 #import "EditEventViewController.h"
 #import <NotificationCenter/NotificationCenter.h>
 
+#define WIDGET_NAME @"group.ActiveAging.TodayExtensionSharingDefaults"
+
 static void * __KVOContext;
 
 @interface ViewController () <NCWidgetProviding, FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance, UITableViewDelegate, UITableViewDataSource, EKEventEditViewDelegate, UIGestureRecognizerDelegate> {
@@ -45,6 +47,7 @@ static void * __KVOContext;
 @end
 
 @implementation ViewController
+
 #pragma mark - Chinese Calendar
 -(void) chineseCalendar {
     self.calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-TW"];
@@ -56,10 +59,53 @@ static void * __KVOContext;
     lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
 }
 
+#pragma mark - widgetConfiguration
+- (void) widgetConfiguration {
+    NSUserDefaults * sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WIDGET_NAME];
+    
+    [_eventManager sortTimeOrder:[NSDate date] complete:^(NSMutableArray *eventArray) {
+        NSMutableArray * eventsForWidget = [[NSMutableArray alloc] initWithArray:eventArray];
+        
+        EKEvent * event;
+        NSString * dateStr;
+        NSString * eventTitle;
+        
+        NSMutableArray * widgetEvent = [NSMutableArray new];
+        
+        if (eventsForWidget.count != 0) {
+            
+            for (int i = 0; i < eventsForWidget.count; i++) {
+                   event = [eventsForWidget objectAtIndex:i];
+            
+                NSDateFormatter * today = [NSDateFormatter new];
+                today.dateFormat = @"HH:mm";
+                
+                dateStr = [today stringFromDate:event.startDate];
+                eventTitle = event.title;
+                
+                NSMutableDictionary * dict = [NSMutableDictionary new];
+                dict = [@{@"today date":dateStr, @"event title":eventTitle} mutableCopy];
+                    
+                [widgetEvent addObject:dict];
+                //the first object contains the latest date and title...
+            }
+        }
+
+        [sharedDefaults setObject:widgetEvent forKey:@"eventsArray"];
+    }];
+    
+    [sharedDefaults synchronize];
+}
+
 #pragma mark - viewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+//    UIImage * backgroundImage = [UIImage imageNamed:@"1.jpg"];
+//    UIImageView * backgroundImageView = [[UIImageView alloc] initWithImage:backgroundImage];
+//    backgroundImageView.alpha = 0.5;
+//    [self.view insertSubview:backgroundImageView atIndex:0];
     
 #pragma mark - calendar appearance setup
     _calendar.appearance.adjustsFontSizeToFitContentSize = false;
@@ -79,10 +125,6 @@ static void * __KVOContext;
     eventStore = [EKEventStore new];
     
     [self requestAccessToEventType];
-    
-//    NSString * dateString = [dateFormatter stringFromDate:[NSDate date]];
-    
-//    NSLog(@"%@", dateString);
     
     chosenDate = [NSDate date];
     
@@ -113,9 +155,8 @@ static void * __KVOContext;
         self.preferredContentSize = CGSizeMake(340, self.calendarHeight.constant);
     }
     
-//    [self configureLoadView];
     [self chineseCalendar];
-//    [self loadEventCalendars];
+    [self widgetConfiguration];
 }
 
 #pragma mark - Request access
@@ -137,6 +178,8 @@ static void * __KVOContext;
         {
             NSLog(@"%@", error);
         }
+        
+        _eventManager.eventsAccessGranted = true;
     }];
 }
 
@@ -204,8 +247,6 @@ static void * __KVOContext;
         [calendar setCurrentPage:date animated:YES];
     }
     
-//    NSString * te = [dateFormatter stringFromDate:date];
-//    NSLog(@"%@", te);
     [_eventManager sortTimeOrder:date complete:^(NSMutableArray *eventArray) {
         allEventsArray = [[NSMutableArray alloc] initWithArray:eventArray];
         [_tableView reloadData];
@@ -232,7 +273,7 @@ static void * __KVOContext;
     if (activeDisplayMode == NCWidgetDisplayModeCompact) {
         
         [self.calendar setScope:FSCalendarScopeWeek animated:YES];
-        self.calendar.appearance.headerMinimumDissolvedAlpha = 0;
+        self.calendar.appearance.headerMinimumDissolvedAlpha = 0.5;
         
     } else if (activeDisplayMode == NCWidgetDisplayModeExpanded) {
         
@@ -298,6 +339,7 @@ static void * __KVOContext;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     BOOL shouldBegin = self.tableView.contentOffset.y <= -self.tableView.contentInset.top;
+    
     if (shouldBegin) {
         CGPoint velocity = [self.scopeGesture velocityInView:self.view];
         switch (self.calendar.scope) {
@@ -344,7 +386,6 @@ static void * __KVOContext;
         NSString * endDateString = [timeFormatter stringFromDate:new.endDate];
         
         NSLog(@"am: %@\npm: %@\n", startDateString, endDateString);
-        
     
         cell.eventTitle.text = new.title;
         cell.startTimeLabel.text = startDateString;
@@ -355,6 +396,9 @@ static void * __KVOContext;
         cell.startTimeLabel.text = @"";
         cell.endtimeLabel.text = @"";
     }
+    
+//    cell.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
+    
     return cell;
 }
 

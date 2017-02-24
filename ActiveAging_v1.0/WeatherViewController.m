@@ -10,8 +10,15 @@
 #import <LBBlurredImage/UIImageView+LBBlurredImage.h>
 #import "WeatherManager.h"
 
+#define WIDGET_NAME @"group.ActiveAging.TodayExtensionSharingDefaults"
+
 @interface WeatherViewController () <CLLocationManagerDelegate> {
     CLLocationManager * locationManager;
+    UILabel * temperatureLabel;
+    UILabel * conditionsLabel;
+    UIImageView * iconView;
+    UILabel * hiloLabel;
+    NSString * imageName;
 }
 
 @property (nonatomic, strong) UIImageView * backgrounImageView;
@@ -40,6 +47,31 @@
         _dailyFormatter.locale = twLocale;
     }
     return self;
+}
+
+#pragma mark - widgetConfiguration
+-(void) widgetConfiguration {
+    NSUserDefaults * sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WIDGET_NAME];
+    
+    [sharedDefaults setObject:temperatureLabel.text forKey:@"currentTempTxt"];
+
+    [sharedDefaults setObject:conditionsLabel.text forKey:@"currentConditions"];
+    
+//    NSData * imageData = UIImagePNGRepresentation(iconView.image);
+//    NSString * imagePath =
+//    [sharedDefaults setObject:imageData forKey:@"currentWeatherIcon"];
+    
+    NSString * imageFilePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString * imagePath = [imageFilePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", imageName]];
+    imagePath = [imagePath stringByAppendingPathExtension:@".png"];
+    
+    NSData * imageData = UIImagePNGRepresentation(iconView.image);
+    [imageData writeToFile:imagePath atomically:YES];
+    
+    [sharedDefaults setObject:imagePath forKey:@"imageURL"];
+    
+    [sharedDefaults synchronize];
 }
 
 #pragma mark - viewDidLoad
@@ -82,7 +114,7 @@
     //3
     CGFloat temperatureHeight = 110;
     CGFloat hiloHeight = 40;
-    CGFloat iconHeight = 30;
+    CGFloat iconHeight = 80;
     
     //4
     CGRect hiloFrame = CGRectMake(inset,
@@ -101,8 +133,8 @@
                                   iconHeight);
     //5
     CGRect conditionsFrame = iconFrame;
-    conditionsFrame.size.width = self.view.bounds.size.width - (((2 * inset) + iconHeight) + 10);
-    conditionsFrame.origin.x = iconFrame.origin.x + (iconHeight + 10);
+    conditionsFrame.size.width = self.view.bounds.size.width - (((2 * inset) + iconHeight) + 30);
+    conditionsFrame.origin.x = iconFrame.origin.x + (iconHeight + 30);
     
 #pragma mark - set up labels
     //1
@@ -111,18 +143,19 @@
     self.tableView.tableHeaderView = header;
     
     //2 - bottom left
-    UILabel * temperatureLabel = [[UILabel alloc] initWithFrame:temperatureFrame];
+    temperatureLabel = [[UILabel alloc] initWithFrame:temperatureFrame];
     temperatureLabel.backgroundColor = [UIColor clearColor];
-    temperatureLabel.textColor = [UIColor orangeColor];
+    temperatureLabel.textColor = [UIColor blackColor];
+//    UIFont * boldFont = [UIFont fontWithName:@"%@-Bold", currentFont. size:<#(CGFloat)#>]
     temperatureLabel.text = @"0°";
-    temperatureLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:120];
+    temperatureLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:120];
     [header addSubview:temperatureLabel];
     
-    UILabel * hiloLabel = [[UILabel alloc] initWithFrame: hiloFrame];
+    hiloLabel = [[UILabel alloc] initWithFrame: hiloFrame];
     hiloLabel.backgroundColor = [UIColor clearColor];
-    hiloLabel.textColor = [UIColor orangeColor];
+    hiloLabel.textColor = [UIColor blackColor];
     hiloLabel.text = @"0° / 0°";
-    hiloLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:28];
+    hiloLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:28];
     [header addSubview:hiloLabel];
     
     // top
@@ -134,14 +167,14 @@
     //    cityLabel.textAlignment = NSTextAlignmentCenter;
     //    [header addSubview:cityLabel];
     
-    UILabel * conditionsLabel = [[UILabel alloc] initWithFrame:conditionsFrame];
+    conditionsLabel = [[UILabel alloc] initWithFrame:conditionsFrame];
     conditionsLabel.backgroundColor = [UIColor clearColor];
-    conditionsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:45];
-    conditionsLabel.textColor = [UIColor orangeColor];
+    conditionsLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:45];
+    conditionsLabel.textColor = [UIColor blackColor];
     [header addSubview: conditionsLabel];
     
     //3 - bottom left
-    UIImageView * iconView = [[UIImageView alloc] initWithFrame:iconFrame];
+    iconView = [[UIImageView alloc] initWithFrame:iconFrame];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.backgroundColor = [UIColor clearColor];
     [header addSubview:iconView];
@@ -158,13 +191,17 @@
          
          // 3
          //Updates the text labels with weather data; you’re using newCondition for the text and not the singleton. The subscriber parameter is guaranteed to be the new value
-         temperatureLabel.text = [NSString stringWithFormat:@"%.0f°",newCondition.temperature.floatValue];
+         temperatureLabel.text = [NSString stringWithFormat:@"%.0f°C",newCondition.temperature.floatValue];
          conditionsLabel.text = [newCondition.condition capitalizedString];
          //         cityLabel.text = [newCondition.locationName capitalizedString];
          
          // 4
          //Uses the mapped image file name to create an image and sets it as the icon for the view
          iconView.image = [UIImage imageNamed:[newCondition imageName]];
+         
+         imageName = [newCondition imageName];
+         
+         [self widgetConfiguration];
      }];
     
 #pragma mark - ReactiveCocoa Bindings
@@ -220,6 +257,12 @@
     self.tableView.frame = bounds;
 }
 
+//- (void)imageIdentity: (UIImage * )currentIcon{
+//    [currentIcon setAccessibilityIdentifier:@"image name"];
+//    
+//    image_name = [currentIcon accessibilityIdentifier];
+//}
+
 //=================== TableView ========================//
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -270,8 +313,8 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.detailTextLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.textColor = [UIColor blackColor];
+    cell.detailTextLabel.textColor = [UIColor blackColor];
     
     return cell;
 }
@@ -293,7 +336,7 @@
 }
 
 - (void)configureHourlyCell:(UITableViewCell *)cell weather:(WeatherCondition *)weather {
-    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:30];
+    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:30];
     cell.detailTextLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:30];
     
     NSLocale * twLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
@@ -321,7 +364,7 @@
     NSString * dailyWeather = [_dailyFormatter stringFromDate:weather.date];
     cell.textLabel.text = dailyWeather;
     
-    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:25];
+    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:25];
     cell.detailTextLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:25];
 //    cell.textLabel.text = [self.dailyFormatter stringFromDate:weather.date];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f°C / %.0f°C",
