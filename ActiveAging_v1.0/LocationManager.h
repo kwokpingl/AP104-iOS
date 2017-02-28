@@ -6,19 +6,27 @@
 //  Copyright © 2017年 PING. All rights reserved.
 //
 
+#import "Definitions.h"
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+
+@protocol LocationManagerDelegate <NSObject>
+- (void) locationControllerDidUpdateLocation: (CLLocation *) location;
+@end
+
 
 @interface LocationManager : NSObject
-@property (nonatomic, strong) CLLocationManager * locationMgr;
-@property (nonatomic, strong) CLLocation * currentLocation;
-@property (nonatomic) int numberOfObserver;
+@property (strong, nonatomic) CLLocationManager * locationMgr;
+@property (strong, nonatomic) CLLocation * location;
+@property (nonatomic) BOOL accessGranted;
+@property (nonatomic) BOOL isUpdatingLocation;
+@property (weak, nonatomic) id delegate;
 
-+ (LocationManager*) shareInstance;
++ (instancetype) shareInstance;
 - (void) startUpdatingLocation;
 - (void) stopUpdatingLocation;
+
 - (double) distanceFromLocationUsingLongitude: (CLLocationDegrees) longitude Latitude: (CLLocationDegrees) latitude;
-- (UIAlertController *) serviceEnableAlert;
-- (UIAlertController *) permissionAlert;
 @end

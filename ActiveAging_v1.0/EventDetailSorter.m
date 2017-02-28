@@ -33,8 +33,6 @@
 + (void) returnArrayWithDictionaryFrom:(NSDictionary *) unsortedDict
                          KeyDictionary:(NSMutableDictionary *)keyDictionary
                               complete: (ArraySorter) finalMArray{
-    // keyDictionary {MY_SORTING_KEYS:[DATABASE_KEYS]}
-    // finalMArray [{MY_SORTING_KEYS: {DATABSE_KEYS: VALUE}}]
     
     NSMutableArray * returnArray = [NSMutableArray new];
     NSMutableDictionary * innerDictionary = [NSMutableDictionary new];

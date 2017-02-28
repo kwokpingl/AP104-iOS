@@ -8,14 +8,20 @@
 
 #import "HomePageViewController.h"
 #import "WeatherManager.h"
+#import "EmergencyButton.h"
 
 @interface HomePageViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *weatherBtn;
+@property (weak, nonatomic) IBOutlet UIButton *activityBtn;
+@property (weak, nonatomic) IBOutlet UIButton *calendarBtn;
+@property (weak, nonatomic) IBOutlet UIButton *contactBtn;
+@property (weak, nonatomic) IBOutlet UIButton *settingsBtn;
+@property (weak, nonatomic) IBOutlet UIButton *mapBtn;
+@property (weak, nonatomic) IBOutlet EmergencyButton *emergencyBtn;
 
 @end
 
@@ -46,6 +52,14 @@
      }];
     
     [[WeatherManager sharedManager] findCurrentLocation];
+    
+    
+    
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    
+    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 }
 
 -(void) showClock {
@@ -58,18 +72,8 @@
     timeFormatter.dateStyle = NSDateFormatterNoStyle;
     timeFormatter.timeStyle = NSDateFormatterShortStyle;
     timeFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
-//    NSLog(@"%@", [timeFormatter stringFromDate:now]);
     
     _timeLabel.text = [timeFormatter stringFromDate:now];
-    
-//#pragma mark - set _timeLabel Background Image
-//    UIImage * timeBackgroundImage = [UIImage imageNamed:@"HaTime"];
-//    CGSize imgSize = _timeLabel.frame.size;
-//    UIGraphicsBeginImageContext(imgSize);
-//    [timeBackgroundImage drawInRect:CGRectMake(0, 0, imgSize.width, imgSize.height)];
-//    UIImage * newTimeImage = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    _timeLabel.backgroundColor = [UIColor colorWithPatternImage:newTimeImage];
     
 #pragma mark - set _dateLabel
     dateFormatter.dateStyle = NSDateFormatterLongStyle;
@@ -78,6 +82,8 @@
 //    NSLog(@"%@", [dateFormatter stringFromDate:now]);
     
     _dateLabel.text = [dateFormatter stringFromDate:now];
+    
+    [self setup];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,14 +91,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void) setup{
+    [_timeLabel setFrame:CGRectMake(0, 0, self.view.frame.size.width/2.0, self.view.frame.size.height/5.0)];
+    [_timeLabel setBounds:CGRectMake(self.view.frame.size.width/2.0, self.view.frame.size.height/4, _timeLabel.frame.size.width, _timeLabel.frame.size.height)];
 }
-*/
+
 
 @end

@@ -11,7 +11,7 @@
 #import "WeatherManager.h"
 
 #define WIDGET_NAME @"group.ActiveAging.TodayExtensionSharingDefaults"
-
+//static NSInteger count = 0;
 @interface WeatherViewController () <CLLocationManagerDelegate> {
     CLLocationManager * locationManager;
     UILabel * temperatureLabel;
@@ -19,9 +19,10 @@
     UIImageView * iconView;
     UILabel * hiloLabel;
     NSString * imageName;
+    UIImage * bkg;
 }
 
-@property (nonatomic, strong) UIImageView * backgrounImageView;
+@property (nonatomic, strong) UIImageView * backgroundImageView;
 @property (nonatomic, strong) UIImageView * blurredImageView;
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, assign) CGFloat screenHeight;
@@ -43,7 +44,7 @@
         _hourlyFormatter.locale = twLocale;
         
         _dailyFormatter = [NSDateFormatter new];
-        _dailyFormatter.dateFormat =@"EEEE";
+        _dailyFormatter.dateFormat = @"EEEE";
         _dailyFormatter.locale = twLocale;
     }
     return self;
@@ -57,20 +58,6 @@
 
     [sharedDefaults setObject:conditionsLabel.text forKey:@"currentConditions"];
     
-//    NSData * imageData = UIImagePNGRepresentation(iconView.image);
-//    NSString * imagePath =
-//    [sharedDefaults setObject:imageData forKey:@"currentWeatherIcon"];
-    
-    NSString * imageFilePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
-    NSString * imagePath = [imageFilePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", imageName]];
-    imagePath = [imagePath stringByAppendingPathExtension:@".png"];
-    
-    NSData * imageData = UIImagePNGRepresentation(iconView.image);
-    [imageData writeToFile:imagePath atomically:YES];
-    
-    [sharedDefaults setObject:imagePath forKey:@"imageURL"];
-    
     [sharedDefaults synchronize];
 }
 
@@ -82,27 +69,21 @@
 #pragma mark - set up Image View & table View
     //1
     self.screenHeight = [UIScreen mainScreen].bounds.size.height;
-    UIImage * background = [UIImage imageNamed:@"LaunchScreen"];
-    
-    //2
-    self.backgrounImageView = [[UIImageView alloc] initWithImage:background];
-    self.backgrounImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.view addSubview:self.backgrounImageView];
+     self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     
     //3
     self.blurredImageView = [UIImageView new];
     self.blurredImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.blurredImageView.alpha = 0;
-    [self.blurredImageView setImageToBlur:background blurRadius:10 completionBlock:nil];
-    [self.view addSubview:self.blurredImageView];
     
     //4
-    self.tableView = [UITableView new];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorColor = [UIColor colorWithWhite:1 alpha:0.2];
     self.tableView.pagingEnabled = YES;
+    [self.tableView addSubview:self.blurredImageView];
     [self.view addSubview:self.tableView];
     
 #pragma mark - set up frames and margins
@@ -146,7 +127,6 @@
     temperatureLabel = [[UILabel alloc] initWithFrame:temperatureFrame];
     temperatureLabel.backgroundColor = [UIColor clearColor];
     temperatureLabel.textColor = [UIColor blackColor];
-//    UIFont * boldFont = [UIFont fontWithName:@"%@-Bold", currentFont. size:<#(CGFloat)#>]
     temperatureLabel.text = @"0°";
     temperatureLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:120];
     [header addSubview:temperatureLabel];
@@ -158,19 +138,12 @@
     hiloLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:28];
     [header addSubview:hiloLabel];
     
-    // top
-    //    UILabel * cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, 30)];
-    //    cityLabel.backgroundColor = [UIColor clearColor];
-    //    cityLabel.textColor = [UIColor whiteColor];
-    //    cityLabel.text = @"Loading";
-    //    cityLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
-    //    cityLabel.textAlignment = NSTextAlignmentCenter;
-    //    [header addSubview:cityLabel];
-    
     conditionsLabel = [[UILabel alloc] initWithFrame:conditionsFrame];
     conditionsLabel.backgroundColor = [UIColor clearColor];
     conditionsLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:45];
     conditionsLabel.textColor = [UIColor blackColor];
+    conditionsLabel.numberOfLines = 0;
+    conditionsLabel.adjustsFontSizeToFitWidth = true;
     [header addSubview: conditionsLabel];
     
     //3 - bottom left
@@ -180,6 +153,7 @@
     [header addSubview:iconView];
     
 #pragma mark - Observe the current Condition
+    
     //1
     //Observes the currentCondition key on the WeatherManager singleton
     [[RACObserve([WeatherManager sharedManager], currentCondition)
@@ -193,13 +167,40 @@
          //Updates the text labels with weather data; you’re using newCondition for the text and not the singleton. The subscriber parameter is guaranteed to be the new value
          temperatureLabel.text = [NSString stringWithFormat:@"%.0f°C",newCondition.temperature.floatValue];
          conditionsLabel.text = [newCondition.condition capitalizedString];
-         //         cityLabel.text = [newCondition.locationName capitalizedString];
          
          // 4
          //Uses the mapped image file name to create an image and sets it as the icon for the view
-         iconView.image = [UIImage imageNamed:[newCondition imageName]];
+         
+         NSDate * date = [NSDate date];
+         NSDateFormatter * dateformat = [NSDateFormatter new];
+         dateformat.dateFormat = @"HH";
+         NSString * currentdate = [dateformat stringFromDate:date];
+         
+         if ([[newCondition imageName] isEqualToString:@"few"]) {
+             if ([currentdate floatValue] >= 18.0 || [currentdate floatValue] <= 6.0) {
+                 iconView.image = [UIImage imageNamed:@"few-night"];
+                 
+             } else {
+                 iconView.image = [UIImage imageNamed:@"few-day"];
+             }
+         }
+         else {
+             iconView.image = [UIImage imageNamed:[newCondition imageName]];
+         }
          
          imageName = [newCondition imageName];
+        
+         [self.backgroundImageView setImage:[self setBackgroundImage]];
+         self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+         [self.blurredImageView setImageToBlur:self.backgroundImageView.image completionBlock:nil];
+         [self.backgroundImageView addSubview:_blurredImageView];
+         [self.view insertSubview:_backgroundImageView atIndex:0];
+         
+         for(UIView * subview in self.view.subviews){
+             NSLog(@"Classes: %@", subview.class);
+         }
+         
+         NSLog(@"============================");
          
          [self widgetConfiguration];
      }];
@@ -238,10 +239,47 @@
      }];
     
     [[WeatherManager sharedManager] findCurrentLocation];
-    
-    //[[WeatherManager sharedManager] init];
+
     
 } //end of viewDidLoad
+
+- (UIImage * ) setBackgroundImage {
+    
+    NSDate * date = [NSDate date];
+    NSDateFormatter * dateformat = [NSDateFormatter new];
+    dateformat.dateFormat = @"HH";
+    NSString * currentdate = [dateformat stringFromDate:date];
+    
+    if ([imageName isEqualToString:@"tstorm"]) {
+        bkg = [UIImage imageNamed:@"tstormBg"];
+    }
+    
+    else if ([imageName isEqualToString:@"moon"]) {
+        bkg = [UIImage imageNamed:@"nightClear"];
+    }
+    
+    else if ([imageName isEqualToString:@"rain"] || [imageName isEqualToString:@"shower"]) {
+        bkg = [UIImage imageNamed:@"rainBg"];
+    }
+    
+    else if ([imageName isEqualToString:@"sunny"]) {
+        bkg = [UIImage imageNamed:@"sunnyBg"];
+    }
+    
+    else if ([imageName isEqualToString:@"broken"] || [imageName isEqualToString:@"few"]) {
+        
+        if ([currentdate floatValue] >= 18.0 || [currentdate floatValue] <= 6.0) {
+            bkg = [UIImage imageNamed:@"brokenN"];
+        } else {
+            bkg = [UIImage imageNamed:@"sunset"];
+        }
+    }
+    
+    else {
+       bkg = [UIImage imageNamed:@"LaunchScreen"];
+    }
+    return bkg;
+}
 
 -(UIStatusBarStyle) preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
@@ -252,16 +290,10 @@
     
     CGRect bounds = self.view.bounds;
     
-    self.backgrounImageView.frame = bounds;
+    self.backgroundImageView.frame = bounds;
     self.blurredImageView.frame = bounds;
     self.tableView.frame = bounds;
 }
-
-//- (void)imageIdentity: (UIImage * )currentIcon{
-//    [currentIcon setAccessibilityIdentifier:@"image name"];
-//    
-//    image_name = [currentIcon accessibilityIdentifier];
-//}
 
 //=================== TableView ========================//
 #pragma mark - UITableViewDataSource
@@ -351,6 +383,8 @@
     
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f°C",weather.temperature.floatValue];
     cell.imageView.image = [UIImage imageNamed:[weather imageName]];
+    NSLog(@"%@",imageName);
+    NSLog(@"%@",cell.imageView.image);
     cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
@@ -358,18 +392,18 @@
     
     NSLocale * twLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
     _dailyFormatter = [NSDateFormatter new];
-    _dailyFormatter.dateFormat =@"EEEE";
+    _dailyFormatter.dateFormat = @"EEEE";
     _dailyFormatter.locale = twLocale;
     
     NSString * dailyWeather = [_dailyFormatter stringFromDate:weather.date];
     cell.textLabel.text = dailyWeather;
-    
     cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:25];
+    
     cell.detailTextLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:25];
-//    cell.textLabel.text = [self.dailyFormatter stringFromDate:weather.date];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f°C / %.0f°C",
                                  weather.tempHigh.floatValue,
                                  weather.tempLow.floatValue];
+    
     cell.imageView.image = [UIImage imageNamed:[weather imageName]];
     cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
 }
@@ -384,7 +418,7 @@
     //2
     //Divide the offset by the height with a maximum of 1 so that your offset is capped at 100%
     CGFloat percent = MIN(position / height, 1.0);
-    
+    NSLog(@"%.2f", percent);
     //3
     //Assign the resulting value to the blur image’s alpha property to change how much of the blurred image you’ll see as you scroll
     self.blurredImageView.alpha = percent;

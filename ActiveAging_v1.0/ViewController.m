@@ -39,7 +39,6 @@ static void * __KVOContext;
     NSMutableArray * allEventsArray;
 }
 
-
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet FSCalendar *calendar;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeight;
@@ -101,6 +100,7 @@ static void * __KVOContext;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    self.tableView.tableFooterView = [UITableView new];
     
 //    UIImage * backgroundImage = [UIImage imageNamed:@"1.jpg"];
 //    UIImageView * backgroundImageView = [[UIImageView alloc] initWithImage:backgroundImage];
@@ -147,13 +147,13 @@ static void * __KVOContext;
 //    self.calendar.scope = FSCalendarScopeWeek;
     self.calendar.scope = FSCalendarScopeMonth;
     
-    if ([self.extensionContext respondsToSelector:@selector(setWidgetLargestAvailableDisplayMode:)]) {
-        
-        self.extensionContext.widgetLargestAvailableDisplayMode = NCWidgetDisplayModeExpanded;
-        
-    } else {
-        self.preferredContentSize = CGSizeMake(340, self.calendarHeight.constant);
-    }
+//    if ([self.extensionContext respondsToSelector:@selector(setWidgetLargestAvailableDisplayMode:)]) {
+//        
+//        self.extensionContext.widgetLargestAvailableDisplayMode = NCWidgetDisplayModeExpanded;
+//        
+//    } else {
+//        self.preferredContentSize = CGSizeMake(340, self.calendarHeight.constant);
+//    }
     
     [self chineseCalendar];
     [self widgetConfiguration];
@@ -282,21 +282,21 @@ static void * __KVOContext;
     }
 }
 
-- (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler
-{
+//- (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler
+//{
     // Perform any setup necessary in order to update the view.
     
     // If an error is encountered, use NCUpdateResultFailed
     // If there's no update required, use NCUpdateResultNoData
     // If there's an update, use NCUpdateResultNewData
     
-    completionHandler(NCUpdateResultNewData);
-}
+//    completionHandler(NCUpdateResultNewData);
+//}
 
-- (UIEdgeInsets)widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets
-{
-    return UIEdgeInsetsZero;
-}
+//- (UIEdgeInsets)widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets
+//{
+//    return UIEdgeInsetsZero;
+//}
 
 #pragma mark - UIColor calendar
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date
@@ -396,9 +396,9 @@ static void * __KVOContext;
         cell.startTimeLabel.text = @"";
         cell.endtimeLabel.text = @"";
     }
-    
+
 //    cell.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
-    
+
     return cell;
 }
 
@@ -433,6 +433,8 @@ static void * __KVOContext;
         if (allEventsArray.count != 0){
             editEventViewController.event = allEventsArray[indexPath.row];
         }
+        
+        
         
         //Allow event editing
         editEventViewController.allowsEditing = true;
@@ -470,7 +472,7 @@ static void * __KVOContext;
                
                 //Re-fetch all events happening in the next 24 hrs
                  [_eventManager sortTimeOrder:[NSDate date] complete:^(NSMutableArray *eventArray) {
-                     
+                     [self widgetConfiguration];
                  }];
                 
                 //Update the UI with the above events

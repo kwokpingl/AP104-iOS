@@ -17,7 +17,6 @@
     NSMutableArray * eventsArray;
 }
 
-@property (weak, nonatomic) IBOutlet UIImageView *weatherImageView;
 @property (weak, nonatomic) IBOutlet UILabel *currentTempLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentWeatherConditionsLabel;
 @property (weak, nonatomic) IBOutlet UITableView *eventsTable;
@@ -28,20 +27,26 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.extensionContext.widgetLargestAvailableDisplayMode = NCWidgetDisplayModeCompact|NCWidgetDisplayModeExpanded;
     
-    self.preferredContentSize = CGSizeMake(320.0, 320.0);
-    self.extensionContext.widgetLargestAvailableDisplayMode = NCWidgetDisplayModeExpanded;
     _eventsTable.delegate = self;
     _eventsTable.dataSource = self;
+    
     [self updateWidgetInfo];
-    [self.view setBackgroundColor:[UIColor blackColor]];
+    [self.view setBackgroundColor:[UIColor clearColor]];
+    self.preferredContentSize = CGSizeMake(0, 100.0);
+//    self.preferredContentSize = CGSizeMake(320.0, 320.0);
 }
 
 - (void) widgetActiveDisplayModeDidChange:(NCWidgetDisplayMode)activeDisplayMode withMaximumSize:(CGSize)maxSize {
     
     if (activeDisplayMode == NCWidgetDisplayModeExpanded) {
         self.preferredContentSize = CGSizeMake(320.0, 320.0);
+        
     } else if (activeDisplayMode == NCWidgetDisplayModeCompact) {
         self.preferredContentSize = CGSizeMake(0, 100.0);
     }
@@ -53,6 +58,10 @@
 }
 
 - (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler {
+    self.preferredContentSize = CGSizeMake(320.0, 320.0);
+    [self updateWidgetInfo];
+
+    [_eventsTable reloadData];
     // Perform any setup necessary in order to update the view.
     
     // If an error is encountered, use NCUpdateResultFailed
@@ -84,15 +93,18 @@
     
 #pragma mark - temperature
     NSString * temperatureTxt = [defaults stringForKey:@"currentTempTxt"];
+    self.currentTempLabel.numberOfLines = 0;
+    self.currentTempLabel.adjustsFontSizeToFitWidth = true;
     self.currentTempLabel.text = temperatureTxt;
     
     NSString * currentConditions = [defaults stringForKey:@"currentConditions"];
     self.currentWeatherConditionsLabel.text = currentConditions;
+    self.currentWeatherConditionsLabel.adjustsFontSizeToFitWidth = true;
     
-    NSString * imagePath = [defaults objectForKey:@"imageURL"];
-    self.weatherImageView.image = [UIImage imageWithContentsOfFile:imagePath];
-    
-    [UIImage imageWithData:[NSData dataWithContentsOfFile:imagePath]];
+//    NSString * imagePath = [defaults objectForKey:@"imageURL"];
+//    self.weatherImageView.image = [UIImage imageWithContentsOfFile:imagePath];
+//    
+//    [UIImage imageWithData:[NSData dataWithContentsOfFile:imagePath]];
     
 #pragma mark - Events calendar
     eventsArray = [NSMutableArray new];
@@ -102,7 +114,6 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
     if (eventsArray.count == 0) {
         return 1;
     }
@@ -123,14 +134,25 @@
     
         cell.titleLabel.text = eventsArray[indexPath.row][@"event title"];
     }
-    
+    cell.titleLabel.font = [UIFont systemFontOfSize:25];
     cell.timeLabel.text = eventsArray[indexPath.row][@"today date"];
-
+    cell.timeLabel.font = [UIFont systemFontOfSize:20];
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSURL * appURL = [NSURL URLWithString:@"activeAging://"];
     
+    [self.extensionContext openURL:appURL completionHandler:^(BOOL success) {
+        
+        NSError * error;
+        
+        if (error) {
+            NSLog(@"%@", error.description);
+        }
+    }];
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
 }
 
 @end

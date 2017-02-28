@@ -15,6 +15,7 @@ static UserInfo * userInfo = nil;
     NSString * _password;
     UIImage * _profileImg;
     NSInteger _userID;
+    BOOL shareLocation;
 }
 + (instancetype) shareInstance{
     if (userInfo == nil){
@@ -23,6 +24,12 @@ static UserInfo * userInfo = nil;
     return userInfo;
 }
 
+- (id) init {
+    self = [super init];
+    
+    shareLocation = [[[NSUserDefaults standardUserDefaults] objectForKey:@"shareLocation"] boolValue];
+    return self;
+}
 
 - (void) setUserInfo: (NSString *) username userPassword: (NSString *) password{
     _username = username;
@@ -35,6 +42,16 @@ static UserInfo * userInfo = nil;
 
 - (void) setUserID:(NSInteger)userID{
     _userID = userID;
+}
+
+- (void) changeShareLocation{
+    
+    shareLocation = !shareLocation;
+    
+    NSString * shareLocationString = [NSString stringWithFormat:@"%d", shareLocation];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:shareLocationString forKey:@"shareLocation"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString *) getUsername{
@@ -51,5 +68,9 @@ static UserInfo * userInfo = nil;
 
 - (NSInteger) getUserID{
     return _userID;
+}
+
+- (BOOL) isShareLocation {
+    return shareLocation;
 }
 @end

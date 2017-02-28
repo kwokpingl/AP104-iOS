@@ -19,9 +19,9 @@
     //Map the condition codes to an image file (e.g. “01d” to “weather-clear.png”)
     if (!_imageMap) {
         _imageMap = @{
-                      @"800" : @"sunny",
-                      @"801" : @"few",
-                      @"802" : @"few",
+                      @"800" : @"weather-clear",
+                      @"801" : @"few-day",
+                      @"802" : @"few-day",
                       @"803" : @"broken", //04d
                       @"804" : @"broken", //04d
                       
@@ -81,8 +81,8 @@
                       @"781" : @"mist",
                       
                       @"800" : @"moon", //01n //img check
-                      @"801" : @"few-night", //02n //img check
-                      @"802" : @"few-night", //03n
+//                      @"801" : @"few", //02n //img check
+//                      @"802" : @"few", //03n
                       @"803" : @"broken", //04n
                       @"804" : @"broken", //04n //img check
 //                      @"09n" : @"weather-shower",

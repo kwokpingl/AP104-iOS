@@ -8,248 +8,232 @@
 
 #import "MapViewController.h"
 #import "ServerManager.h"
+#import "DataManager.h"
 #import "SQLite3DBManager.h"
-#import <CoreLocation/CoreLocation.h>
+#import "LocationManager.h"
+#import "ImageManager.h"
+#import "UserInfo.h"
+#import "ContactTableViewCell.h"
+#import "MemberDetailViewController.h"
+#import "MemberAnnotationView.h"
+#import "MemberPointAnnotation.h"
 #import <MapKit/MapKit.h>
+#import "MKMapView+Autoadjustment.h"
 
 
-static dispatch_once_t onceToken;
-@interface MapViewController () <MKMapViewDelegate, CLLocationManagerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource>
+
+typedef enum : NSUInteger {
+    noSelection,
+    personalGroups,
+    otherGroups,
+    activities,
+} GeneralGroups;
+
+typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nullable error);
+
+@interface MapViewController () <MKMapViewDelegate,UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource, LocationManagerDelegate, MemberDetailViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet MKMapView *mapview;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
 @property (weak, nonatomic) IBOutlet UIView *groupView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *memberDetailView;
+@property (weak, nonatomic) IBOutlet UISwitch *shareLocationSwitch;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *directionStyleSwitcher;
 
+@property (strong, nonatomic) NSArray * generalGroupList;
+@property (strong, nonatomic) NSMutableArray * groupList;
+@property (strong, nonatomic) NSMutableArray * targetGroupList;
+@property (strong, nonatomic) NSMutableDictionary * friendListDict;
+@property (strong, nonatomic) NSMutableArray * targetFriendList;
+@property (strong, nonatomic) NSMutableArray * eventsLocations;
+@property (strong, nonatomic) NSMutableArray * hospitalLocations;
+@property (strong, nonatomic) NSMutableArray * policeStationLocations;
+
+@property (strong, nonatomic) MKRoute * currentRoute;
+@property (strong, nonatomic) MKPolyline * routeOverlay;
+@property (strong, nonatomic) NSArray <MKRouteStep *> * routeStep;
+@property (strong, nonatomic) UIViewController * currentVC;
+@property (assign) CLLocationCoordinate2D targetLocation;
 @end
 
 @implementation MapViewController{
     
     ServerManager * _serverMgr;
-    
-    CLLocationManager * cllocationMgr;
-    MKAnnotationView * mkAnnotation;
+    LocationManager * _locationMgr;
+    UserInfo * _userInfo;
     CLLocation * specificLocation;
     MKPolyline * polyLine;
+    MKDirectionsTransportType transportationType;
     
     BOOL shareLocation;
-    NSArray * dummyArray;
-    NSDictionary * dummyDictionary;
-    NSString * chosenGroup;
-    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    cllocationMgr = [CLLocationManager new];
-    [_mapview setShowsUserLocation:true];
-    shareLocation = false;
-    
-//    UITapGestureRecognizer * tap = [UITapGestureRecognizer new];
-//    [tap addTarget:self action:@selector(endEditing)];
-//    [self.view addGestureRecognizer:tap];
-    
-    
-    // REQUEST PERMISSION
-    if([cllocationMgr respondsToSelector:@selector(requestAlwaysAuthorization)]){
-        [cllocationMgr requestWhenInUseAuthorization];
-        _mapview.delegate = self;
-    }else{
-        UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"錯誤" message:@"請允許我們用您的定位系統以便讓您享用我們ＡＰＰ的完整服務" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction * ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:ok];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    
-    [cllocationMgr setDesiredAccuracy:kCLLocationAccuracyBest];
-    [cllocationMgr setActivityType:CLActivityTypeAutomotiveNavigation];
-    [cllocationMgr setAllowsBackgroundLocationUpdates:true];
-    cllocationMgr.delegate = self;
-    [cllocationMgr startUpdatingLocation];
-    
-    
-    
-    // SETUP PICKERVIEW
-    _pickerview.delegate = self;
-    _pickerview.dataSource = self;
-    
-    // SETUP TABLEVIEW
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    
-    
-    // SETUP GROUP_VIEW
-    [_groupView setHidden:true];
-    
-    
-    // SETUP the DUMMY DICTIONARY FOR LATER USE
-    /*
-     self needed:
-     // shall be saved in local database
-     1. group_ID
-     2. role
-     
-     keys needed are:
-     1. group_ID
-     1. user_ID
-     2. user_Name
-     3. user_Lon
-     4. user_Lat
-     5. user_PIC
-     */
-    
-    NSArray * group1 = @[
-  @{USER_ID_KEY:@"100",
-    USER_NAME_KEY:@"AlbertLEE",
-    USER_CUR_LAT_KEY:@"23",
-    USER_CUR_LON_KEY:@"120"},
-  @{USER_ID_KEY:@"101",
-    USER_NAME_KEY:@"AlexALA",
-    USER_CUR_LAT_KEY:@"34",
-    USER_CUR_LON_KEY:@"120"},
-  @{USER_ID_KEY:@"102",
-    USER_NAME_KEY:@"AmyMcDonald",
-    USER_CUR_LAT_KEY:@"34",
-    USER_CUR_LON_KEY:@"120"},
-  @{USER_ID_KEY:@"103",
-    USER_NAME_KEY:@"Adam",
-    USER_CUR_LAT_KEY:@"34",
-    USER_CUR_LON_KEY:@"120"}];
-    
-    NSArray * group2 = @[
-  @{USER_ID_KEY:@"104",
-    USER_NAME_KEY:@"BenEthen",
-    USER_CUR_LAT_KEY:@"23",
-    USER_CUR_LON_KEY:@"120"},
-  @{USER_ID_KEY:@"105",
-    USER_NAME_KEY:@"BakeryLoaf",
-    USER_CUR_LAT_KEY:@"34",
-    USER_CUR_LON_KEY:@"120"},
-  @{USER_ID_KEY:@"106",
-    USER_NAME_KEY:@"BackStabber",
-    USER_CUR_LAT_KEY:@"34",
-    USER_CUR_LON_KEY:@"120"},
-  @{USER_ID_KEY:@"107",
-    USER_NAME_KEY:@"BackToSchool",
-    USER_CUR_LAT_KEY:@"34",
-    USER_CUR_LON_KEY:@"120"}];
-    
-    NSArray * group3 = @[
-  @{USER_ID_KEY:@"108",
-    USER_NAME_KEY:@"CatLady",
-    USER_CUR_LAT_KEY:@"23",
-    USER_CUR_LON_KEY:@"120"},
-  @{USER_ID_KEY:@"109",
-    USER_NAME_KEY:@"CattaPuss",
-    USER_CUR_LAT_KEY:@"34",
-    USER_CUR_LON_KEY:@"120"},
-  @{USER_ID_KEY:@"110",
-    USER_NAME_KEY:@"CalvinKen",
-    USER_CUR_LAT_KEY:@"34",
-    USER_CUR_LON_KEY:@"120"},
-  @{USER_ID_KEY:@"111",
-    USER_NAME_KEY:@"CloverChan",
-    USER_CUR_LAT_KEY:@"34",
-    USER_CUR_LON_KEY:@"120"}];
-    
-    
-    
-    dummyDictionary = @{@"groups":@[@"group1",@"group2",@"group3"],
-                        @"group1":group1,
-                        @"group2":group2,
-                        @"group3":group3};
-    dummyArray = dummyDictionary[@"groups"];
-}
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    // SETUP SINGLETONs
+    _locationMgr = [LocationManager shareInstance];
+    if (_locationMgr.accessGranted){
+        [_locationMgr startUpdatingLocation];
+    }
+    _locationMgr.delegate = self;
+    _userInfo = [UserInfo shareInstance];
+    
+    
+    // Prepare data
+    [DataManager updateContactDatabase];
+    shareLocation = [[[NSUserDefaults standardUserDefaults]
+                      objectForKey:@"shareLocation"] boolValue];
+    
+    // SETUP VIEWS
+    [_mapview setShowsUserLocation:true];
+    [_mapview setDelegate:self];
+    [_pickerview setDelegate:self];
+    [_pickerview setDataSource:self];
+    [_tableView setDelegate:self];
+    [_tableView setDataSource:self];
+    [_groupView setHidden:true];
+    [_memberDetailView setHidden:true];
+    [_shareLocationSwitch setOn:shareLocation];
+    
+    [self setupInfo];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    [cllocationMgr startUpdatingLocation];
+    [[LocationManager shareInstance] startUpdatingLocation];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [_mapview locatePointA:_locationMgr.location.coordinate];
 }
 
 
-#pragma mark - MAP
--(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
-    static NSString * pinAnnotation = @"friend";
+#pragma mark - LOCATION MANAGER
+- (void) locationControllerDidUpdateLocation: (CLLocation *) location{
     
+    // Update the database
+    [DataManager updateContactDatabase];
+    
+    if ([_currentVC isKindOfClass:[MemberDetailViewController class]] && ![_memberDetailView isHidden]){
+        NSInteger userID = ((MemberDetailViewController *) _currentVC).userID;
+        NSArray * tempArray = [DataManager fetchUserInfoFromTableWithUserID:userID];
+        NSLog(@"tempArray : %@", tempArray);
+        CLLocationDegrees lon = [tempArray.lastObject[USER_CUR_LON_KEY] doubleValue];
+        CLLocationDegrees lat = [tempArray.lastObject[USER_CUR_LAT_KEY] doubleValue];
+        
+        _targetLocation = CLLocationCoordinate2DMake(lat, lon);
+    }
+    
+    if (CLLocationCoordinate2DIsValid(_targetLocation)){
+        [self showDirection:_targetLocation];
+    }
+    
+    if (![_groupView isHidden]){
+        [_tableView reloadData];
+    }
+}
+
+#pragma mark - MAP
+/// MARK: ANNOTATION
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
+    // return nil if annotation @ userLocation
     if (annotation == mapView.userLocation){
         return nil;
     }
     
-    MKPinAnnotationView * pinView = (MKPinAnnotationView *) [mapView dequeueReusableAnnotationViewWithIdentifier:pinAnnotation];
+    float distance = ((MemberAnnotationView *) annotation).distance;
+    MemberAnnotationView * pin = [[MemberAnnotationView alloc] initWithAnnotation:annotation distance:distance];
     
-    // set the PIN
-    if (pinView == nil){
-        pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:pinAnnotation];
-    } else {
-        pinView.annotation = annotation;
-    }
-    [pinView setCanShowCallout:true];
-    return pinView;
+    return pin;
 }
 
 -(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay{
-    MKPolylineRenderer * line = [[MKPolylineRenderer alloc] initWithPolyline:polyLine];
-    [line setLineWidth:7.0];
+    MKPolylineRenderer * line = [[MKPolylineRenderer alloc] initWithPolyline:overlay];
+    [line setLineWidth:5.0];
+    [line setStrokeColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.5]];
     return line;
 }
 
-
-#pragma mark - CLLOCATION
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
-    CLLocation * myLocation = locations.lastObject;
+-(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
     
-    CLLocationCoordinate2D myCoordinate = CLLocationCoordinate2DMake(myLocation.coordinate.latitude, myLocation.coordinate.longitude);
+    [_mapview setRegionBetweenA:[view.annotation coordinate] andB:_locationMgr.location.coordinate];
     
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.01, 0.01);
-    
-    MKCoordinateRegion  region = MKCoordinateRegionMake(myCoordinate, span);
-    
-    dispatch_once(&onceToken, ^{
-        [_mapview setRegion:region];
-        [self showFriendAnnotation];
-    });
-}
-
--(void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region{
-    
+    _targetLocation = view.annotation.coordinate;
+    [self showDirection:_targetLocation];
 }
 
 #pragma mark - PICKER
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    return 1;
+    return 2;
 }
 
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-    return dummyArray.count+1;
+    if (component == 0)
+    {
+        return _generalGroupList.count;
+    }
+    return _targetGroupList.count;
 }
 
-//-(UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
-//    
-//}
-
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
-    NSMutableArray * tempArray = [NSMutableArray new];
     
-    [tempArray addObject:@"請選擇"];
-    [tempArray addObjectsFromArray:dummyArray];
-    return  tempArray[row];
+    if (component == 0)
+    {
+        return _generalGroupList[row];
+    }
+    return _targetGroupList[row][GROUP_NAME_KEY];
 }
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    if (row != 0){
-        row = row-1;
-        chosenGroup = dummyArray[row];
-        [_groupView setHidden:false];
-        [_tableView reloadData];
-    } else {
-        [_groupView setHidden:true];
-        onceToken = 0;
+    
+    [_mapview removeAnnotations:_mapview.annotations];
+    
+    if (component == 0)
+    {
+        // User pick the GENERAL group
+        _targetGroupList = [NSMutableArray new];
+        [_targetGroupList addObject:@{GROUP_ID_KEY:@(0),
+                                      GROUP_NAME_KEY: @"請選組",
+                                      USER_ROLE_KEY:@(0)}];
+        switch (row) {
+            case personalGroups:
+                [_targetGroupList addObjectsFromArray:_groupList[0]];
+                break;
+            case otherGroups:
+                [_targetGroupList addObjectsFromArray:_groupList[1]];
+                break;
+            case activities: // need to set another SQL_Table?
+                _targetGroupList = [NSMutableArray new];
+                break;
+            default:
+                _targetGroupList = [NSMutableArray new];
+                [_mapview locatePointA:_locationMgr.location.coordinate];
+                break;
+        }
+        [_pickerview reloadComponent:1];
+        [_pickerview selectRow:0 inComponent:1 animated:true];
     }
+    else{
+        _targetFriendList = [NSMutableArray new];
+        [_targetFriendList addObject:@{USER_NAME_KEY:@"全部"}];
+        if (_targetGroupList.count > 1){
+            NSInteger groupID = [_targetGroupList[row][GROUP_ID_KEY] integerValue];
+            if (groupID == 0)
+            {
+                _targetFriendList = [NSMutableArray new];
+                [_groupView setHidden:true];
+                [_directionStyleSwitcher setHidden:false];
+            }
+            else
+            {
+                [_targetFriendList addObjectsFromArray:_friendListDict[@(groupID)]];
+                [_groupView setHidden:false];
+                [_directionStyleSwitcher setHidden:true];
+                [_tableView reloadData];
+            }
+        }
+    }
+    
 }
 
 
@@ -257,17 +241,57 @@ static dispatch_once_t onceToken;
 
 #pragma mark - TABLEVIEW
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSArray * tempArray = dummyDictionary[chosenGroup];
-    return tempArray.count;
+    return _targetFriendList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSArray * tempArray = dummyDictionary[chosenGroup];
+    ContactTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     
-    cell.textLabel.text = tempArray[indexPath.row][USER_NAME_KEY];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"(%@,%@", tempArray[indexPath.row][USER_CUR_LAT_KEY], tempArray[indexPath.row][USER_CUR_LON_KEY]];
+    cell.titleLabel.text = _targetFriendList[indexPath.row][USER_NAME_KEY];
+    [cell.titleLabel setNumberOfLines:0];
+    if (indexPath.row == 0){
+        cell.subtitleLabel.text = @"";
+    }
+    else{
+        if (_targetFriendList[indexPath.row][USER_CUR_LON_KEY] != [NSNull null]
+            && _targetFriendList[indexPath.row][USER_CUR_LAT_KEY] != [NSNull null]){
+            
+            CLLocationDegrees lon = [_targetFriendList[indexPath.row][USER_CUR_LON_KEY] doubleValue];
+            CLLocationDegrees lat = [_targetFriendList[indexPath.row][USER_CUR_LAT_KEY] doubleValue];
+            
+            CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lon);
+            
+            [self getETA:location withDonehandler:^(MKETAResponse * _Nullable response, NSError * _Nullable error) {
+                NSString * expectedTime = @"";
+                if (error){
+                    expectedTime = @"UNKNONW";
+                }
+                else{
+                    
+                    NSTimeInterval minutes = response.expectedTravelTime/60.0;
+                    
+                    if (minutes>= 60.0){
+                        
+                        expectedTime = [NSString stringWithFormat:@"距離 %d 小時 %d分鐘",
+                                        (int)minutes/60, (int)minutes%60];
+                    }
+                    
+                    else if (minutes < 60) {
+                        expectedTime = [NSString stringWithFormat:@"距離 %d 分鐘", (int) minutes];
+                    }
+                    else {
+                        expectedTime = @"太遠了";
+                    }
+                    [cell.subtitleLabel setNumberOfLines:0];
+                    cell.subtitleLabel.text = expectedTime;
+                }
+            }];
+        }
+        else {
+            cell.subtitleLabel.text = @"UNKNOWN";
+        }
+    }
     
     return cell;
 }
@@ -275,18 +299,63 @@ static dispatch_once_t onceToken;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [_groupView setHidden:true];
+    CLLocationDegrees lon;
+    CLLocationDegrees lat;
     
-    NSArray * memberArray = dummyDictionary[chosenGroup];
+    UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    CLLocationDegrees lat = [memberArray[indexPath.row][USER_CUR_LAT_KEY] doubleValue];
-    CLLocationDegrees lon = [memberArray[indexPath.row][USER_CUR_LON_KEY] doubleValue];
-    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat, lon);
+    // show all people, change the span and center below
+
+    if (indexPath.row == 0)
+    {
+        // show most people in the map together
+        NSMutableArray * coordinates = [NSMutableArray new];
+        for (int i = 1; i < _targetFriendList.count; i++){
+            [coordinates addObject:@[_targetFriendList[i][USER_CUR_LAT_KEY], _targetFriendList[i][USER_CUR_LON_KEY]]];
+        }
+        
+        [coordinates addObject:@[@(_locationMgr.location.coordinate.latitude), @(_locationMgr.location.coordinate.longitude)]];
+        
+        [_mapview recenterMap:coordinates];
+        [_mapview removeOverlay:_routeOverlay];
+    }
+    else
+    {
+        if (![cell.detailTextLabel.text isEqualToString:@"UNKNOWN"]){
+            lon = [_targetFriendList[indexPath.row][USER_CUR_LON_KEY] doubleValue];
+            lat = [_targetFriendList[indexPath.row][USER_CUR_LAT_KEY] doubleValue];
+            _targetLocation = CLLocationCoordinate2DMake(lat, lon);
+            [_mapview setRegionBetweenA:_targetLocation andB:_locationMgr.location.coordinate];
+            
+            [self showDirection:_targetLocation];
+            
+            MemberDetailViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"MemberDetailViewController"];
+            vc.delegate = self;
+            vc.userID = [_targetFriendList[indexPath.row][USER_ID_KEY] integerValue];
+            
+            [self setSubView:vc];
+            
+        }
+    }
+    [_mapview removeAnnotations:_mapview.annotations];
+    [self showFriendAnnotation];
+    [_directionStyleSwitcher setHidden:false];
     
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.3, 0.3);
-//    MKOverlayRenderer 
-    MKCoordinateRegion region = MKCoordinateRegionMake(location, span);
-    [_mapview setRegion:region];
 }
+
+/// MARK: TABLE_VIEW_PROPERTIES
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 40.0;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 5.0;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 5.0;
+}
+
 
 
 #pragma mark - BUTTONS
@@ -297,47 +366,166 @@ static dispatch_once_t onceToken;
 - (IBAction)shouldShareLocationSwitch:(id)sender {
     if (shareLocation){
         shareLocation = !shareLocation;
+        [_userInfo changeShareLocation];
     }
 }
 
+- (IBAction)travelTypeSwitching:(UISegmentedControl *)sender {
+    if (sender.selectedSegmentIndex == 0){
+        transportationType = MKDirectionsTransportTypeWalking;
+    }
+    else{
+        transportationType = MKDirectionsTransportTypeAutomobile;
+    }
+    if (CLLocationCoordinate2DIsValid(_targetLocation)){
+        [self showDirection:_targetLocation];
+    }
+}
 
 #pragma mark - PRIVATE METHODS
-- (void) showFriendAnnotation{
-    NSArray * keys = [[NSArray alloc] initWithArray:dummyDictionary[@"groups"]];
-    
-    for (int i = 0; i<keys.count; i++){
-        NSArray * tempArray = dummyDictionary[keys[i]];
+/// MARK: MAP_RELATED
+- (void) showFriendAnnotation {
+    if (_targetFriendList.count > 0){
+        
+        MemberPointAnnotation * annotation;
         CLLocationCoordinate2D location;
-        MKPointAnnotation * friendPAnnotation;
-        for (int i = 0; i < tempArray.count ; i++){
-            CLLocationDegrees lat = [tempArray[i][USER_CUR_LAT_KEY] doubleValue];
-            CLLocationDegrees lon = [tempArray[i][USER_CUR_LON_KEY] doubleValue];
+        
+        for (int i = 1; i < _targetFriendList.count; i++){
             
-            location = CLLocationCoordinate2DMake(lat, lon);
-            //        MKPinAnnotationView *
+            if (_targetFriendList[i][USER_CUR_LAT_KEY] != [NSNull null] && _targetFriendList[i][USER_CUR_LON_KEY] != [NSNull null]){
             
-            friendPAnnotation = [MKPointAnnotation new];
-            [friendPAnnotation setTitle:tempArray[i][USER_NAME_KEY]];
-            [friendPAnnotation setCoordinate:location];
+                CLLocationDegrees lat = [_targetFriendList[i][USER_CUR_LAT_KEY] doubleValue];
+                CLLocationDegrees lon = [_targetFriendList[i][USER_CUR_LON_KEY] doubleValue];
+                location = CLLocationCoordinate2DMake(lat, lon);
+                annotation = [MemberPointAnnotation new];
+                
+                [annotation setTitle:_targetFriendList[i][USER_NAME_KEY]];
+                [annotation setCoordinate:location];
+                annotation.distance = [_locationMgr distanceFromLocationUsingLongitude:lon Latitude:lat];
+                
+                [_mapview addAnnotation:annotation];
+            }
         }
-        [friendPAnnotation setSubtitle:keys[i]];
-        [_mapview addAnnotation:friendPAnnotation];
+        
+    }
 
+}
+
+
+- (void) showDirection : (CLLocationCoordinate2D) destination {
+    MKDirectionsRequest * directionRequest = [MKDirectionsRequest new];
+    MKMapItem * sourceMapItem = [MKMapItem mapItemForCurrentLocation];
+    MKPlacemark * destinationPlacemark = [[MKPlacemark alloc] initWithCoordinate:destination];
+    MKMapItem * destinationMapItem = [[MKMapItem alloc] initWithPlacemark:destinationPlacemark];
+    [directionRequest setSource:sourceMapItem];
+    [directionRequest setDestination:destinationMapItem];
+    [directionRequest setTransportType:transportationType];
+    
+    MKDirections * directions = [[MKDirections alloc] initWithRequest:directionRequest];
+    [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse * _Nullable response, NSError * _Nullable error) {
+        if (error){
+            NSLog(@"ERRROR in MKDirections : %@", error);
+            return;
+        }
+        _currentRoute = [response.routes firstObject];
+        [self plotRouteOnMap:_currentRoute];
+    }];
+    
+}
+
+- (void) plotRouteOnMap: (MKRoute *) route {
+    if (_routeOverlay){
+        [_mapview removeOverlay:_routeOverlay];
+    }
+    
+    // Update
+    _routeOverlay = route.polyline;
+    [_mapview addOverlay:_routeOverlay level:MKOverlayLevelAboveRoads];
+    
+    _routeStep = route.steps;
+    
+    if (_currentVC && [_currentVC isKindOfClass:[MemberDetailViewController class]]){
+        [((MemberDetailViewController *) _currentVC) setNextStep:[NSString stringWithFormat:@"%@", _routeStep.firstObject.instructions]];
+    }
+
+}
+
+/// GET ESTIMATED TIME of ARRIVAL
+- (void) getETA : (CLLocationCoordinate2D) destination withDonehandler: (MKETAHandler) handler {
+    MKDirectionsRequest * directionRequest = [MKDirectionsRequest new];
+    [directionRequest setSource:[MKMapItem mapItemForCurrentLocation]];
+    MKPlacemark * destinationPlacemark = [[MKPlacemark alloc] initWithCoordinate:destination];
+    MKMapItem * destinationMapItem = [[MKMapItem alloc] initWithPlacemark:destinationPlacemark];
+    [directionRequest setDestination:destinationMapItem];
+    [directionRequest setTransportType:transportationType];
+    MKDirections * directions = [[MKDirections alloc] initWithRequest:directionRequest];
+    [directions calculateETAWithCompletionHandler:handler];
+}
+
+#pragma mark - SETUPs
+- (void) setupInfo {
+    // 0. setup GENERAL GROUP LIST
+    _generalGroupList = @[@"請選擇",
+                          @"個人群組",
+                          @"其他群組",
+                          @"我的活動",
+                          @"顯示全部"];
+    
+    
+    _groupList = [NSMutableArray new]; // contains the groups' name
+    _friendListDict = [NSMutableDictionary new];
+    _targetGroupList = [NSMutableArray new];
+    _targetFriendList = [NSMutableArray new];
+    
+    // 1. update the Database from Server
+    [DataManager updateContactDatabase];
+    
+    // 2. setup GROUP_LIST
+//    [_groupList addObjectsFromArray:[DataManager fetchDatabaseFromTable:GROUP_LIST_TABLE]];
+    
+    [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:1]];
+    [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:-1]];
+    
+    NSMutableArray * tempGroups = [NSMutableArray new];
+    [tempGroups addObjectsFromArray:[DataManager fetchDatabaseFromTable:GROUP_LIST_TABLE]];
+    
+    // 3. setup FRIEND_LIST (based on GROUPS)
+    for (int i = 0; i < tempGroups.count; i++){
+        NSInteger groupID = [tempGroups[i][GROUP_ID_KEY] integerValue];
+        NSArray * tempArray = [[NSArray alloc] initWithArray:[DataManager fetchUserInfoFromTableWithGroupID:groupID]];
+        [_friendListDict setObject:tempArray forKey:@(groupID)];
     }
 }
 
-- (void) endEditing{
-    [self.view endEditing:true];
+- (void) setSubView: (UIViewController *) vc {
+    for (UIView * view in [_memberDetailView subviews])
+    {
+        [view removeFromSuperview];
+    }
+    
+    if (_currentVC)
+    {
+        [_currentVC willMoveToParentViewController:nil];
+    }
+    else
+    {
+        [vc willMoveToParentViewController:self];
+        
+        [self addChildViewController:vc];
+    }
+    
+    [vc.view setFrame:(CGRect){{0,0},_memberDetailView.frame.size}];
+    [_memberDetailView addSubview:vc.view];
+    [_memberDetailView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+    [_memberDetailView setClipsToBounds:true];
+    _currentVC = vc;
+    [_memberDetailView setHidden:false];
+    
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+
+#pragma mark - MemberDetailView Delegate
+
 
 @end

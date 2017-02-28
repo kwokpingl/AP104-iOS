@@ -28,4 +28,8 @@ typedef void (^Donehandler)(NSMutableArray * eventArray);
 
 //-(void) newEventToBeAdded: (NSArray *)newEvent;
 -(void) newEventToBeAdded: (NSDictionary *) newEvent complete: (Donehandler) done;
+
+- (void) eventToBeRemoved: (NSDictionary *) event complete:(Donehandler) done;
+
+-(void) checkNewEvetn:(NSDictionary *)newEvent complete:(Donehandler)done;
 @end

@@ -22,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *firstnameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *phoneNumberTextField;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property (weak, nonatomic) IBOutlet UILabel *hintLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *hintImageView;
 
 
 @end
@@ -44,11 +46,13 @@
     _phoneNumberTextField.delegate  = self;
     
     // KEYBOARD_TYPE
-    _firstnameTextField.keyboardType = UIKeyboardTypeAlphabet;
-    _firstnameTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-    _lastnameTextField.keyboardType = UIKeyboardTypeAlphabet;
-    _lastnameTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+    _firstnameTextField.keyboardType = UIKeyboardTypeDefault;
+//    _firstnameTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+    
+    _lastnameTextField.keyboardType = UIKeyboardTypeDefault;
+//    _lastnameTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
     _phoneNumberTextField.keyboardType = UIKeyboardTypeNumberPad;
+    
     
     
     // SETUP GESTURE
@@ -68,13 +72,45 @@
 }
 
 
-#pragma mark - TEXTFIELD_BUTTON_GESTURE
+#pragma mark - TEXTFIELD_DELEGATE
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [self validation:ACTION_CHECK];
     [textField resignFirstResponder];
     return true;
 }
 
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    
+    if (textField == _phoneNumberTextField){
+        NSString * newString = [textField.text
+                                stringByReplacingCharactersInRange:range
+                                withString:string];
+        return !([newString length]>PHONE_NUMBER_LENGTH);
+    }
+    
+    return true;
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+    if (textField == _phoneNumberTextField){
+        NSPredicate * phoneNumberPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",PHONE_NUMBER_REX];
+        
+        BOOL match = [phoneNumberPredicate evaluateWithObject:textField.text];
+        
+        if (!match){
+            [_hintLabel setNumberOfLines:0];
+            _hintLabel.text = @"請輸入正確手機號碼喔\n09開頭的\n共十位數字";
+        }
+        else{
+            _hintLabel.text = @"";
+        }
+        return match;
+    }
+    
+    return true;
+}
+
+#pragma mark - BUTTON
 - (IBAction)nextButtonPressed:(id)sender {
 //    [self validation:ACTION_ADD];
     [self performSegueWithIdentifier:@"confirmation" sender:self];
@@ -86,10 +122,21 @@
 }
 
 #pragma mark - PRIVATE_METHODS
+
+- (BOOL) validatingString:(NSString *)inputString withRegEx:(NSString *) regEx{
+    
+    
+    
+    
+    return true;
+}
+
+
+
 - (void) validation : (NSString *) action {
     if (![_lastnameTextField.text isEqualToString:@""] &&
         ![_firstnameTextField.text isEqualToString:@""] &&
-        (_phoneNumberTextField.text.length == 10)){
+        (_phoneNumberTextField.text.length == 10) ){
         
         NSString * username = [_lastnameTextField.text stringByAppendingString:_firstnameTextField.text];
         
@@ -109,6 +156,7 @@
         }];
         
     } else {
+        
         [_nextButton setEnabled:false];
     }
 

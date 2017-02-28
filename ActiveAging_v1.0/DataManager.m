@@ -38,10 +38,14 @@
     query = [NSString stringWithFormat:@"create table %@ (%@ int primary key,%@ text,%@ int)", GROUP_LIST_TABLE, GROUP_ID_KEY, GROUP_NAME_KEY, USER_ROLE_KEY];
     [sqlMgr executeQuery:query];
     
+    // FOR EVENTS
+//    query = [NSString stringWithFormat:@"create table %@ (%@ int primary key, %@ text, %@ "]
+    
     // FOR EMERGENCY CONTACTS
     query = [NSString stringWithFormat:@"create table %@ (%@ integer primary key autoincrement, %@ text, %@ text)",EMERGENCY_TABLE, USER_ID_KEY, USER_NAME_KEY, USER_PHONENUMBER_KEY];
     [sqlMgr executeQuery:query];
 }
+
 
 + (void) updateContactDatabase{
     ServerManager * serverMgr = [ServerManager shareInstance];
@@ -85,11 +89,62 @@
 }
 
 
+#pragma mark - RETRIEVE INFO
+/// MARK: with_TABLE_name
 + (NSMutableArray *) fetchDatabaseFromTable: (NSString *) table{
     
-    SQLite3DBManager * sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
-    
     NSString * query = [NSString stringWithFormat:@"select * from %@", table];
+    
+    return [self getArrayUsingQuery:query];
+
+}
+
+/// MARK: with_USERID
++ (NSMutableArray *) fetchUserInfoFromTableWithUserID: (NSInteger) userID{
+
+    NSString * query;
+    NSString * idString;
+    
+    // You can only search from CONTACT_LIST_TABLE
+    
+    idString = [NSString stringWithFormat:@"%ld", userID];
+    query = [NSString stringWithFormat:@"select * from `%@` where `%@` = '%@'", CONTACT_LIST_TABLE, USER_ID_KEY, idString];
+    
+    return  [self getArrayUsingQuery:query];
+}
+
+/// MARK: with_GROUPID
++ (NSMutableArray *) fetchUserInfoFromTableWithGroupID: (NSInteger) groupID {
+    
+    NSString * query;
+    NSString * idString;
+    
+    // You can only search from CONTACT_LIST_TABLE
+    
+    idString = [NSString stringWithFormat:@"%ld", groupID];
+    query = [NSString stringWithFormat:@"select * from `%@` where `%@` = '%@'", CONTACT_LIST_TABLE, GROUP_ID_KEY, idString];
+    
+    return  [self getArrayUsingQuery:query];
+}
+
+/// MARK: with_ROLE
++ (NSMutableArray *) fetchGroupsFromTableWithRole: (NSInteger) role {
+    
+    NSString * query;
+    NSString * roleString;
+    
+    // You can only search from CONTACT_LIST_TABLE
+    
+    roleString = [NSString stringWithFormat:@"%ld", role];
+    query = [NSString stringWithFormat:@"select * from `%@` where `%@` = '%@'", GROUP_LIST_TABLE, USER_ROLE_KEY, roleString];
+    
+    return  [self getArrayUsingQuery:query];
+}
+
+#pragma mark - PRIVATE METHODs
+/// MARK: RETURN_INFO_in_ARRAY
++ (NSMutableArray *) getArrayUsingQuery: (NSString *) query{
+    SQLite3DBManager * sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
     
     NSArray * dataFromTable = [sqlMgr loadDataFromDB:query];
     
@@ -107,16 +162,7 @@
         }
         [dataArray addObject:dataDictionary];
     }
-    
-//    NSLog(@"%@", dataFromTable);
-//    for (NSString * key in columnNames) {
-//        [dataDictionary setObject:dataFromTable[counter] forKey:key];
-//        counter ++;
-//    }
-    
     return dataArray;
 }
-
-
 
 @end

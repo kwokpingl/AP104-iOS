@@ -29,6 +29,15 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>activeAging</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSApplicationCategoryType</key>
@@ -68,6 +77,10 @@
 	<string>這APP必須使用您的運動傳感器</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>這APP必須使用您的圖庫才能完整呈現全部功能</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Tensentype-XiaoXiaoXinF.ttf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
