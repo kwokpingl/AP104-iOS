@@ -16,8 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *trackerBtn;
 @property (weak, nonatomic) IBOutlet UIView *trackingView;
 @property (weak, nonatomic) IBOutlet UILabel *trackerLabel;
-
-
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
 
@@ -26,36 +25,63 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [_callingBtn addTarget:self action:@selector(makeACall:) forControlEvents:UIControlEventTouchUpInside];
+    
     [_imageView setContentMode:UIViewContentModeScaleAspectFit];
-    [_cancelBtn addTarget:self action:@selector(cancelBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [ImageManager getUserImage:_userID completion:^(NSError *error, id result) {
-        if (error){
-            NSLog(@"Error: %@", error);
-        }
-        else{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [_imageView setImage:[UIImage imageWithData:result]];
-                [_imageView setContentMode:UIViewContentModeScaleAspectFit];
-            });
-        }
-        
-    }];
+    [_imageView.layer setCornerRadius:_imageView.frame.size.height/2.5];
+    [_imageView.layer setMasksToBounds:true];
+    if (_userID != 0){
+        [ImageManager getUserImage:_userID completion:^(NSError *error, id result) {
+            if (error){
+                NSLog(@"Error: %@", error);
+            }
+            else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_imageView setImage:[UIImage imageWithData:result]];
+                });
+            }
+            
+        }];
+    } else if (_userID == -1){
+        [_imageView setImage:_customImage];
+    } else {
+        [ImageManager getEventImage:_eventImageName completion:^(NSError *error, id result) {
+            if (error){
+                NSLog(@"Error: %@", error);
+            }
+            else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_imageView setImage:[UIImage imageWithData:result]];
+                });
+            }
+        }];
+    }
     UIImage * image = [UIImage imageNamed:@"callBtn"];
-    [_cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
-    [_callingBtn setBackgroundImage:image forState:UIControlStateNormal];
-    [_callingBtn setContentMode:UIViewContentModeScaleAspectFit];
+    [_callingBtn addTarget:self action:@selector(makeACall:) forControlEvents:UIControlEventTouchUpInside];
     [_callingBtn setTitle:@"" forState:UIControlStateNormal];
+    [_callingBtn setBackgroundImage:image forState:UIControlStateNormal];
+    [_callingBtn.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [_callingBtn setPhoneNumber:_phoneNumber];
+    
+    [_cancelBtn addTarget:self action:@selector(cancelBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [_cancelBtn.titleLabel setFont:[UIFont systemFontOfSize:25]];
+    [_cancelBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    
     [_trackerBtn setTitle:@"導航" forState:UIControlStateNormal];
     [_trackerBtn addTarget:self action:@selector(showTracker) forControlEvents:UIControlEventTouchUpInside];
-    [_trackerBtn.titleLabel setFont:[UIFont fontWithName:@"System" size:25]];
+    [_trackerBtn.titleLabel setFont:[UIFont systemFontOfSize:25]];
+    [_trackerBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    
+    
     [_trackingView setHidden:true];
+    
     [_trackerLabel setNumberOfLines:0];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    [_titleLabel setText:_name];
+    [_titleLabel setNumberOfLines:0];
+    [_titleLabel setFont:[UIFont systemFontOfSize:25]];
+    [_titleLabel setAdjustsFontSizeToFitWidth:true];
+    
 }
 
 - (void) makeACall: (CallButton *) sender{
@@ -84,6 +110,5 @@
     [_imageView setHidden:true];
     [_trackerBtn setEnabled:false];
 }
-
 
 @end

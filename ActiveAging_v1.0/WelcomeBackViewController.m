@@ -7,7 +7,7 @@
 //
 
 #import "WelcomeBackViewController.h"
-#import "HomePageViewController.h"
+#import "DataManager.h"
 
 @interface WelcomeBackViewController ()
 
@@ -24,6 +24,10 @@
     [button setTitle:@"Press ME" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [self.view addSubview:button];
+    
+    [DataManager prepareDatabase];
+    [DataManager updateContactDatabase];
+    [DataManager updateEventDatabase];
     
 }
 

@@ -60,7 +60,7 @@ static LocationManager * _myLocationMgr;
             
             _locationMgr = [[CLLocationManager alloc] init];
             _locationMgr.delegate = self;
-            [_locationMgr setDesiredAccuracy:kCLLocationAccuracyBest];
+            [_locationMgr setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
             [_locationMgr setDistanceFilter:DISTANCE_FILTER_30M];
             [_locationMgr setAllowsBackgroundLocationUpdates:true];
             [self setAccessGranted:true];
@@ -86,7 +86,7 @@ static LocationManager * _myLocationMgr;
     }
     
     if ([[UserInfo shareInstance] isShareLocation]){
-//        serMgr 
+#warning Update Position
     }
     
 }
@@ -130,7 +130,6 @@ static LocationManager * _myLocationMgr;
     CLLocation * targetLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
     
     double distanceMeter = [_location distanceFromLocation:targetLocation];
-//    double distanceKilo = distanceMeter/1000.0;
     double distanceInSteps = distanceMeter / AVERAGE_STRIDE_LENGTH;
     return distanceInSteps;
 }
@@ -159,6 +158,14 @@ static LocationManager * _myLocationMgr;
     }
     
     return true;
+}
+
+- (void) startMonitoringSignificatnLocationChanges {
+    if (!_isUpdatingLocation){
+        [_locationMgr startMonitoringSignificantLocationChanges];
+        _isUpdatingLocation = !_isUpdatingLocation;
+    }
+    
 }
 
 @end

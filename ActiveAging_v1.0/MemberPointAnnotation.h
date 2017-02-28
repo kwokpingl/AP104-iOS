@@ -10,4 +10,5 @@
 
 @interface MemberPointAnnotation : MKPointAnnotation
 @property float distance;
+@property NSInteger tag;
 @end

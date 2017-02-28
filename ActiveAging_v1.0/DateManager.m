@@ -38,7 +38,7 @@
     NSDate * date = [formatter dateFromString:dateString];
     formatter = [NSDateFormatter new];
     [formatter setDateStyle:NSDateFormatterLongStyle];
-    [formatter setTimeStyle:NSDateFormatterNoStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
     
     NSLocale * locale = [NSLocale currentLocale];
     NSString * language = [locale objectForKey:NSLocaleLanguageCode];

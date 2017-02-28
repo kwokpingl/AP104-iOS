@@ -35,25 +35,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+}
+
+- (void) viewDidAppear:(BOOL)animated{
     [self.view setBackgroundColor:[UIColor clearColor]];
     
     locationMgr = [LocationManager shareInstance];
     locationMgr.delegate = self;
     if (locationMgr.accessGranted && !locationMgr.isUpdatingLocation){
-        [locationMgr startUpdatingLocation];
+        [locationMgr startMonitoringSignificatnLocationChanges];
     }
     
     _mapView.delegate = self;
     [self setup];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
--(void)viewWillDisappear:(BOOL)animated{
-    [locationMgr stopUpdatingLocation];
+    [self mapSetup];
 }
 
 -(void)locationControllerDidUpdateLocation:(CLLocation *)location{
@@ -100,7 +95,16 @@
             
             [_mapView setShowsUserLocation:true];
             [_mapView addAnnotation:eventAnnotation];
-            [_mapView setRegionBetweenA:eventCoordinate andB:locationMgr.location.coordinate];
+            if (locationMgr.location)
+            {
+                [_mapView setRegionBetweenA:eventCoordinate andB:locationMgr.location.coordinate];
+            }
+            else
+            {
+                MKCoordinateSpan span = {0.01,0.01};
+                MKCoordinateRegion region = MKCoordinateRegionMake(eventCoordinate, span);
+                [_mapView setRegion:region animated:false];
+            }
             
             double distance = [locationMgr distanceFromLocationUsingLongitude:[lon doubleValue] Latitude:[lat doubleValue]];
             NSString * unit = @"步";

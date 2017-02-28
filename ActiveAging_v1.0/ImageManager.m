@@ -11,38 +11,76 @@
 
 @implementation ImageManager{
 }
+
+#pragma mark - SAVE IMAGEs
 + (void) saveImageWithFileName: (NSString *)imageFileName ImageData:(NSData *) imageData{
     
     NSURL * fullTargetURL = [ImageManager getFullURLWithFileName:imageFileName];
+    
+#warning SET IMAGE SIZE?
+    
     [imageData writeToURL:fullTargetURL atomically:true];
 }
 
+#pragma mark - GET IMAGEs
 + (void) getUserImage: (NSInteger) userID completion:(DoneHandler) done{
     NSString * imageName = [NSString stringWithFormat:@"%ld_profile.jpg", userID];
-    [self getImageFromServer:USER_PIC_URL WithImageName:imageName completion:done];
+    UIImage * image = [self loadImageWithFileName:imageName];
+    if (image == nil){
+        [self getImageFromServer:USER_PIC_URL WithImageName:imageName completion:^(NSError *error, id result) {
+            if (!error){
+                [ImageManager saveImageWithFileName:imageName ImageData:result];
+                done(nil, result);
+            }
+            else {
+                NSLog(@"ERROR GETTING USER IMAGE : %@", error);
+                done(error, nil);
+            }
+        }];
+    }
+    else {
+        NSData * result = UIImageJPEGRepresentation(image, 0.7);
+        done(nil,result);
+    }
 }
-
 
 + (void) getEventImage: (NSString *) eventImageName completion:(DoneHandler) done {
     
-    [self getImageFromServer:EVENT_PIC_URL WithImageName:eventImageName completion:done];
-    
+    UIImage * image = [self loadImageWithFileName:eventImageName];
+    if (image == nil){
+        [self getImageFromServer:EVENT_PIC_URL WithImageName:eventImageName completion:^(NSError *error, id result) {
+            if (!error){
+                [ImageManager saveImageWithFileName:eventImageName ImageData:result];
+                done(nil, result);
+            }
+            else {
+                NSLog(@"ERROR GETTING EVENT IMAGE: %@", error);
+                done(error, nil);
+            }
+        }];
+    }
+    else {
+        NSData * result = UIImageJPEGRepresentation(image, 0.7);
+        done(nil,result);
+    }
 }
 
+#pragma mark - LOAD IMAGES
 + (UIImage *) loadImageWithFileName: (NSString *) fileName{
-    fileName = [fileName stringByDeletingPathExtension];
     NSURL * fullTargetURL = [ImageManager getFullURLWithFileName:fileName];
-    NSData * data = [NSData dataWithContentsOfURL:fullTargetURL];
-    return [UIImage imageWithData:data];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:fullTargetURL.path]){
+        NSData * data = [NSData dataWithContentsOfURL:fullTargetURL];
+        return [UIImage imageWithData:data];
+    }
+    return nil;
 }
 
+#pragma mark - PRIVATE METHODS
 + (NSURL *) getFullURLWithFileName: (NSString *) fileName{
     NSArray * paths = [[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask];
-    
     NSURL * targetDocURL = paths.firstObject;
     NSString * fullFileName = fileName;
     NSURL * finalTargetURL = [targetDocURL URLByAppendingPathComponent:fullFileName];
-    
     return finalTargetURL;
 }
 

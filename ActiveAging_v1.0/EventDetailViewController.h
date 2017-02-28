@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol EventDetailViewControllerDelegate <NSObject>
+- (void) updateList;
+@end
+
 @interface EventDetailViewController : UIViewController
 @property (strong, nonatomic) NSMutableDictionary * eventDetailDict;
+@property (assign, nonatomic) id<EventDetailViewControllerDelegate> delegate;
 @end

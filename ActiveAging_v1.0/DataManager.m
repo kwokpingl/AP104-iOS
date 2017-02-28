@@ -26,6 +26,7 @@
     query = [NSString stringWithFormat:@"drop table %@",GROUP_LIST_TABLE];
     [sqlMgr executeQuery:query];
     
+    
 //    query = [NSString stringWithFormat:@"drop table %@",EMERGENCY_TABLE];
 //    [sqlMgr executeQuery:query];
     
@@ -38,8 +39,7 @@
     query = [NSString stringWithFormat:@"create table %@ (%@ int primary key,%@ text,%@ int)", GROUP_LIST_TABLE, GROUP_ID_KEY, GROUP_NAME_KEY, USER_ROLE_KEY];
     [sqlMgr executeQuery:query];
     
-    // FOR EVENTS
-//    query = [NSString stringWithFormat:@"create table %@ (%@ int primary key, %@ text, %@ "]
+    
     
     // FOR EMERGENCY CONTACTS
     query = [NSString stringWithFormat:@"create table %@ (%@ integer primary key autoincrement, %@ text, %@ text)",EMERGENCY_TABLE, USER_ID_KEY, USER_NAME_KEY, USER_PHONENUMBER_KEY];
@@ -55,7 +55,7 @@
     
     [serverMgr retrieveGroupInfo:userInfo.getUserID completion:^(NSError *error, id result) {
         if ([result[ECHO_RESULT_KEY] boolValue]){
-            NSLog(@"UPDATE DB SUCCESS: %@",result[ECHO_MESSAGE_KEY]);
+//            NSLog(@"UPDATE DB SUCCESS: %@",result[ECHO_MESSAGE_KEY]);
             
             NSArray * groupArray = result[ECHO_MESSAGE_KEY][@"groups"];
             NSArray * contactArray = result[ECHO_MESSAGE_KEY][@"members"];
@@ -88,6 +88,40 @@
     }];
 }
 
++ (void) updateEventDatabase {
+    ServerManager * serverMgr = [ServerManager shareInstance];
+    UserInfo * userInfo = [UserInfo shareInstance];
+    SQLite3DBManager * sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
+    
+    NSString * query = [NSString stringWithFormat:@"drop table %@", EVENT_LIST_TABLE];
+    [sqlMgr executeQuery:query];
+    // FOR EVENTS
+    query = [NSString stringWithFormat:@"create table %@ (%@ int primary key, %@ text, %@ text, %@ text, %@ text, %@ text)", EVENT_LIST_TABLE, EVENT_ID_KEY, EVENT_TITLE_KEY, EVENT_LAT_KEY, EVENT_LON_KEY, EVENT_ORGN_PHONE_KEY, EVENT_PIC_KEY];
+    [sqlMgr executeQuery:query];
+    
+    [serverMgr retrieveEventInfo:USER_EVENT_FETCH UserID: userInfo.getUserID  EventID:@"-1" completion:^(NSError *error, id result) {
+        if ([result[ECHO_RESULT_KEY] boolValue]){
+            NSArray * joinedEvents = result[ECHO_MESSAGE_KEY][@"joined"];
+            
+            for (int i = 0; i < joinedEvents.count; i++){
+                NSInteger eventID = [joinedEvents[i][EVENT_ID_KEY] integerValue];
+                NSString * eventTitle = joinedEvents[i][EVENT_TITLE_KEY];
+                NSString * eventLat = joinedEvents[i][EVENT_LAT_KEY];
+                NSString * eventLon = joinedEvents[i][EVENT_LON_KEY];
+                NSString * organizationPhone = joinedEvents[i][EVENT_ORGN_PHONE_KEY];
+                NSString * eventImage = joinedEvents[i][EVENT_PIC_KEY];
+                NSString * query = [NSString stringWithFormat:@"insert into %@ values ('%ld','%@', '%@', '%@', '%@', '%@')",EVENT_LIST_TABLE, eventID, eventTitle, eventLat, eventLon, organizationPhone, eventImage];
+                [sqlMgr executeQuery:query];
+            }
+            
+            NSLog(@"EVENT_LIST SUCCESS");
+        }
+        else
+        {
+            NSLog(@"ERROR: %@", result[ECHO_ERROR_KEY]);
+        }
+    }];
+}
 
 #pragma mark - RETRIEVE INFO
 /// MARK: with_TABLE_name
@@ -96,7 +130,6 @@
     NSString * query = [NSString stringWithFormat:@"select * from %@", table];
     
     return [self getArrayUsingQuery:query];
-
 }
 
 /// MARK: with_USERID
@@ -141,17 +174,18 @@
     return  [self getArrayUsingQuery:query];
 }
 
++ (NSMutableArray *) fetchEventsFromTable {
+    NSString * query = [NSString stringWithFormat: @"select * from `%@`", EVENT_LIST_TABLE];
+    return [self getArrayUsingQuery:query];
+}
+
 #pragma mark - PRIVATE METHODs
 /// MARK: RETURN_INFO_in_ARRAY
 + (NSMutableArray *) getArrayUsingQuery: (NSString *) query{
     SQLite3DBManager * sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
-    
     NSArray * dataFromTable = [sqlMgr loadDataFromDB:query];
-    
     NSArray * columnNames = sqlMgr.arrColumnNames;
-    
     NSMutableArray * dataArray = [NSMutableArray new];
-    
     
     for (int i = 0; i < dataFromTable.count; i++){
         NSMutableDictionary * dataDictionary = [NSMutableDictionary new];

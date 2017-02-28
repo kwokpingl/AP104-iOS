@@ -10,19 +10,18 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol MemberDetailViewControllerDelegate <NSObject>
-@required
-- (void) cancelBtnPressed:(id) sender;
-@end
 
 @interface MemberDetailViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) NSArray * steps;
 @property (weak, nonatomic) NSString * nextStep;
+@property (weak, nonatomic) NSString * phoneNumber;
+@property (weak, nonatomic) NSString * eventImageName;
+@property (weak, nonatomic) NSString * targetTitle;
+@property (weak, nonatomic) NSString * name;
+@property (weak, nonatomic) UIImage * customImage;
 @property (assign) NSInteger userID;
-//@property (weak, nonatomic) IBOutlet UIButton *trackingBtn;
-@property (weak, nonatomic) id <MemberDetailViewControllerDelegate> delegate;
+
 
 - (void) setNextStep:(NSString *)nextStep;
-
 @end

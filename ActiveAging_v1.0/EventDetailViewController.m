@@ -12,6 +12,7 @@
 #import "ServerManager.h"
 #import "UserInfo.h"
 #import "EventManager.h"
+#import "DataManager.h"
 
 #import "OrganizationViewController.h"
 #import "DescriptionViewController.h"
@@ -48,6 +49,7 @@ typedef enum : NSUInteger {
 @end
 
 @implementation EventDetailViewController
+@synthesize delegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -196,7 +198,6 @@ typedef enum : NSUInteger {
     }
     UIBarButtonItem * joinButtonItem = [[UIBarButtonItem alloc] initWithTitle:joinButtonName style:UIBarButtonItemStylePlain target:self action:@selector(joinBtnPressed:)];
     [self.navigationItem setRightBarButtonItem:joinButtonItem];
-
 }
 
 
@@ -253,16 +254,17 @@ typedef enum : NSUInteger {
     NSString * action;
     
     if ([sender.title isEqualToString:@"感興趣"]){
-        NSDictionary * eventDetail = @{@"startDateTime":_eventDetailDict[EVENT_START_KEY],
-                                       @"endDateTime": _eventDetailDict[EVENT_END_KEY],
-                                       @"title": _eventDetailDict[EVENT_TITLE_KEY],
-                                       @"location": _eventDetailDict[EVENT_ADDRESS_KEY],
-                                       @"detail": _eventDetailDict[EVENT_DESCRIPTION_KEY]
+        NSDictionary * eventDetail = @{EVENT_START_KEY:_eventDetailDict[EVENT_START_KEY],
+                                       EVENT_END_KEY: _eventDetailDict[EVENT_END_KEY],
+                                       EVENT_TITLE_KEY: _eventDetailDict[EVENT_TITLE_KEY],
+                                       EVENT_ADDRESS_KEY: _eventDetailDict[EVENT_ADDRESS_KEY],
+                                       EVENT_DESCRIPTION_KEY: _eventDetailDict[EVENT_DESCRIPTION_KEY]
                                        };
         [_eventMgr checkNewEvetn:eventDetail complete:^(NSMutableArray *eventArray) {
             [self isNewEventAdded:([eventArray[0] intValue] == 1)?true:false];
                 
         }];
+        
         
     }else {
         action = USER_EVENT_QUIT;
@@ -276,15 +278,16 @@ typedef enum : NSUInteger {
                                       alertMessage = @"系統以消除此項目";
                                       
                                       [self requestAccessToEventType];
-                                      NSDictionary * eventDetail = @{@"startDateTime":_eventDetailDict[EVENT_START_KEY],
-                                                                     @"endDateTime": _eventDetailDict[EVENT_END_KEY],
-                                                                     @"title": _eventDetailDict[EVENT_TITLE_KEY],
-                                                                     @"location": _eventDetailDict[EVENT_ADDRESS_KEY],
-                                                                     @"detail": _eventDetailDict[EVENT_DESCRIPTION_KEY]
+                                      NSDictionary * eventDetail = @{EVENT_START_KEY:_eventDetailDict[EVENT_START_KEY],
+                                                                     EVENT_END_KEY: _eventDetailDict[EVENT_END_KEY],
+                                                                     EVENT_TITLE_KEY: _eventDetailDict[EVENT_TITLE_KEY],
+                                                                     EVENT_ADDRESS_KEY: _eventDetailDict[EVENT_ADDRESS_KEY],
+                                                                     EVENT_DESCRIPTION_KEY: _eventDetailDict[EVENT_DESCRIPTION_KEY]
                                                                      };
                                       [_eventMgr eventToBeRemoved:eventDetail complete:^(NSMutableArray *eventArray) {
                                           if ([eventArray.lastObject boolValue]){
                                               NSLog(@"SUCCESS");
+                                              [DataManager updateEventDatabase];
                                           }
                                           else{
                                               NSLog(@"FAILED");
@@ -299,6 +302,7 @@ typedef enum : NSUInteger {
                                   
                                   UIAlertController * alert = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
                                   UIAlertAction * ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                      [delegate updateList];
                                       dispatch_async(dispatch_get_main_queue(), ^{
                                           [self returnButtonPressed];
                                       });
@@ -312,8 +316,8 @@ typedef enum : NSUInteger {
         
     }
     
-    
-    
+    [DataManager updateEventDatabase];
+
 }
 
 
@@ -345,11 +349,11 @@ typedef enum : NSUInteger {
 -(void) isNewEventAdded: (BOOL) isAdded {
     if (isAdded) {
         
-        NSDictionary * eventDetail = @{@"startDateTime":_eventDetailDict[EVENT_START_KEY],
-                                       @"endDateTime": _eventDetailDict[EVENT_END_KEY],
-                                       @"title": _eventDetailDict[EVENT_TITLE_KEY],
-                                       @"location": _eventDetailDict[EVENT_ADDRESS_KEY],
-                                       @"detail": _eventDetailDict[EVENT_DESCRIPTION_KEY]
+        NSDictionary * eventDetail = @{EVENT_START_KEY:_eventDetailDict[EVENT_START_KEY],
+                                       EVENT_END_KEY: _eventDetailDict[EVENT_END_KEY],
+                                       EVENT_TITLE_KEY: _eventDetailDict[EVENT_TITLE_KEY],
+                                       EVENT_ADDRESS_KEY: _eventDetailDict[EVENT_ADDRESS_KEY],
+                                       EVENT_DESCRIPTION_KEY: _eventDetailDict[EVENT_DESCRIPTION_KEY]
                                        };
         
         [_eventMgr newEventToBeAdded:eventDetail complete:^(NSMutableArray *eventArray) {
@@ -364,7 +368,7 @@ typedef enum : NSUInteger {
                                       UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"耶！存好了。" message:@"您可以在月曆上瀏覽新增的活動喔。\n請與舉辦單位聯繫以完成加入活動手續。" preferredStyle:UIAlertControllerStyleAlert];
                                       
                                       UIAlertAction * okAction = [UIAlertAction actionWithTitle:@"好，我知道了。" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                          
+                                          [delegate updateList];
                                           [self returnButtonPressed];
                                       }];
                                       
@@ -383,7 +387,7 @@ typedef enum : NSUInteger {
                                           [_eventMgr eventToBeRemoved:eventDetail complete:^(NSMutableArray *eventArray) {
                                               
                                           }];
-                                          
+                                          [delegate updateList];
                                           [self returnButtonPressed];
                                       }];
                                       
@@ -396,11 +400,14 @@ typedef enum : NSUInteger {
                                   }
                                   
                                   }];
+        [DataManager updateEventDatabase];
+        
     }
     else {
         UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"哇~沒存到。" message:@"你這段時間已經有活動了唷。" preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction * okAction = [UIAlertAction actionWithTitle:@"好，我知道了。" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [delegate updateList];
             [self returnButtonPressed];
         }];
         

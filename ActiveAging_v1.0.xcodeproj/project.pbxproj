@@ -46,6 +46,10 @@
 		AE09E5CD1E47571D0056110B /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AE09E5CC1E47571D0056110B /* LocationManager.m */; };
 		AE0A0A581E600B01009572EA /* MKMapView+Autoadjustment.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0A0A571E600B01009572EA /* MKMapView+Autoadjustment.m */; };
 		AE0A0A5E1E6069A6009572EA /* WelcomeBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0A0A5D1E6069A6009572EA /* WelcomeBackViewController.m */; };
+		AE0A0A611E62032D009572EA /* CustomAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0A0A601E62032D009572EA /* CustomAnnotation.m */; };
+		AE0A0A631E629608009572EA /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0A0A621E629608009572EA /* CoreTelephony.framework */; };
+		AE0A0A691E62EE9B009572EA /* CustomPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0A0A681E62EE9B009572EA /* CustomPointAnnotation.m */; };
+		AE0A0A6C1E62F791009572EA /* InfrastructureAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0A0A6B1E62F790009572EA /* InfrastructureAnnotationView.m */; };
 		AE0B0E551E46D69B00C4F076 /* SubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0B0E541E46D69B00C4F076 /* SubViewController.m */; };
 		AE10E2D51E50245400BEC03D /* OrganizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE10E2D41E50245400BEC03D /* OrganizationViewController.m */; };
 		AE10E2DB1E50247100BEC03D /* DescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE10E2DA1E50247100BEC03D /* DescriptionViewController.m */; };
@@ -177,6 +181,13 @@
 		AE0A0A571E600B01009572EA /* MKMapView+Autoadjustment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+Autoadjustment.m"; sourceTree = "<group>"; };
 		AE0A0A5C1E6069A6009572EA /* WelcomeBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeBackViewController.h; sourceTree = "<group>"; };
 		AE0A0A5D1E6069A6009572EA /* WelcomeBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeBackViewController.m; sourceTree = "<group>"; };
+		AE0A0A5F1E62032D009572EA /* CustomAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAnnotation.h; sourceTree = "<group>"; };
+		AE0A0A601E62032D009572EA /* CustomAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAnnotation.m; sourceTree = "<group>"; };
+		AE0A0A621E629608009572EA /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		AE0A0A671E62EE9B009572EA /* CustomPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPointAnnotation.h; sourceTree = "<group>"; };
+		AE0A0A681E62EE9B009572EA /* CustomPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPointAnnotation.m; sourceTree = "<group>"; };
+		AE0A0A6A1E62F790009572EA /* InfrastructureAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfrastructureAnnotationView.h; sourceTree = "<group>"; };
+		AE0A0A6B1E62F790009572EA /* InfrastructureAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfrastructureAnnotationView.m; sourceTree = "<group>"; };
 		AE0B0E531E46D69B00C4F076 /* SubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubViewController.h; sourceTree = "<group>"; };
 		AE0B0E541E46D69B00C4F076 /* SubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubViewController.m; sourceTree = "<group>"; };
 		AE10E2D31E50245400BEC03D /* OrganizationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrganizationViewController.h; sourceTree = "<group>"; };
@@ -272,6 +283,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE0A0A631E629608009572EA /* CoreTelephony.framework in Frameworks */,
 				E7CED0241E426D9400561645 /* CoreGraphics.framework in Frameworks */,
 				3DA5E5161E37AFCD00D50E7C /* CoreLocation.framework in Frameworks */,
 				3DA5E5141E37AFC400D50E7C /* MapKit.framework in Frameworks */,
@@ -301,6 +313,14 @@
 				3D45212A1E2F09BD002E416C /* HomePageViewController.m */,
 				AE0A0A5C1E6069A6009572EA /* WelcomeBackViewController.h */,
 				AE0A0A5D1E6069A6009572EA /* WelcomeBackViewController.m */,
+				3D4521191E2EFB67002E416C /* WelcomeViewController.h */,
+				3D45211A1E2EFB67002E416C /* WelcomeViewController.m */,
+				3D45211C1E2EFBA2002E416C /* InputNameViewController.h */,
+				3D45211D1E2EFBA2002E416C /* InputNameViewController.m */,
+				3D4521221E2EFBD3002E416C /* ConfirmationViewController.h */,
+				3D4521231E2EFBD3002E416C /* ConfirmationViewController.m */,
+				3D4521251E2EFC08002E416C /* PhotoViewController.h */,
+				3D4521261E2EFC08002E416C /* PhotoViewController.m */,
 			);
 			name = MainMenu;
 			sourceTree = "<group>";
@@ -366,14 +386,6 @@
 				E7F8AE861E49060100379CD6 /* LaunchScreen@3x.png */,
 				3D50155E1E26079C006F5F20 /* AccountVerificationViewController.h */,
 				3D50155F1E26079C006F5F20 /* AccountVerificationViewController.m */,
-				3D4521191E2EFB67002E416C /* WelcomeViewController.h */,
-				3D45211A1E2EFB67002E416C /* WelcomeViewController.m */,
-				3D45211C1E2EFBA2002E416C /* InputNameViewController.h */,
-				3D45211D1E2EFBA2002E416C /* InputNameViewController.m */,
-				3D4521221E2EFBD3002E416C /* ConfirmationViewController.h */,
-				3D4521231E2EFBD3002E416C /* ConfirmationViewController.m */,
-				3D4521251E2EFC08002E416C /* PhotoViewController.h */,
-				3D4521261E2EFC08002E416C /* PhotoViewController.m */,
 			);
 			name = "Login Page";
 			sourceTree = "<group>";
@@ -459,6 +471,7 @@
 		78CF3B493146A2D7E53ECE39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AE0A0A621E629608009572EA /* CoreTelephony.framework */,
 				E7CED0231E426D9400561645 /* CoreGraphics.framework */,
 				3DA5E5151E37AFCD00D50E7C /* CoreLocation.framework */,
 				3DA5E5131E37AFC400D50E7C /* MapKit.framework */,
@@ -591,6 +604,12 @@
 				AED95D8F1E599CA300F68D18 /* MemberPointAnnotation.m */,
 				AED95D8B1E59375400F68D18 /* MemberAnnotationView.h */,
 				AED95D8C1E59375400F68D18 /* MemberAnnotationView.m */,
+				AE0A0A6A1E62F790009572EA /* InfrastructureAnnotationView.h */,
+				AE0A0A6B1E62F790009572EA /* InfrastructureAnnotationView.m */,
+				AE0A0A5F1E62032D009572EA /* CustomAnnotation.h */,
+				AE0A0A601E62032D009572EA /* CustomAnnotation.m */,
+				AE0A0A671E62EE9B009572EA /* CustomPointAnnotation.h */,
+				AE0A0A681E62EE9B009572EA /* CustomPointAnnotation.m */,
 			);
 			name = Maps;
 			sourceTree = "<group>";
@@ -767,6 +786,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE0A0A611E62032D009572EA /* CustomAnnotation.m in Sources */,
 				3D45211E1E2EFBA2002E416C /* InputNameViewController.m in Sources */,
 				3D4521121E2EC1C6002E416C /* UserInfo.m in Sources */,
 				AE240FE81E42111700AB6B33 /* ContactTableViewCell.m in Sources */,
@@ -801,9 +821,11 @@
 				3DFC71191E367771004D8975 /* CalEventsTableViewCell.m in Sources */,
 				AE09E5C61E470E640056110B /* EmergencyButton.m in Sources */,
 				E7CECFEB1E426B2800561645 /* WeatherManager.m in Sources */,
+				AE0A0A6C1E62F791009572EA /* InfrastructureAnnotationView.m in Sources */,
 				AE46F48E1E4401D000ED51A1 /* DataManager.m in Sources */,
 				AE1250B41E540266000CDAD6 /* DateManager.m in Sources */,
 				E70C46AE1E365F360007FEC4 /* EventManager.m in Sources */,
+				AE0A0A691E62EE9B009572EA /* CustomPointAnnotation.m in Sources */,
 				3D4521321E2F3159002E416C /* SetupViewController.m in Sources */,
 				AE0A0A5E1E6069A6009572EA /* WelcomeBackViewController.m in Sources */,
 				3DB322071E114FF7002A9FD9 /* main.m in Sources */,

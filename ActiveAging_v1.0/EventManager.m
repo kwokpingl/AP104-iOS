@@ -8,6 +8,7 @@
 
 #import "EventManager.h"
 #import "EventListTableViewController.h"
+#import "Definitions.h"
 
 static EventManager * _store = nil;
 
@@ -132,11 +133,9 @@ static EventManager * _store = nil;
 }
 
 - (void) eventToBeRemoved: (NSDictionary *) event complete:(Donehandler) done {
-    NSString * startDateTimeStr = event[@"startDateTime"];
-//    NSString * titleStr = event[@"title"];
-    NSString * endDateTimeStr = event[@"endDateTime"];
-//    NSString * detailStr = event[@"detail"];
-//    NSString * locationStr = event[@"location"];
+    NSDictionary * dict = event;
+    NSString * startDateTimeStr = dict[EVENT_START_KEY];
+    NSString * endDateTimeStr = dict[EVENT_END_KEY];
     
     
     NSDateFormatter * dateFormatter = [NSDateFormatter new];
@@ -165,11 +164,11 @@ static EventManager * _store = nil;
 }
 
 -(void) newEventToBeAdded:(NSDictionary *)newEvent complete:(Donehandler)done {
-    NSString * startDateTimeStr = newEvent[@"startDateTime"];
-    NSString * titleStr = newEvent[@"title"];
-    NSString * endDateTimeStr = newEvent[@"endDateTime"];
-    NSString * detailStr = newEvent[@"detail"];
-    NSString * locationStr = newEvent[@"location"];
+    NSString * startDateTimeStr = newEvent[EVENT_START_KEY];
+    NSString * titleStr = newEvent[EVENT_TITLE_KEY];
+    NSString * endDateTimeStr = newEvent[EVENT_END_KEY];
+    NSString * detailStr = newEvent[EVENT_DESCRIPTION_KEY];
+    NSString * locationStr = newEvent[EVENT_ADDRESS_KEY];
     
     NSDateFormatter * dateFormatter = [NSDateFormatter new];
     dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
@@ -180,7 +179,6 @@ static EventManager * _store = nil;
         startDateTime = [dateFormatter dateFromString:startDateTimeStr];
     }
     NSDate * endDateTime = [dateFormatter dateFromString:endDateTimeStr];
-//    endDateTime = [NSDate dateWithTimeIntervalSinceReferenceDate:162000];
     addEvent = [EKEvent eventWithEventStore:_store];
     [addEvent setCalendar:[_store defaultCalendarForNewEvents]];
     _defaultCalendar = _store.defaultCalendarForNewEvents;
@@ -204,15 +202,14 @@ static EventManager * _store = nil;
     
     if (result) {
         [[NSUserDefaults standardUserDefaults] setObject:itemIdentifier     forKey:@"itemIdentifier"];
-//        [eventListVC isNewEventAdded:true];
     } else {
         NSLog(@"Event External Identifier not saved:%@", error);
     }
 }
 
 -(void) checkNewEvetn:(NSDictionary *)newEvent complete:(Donehandler)done {
-    NSString * startDateTimeStr = newEvent[@"startDateTime"];
-    NSString * endDateTimeStr = newEvent[@"endDateTime"];
+    NSString * startDateTimeStr = newEvent[EVENT_START_KEY];
+    NSString * endDateTimeStr = newEvent[EVENT_END_KEY];
 
     
     NSDateFormatter * dateFormatter = [NSDateFormatter new];

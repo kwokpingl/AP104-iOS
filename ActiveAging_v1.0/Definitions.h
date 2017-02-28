@@ -149,6 +149,7 @@
 
 #define CONTACT_LIST_TABLE    @"contactList"
 #define GROUP_LIST_TABLE    @"groupList"
+#define EVENT_LIST_TABLE    @"eventList"
 #define EMERGENCY_TABLE     @"emergencyList"
 
 /// MARK: DB_KEY
@@ -175,7 +176,7 @@
 #define DISTANCE_FILTER_30M 30
 
 /// MARK: DATE_FORMAT
-#define DATE_FORMAT @"YYYY-MM-dd HH-mm-ss"
+#define DATE_FORMAT @"YYYY-MM-dd HH:mm:ss"
 
 /// MARK: USERDEFAULTS
 #define SHOULD_SHARE_LOCATION_KEY @"shareLocation";

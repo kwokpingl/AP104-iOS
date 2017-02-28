@@ -27,6 +27,7 @@
 + (instancetype) shareInstance;
 - (void) startUpdatingLocation;
 - (void) stopUpdatingLocation;
+- (void) startMonitoringSignificatnLocationChanges;
 
 - (double) distanceFromLocationUsingLongitude: (CLLocationDegrees) longitude Latitude: (CLLocationDegrees) latitude;
 @end

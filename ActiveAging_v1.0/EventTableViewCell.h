@@ -13,4 +13,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *eventOrganizationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *eventRegistrationDateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *eventLocationLabel;
 @end
