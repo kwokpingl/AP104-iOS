@@ -22,13 +22,13 @@
     UIImage * bkg;
 }
 
-@property (nonatomic, strong) UIImageView * backgroundImageView;
-@property (nonatomic, strong) UIImageView * blurredImageView;
-@property (nonatomic, strong) UITableView * tableView;
+@property UIImageView * backgroundImageView;
+//@property UIImageView * blurredImageView;
+@property UITableView * tableView;
 @property (nonatomic, assign) CGFloat screenHeight;
 
-@property (nonatomic, strong) NSDateFormatter * hourlyFormatter;
-@property (nonatomic, strong) NSDateFormatter * dailyFormatter;
+@property NSDateFormatter * hourlyFormatter;
+@property NSDateFormatter * dailyFormatter;
 
 @end
 
@@ -72,9 +72,9 @@
      self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     
     //3
-    self.blurredImageView = [UIImageView new];
-    self.blurredImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.blurredImageView.alpha = 0;
+//    self.blurredImageView = [UIImageView new];
+//    self.blurredImageView.contentMode = UIViewContentModeScaleAspectFill;
+//    self.blurredImageView.alpha = 0;
     
     //4
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
@@ -83,7 +83,7 @@
     self.tableView.dataSource = self;
     self.tableView.separatorColor = [UIColor colorWithWhite:1 alpha:0.2];
     self.tableView.pagingEnabled = YES;
-    [self.tableView addSubview:self.blurredImageView];
+//    [self.tableView addSubview:self.blurredImageView];
     [self.view addSubview:self.tableView];
     
 #pragma mark - set up frames and margins
@@ -192,9 +192,8 @@
         
          [self.backgroundImageView setImage:[self setBackgroundImage]];
          self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-         [self.blurredImageView setImageToBlur:self.backgroundImageView.image completionBlock:nil];
-         [self.backgroundImageView addSubview:_blurredImageView];
-         [self.view insertSubview:_backgroundImageView atIndex:0];
+//         [self.blurredImageView setImageToBlur:self.backgroundImageView.image completionBlock:nil];
+//         [self.backgroundImageView addSubview:_blurredImageView];
          
          for(UIView * subview in self.view.subviews){
              NSLog(@"Classes: %@", subview.class);
@@ -204,6 +203,8 @@
          
          [self widgetConfiguration];
      }];
+    
+    [self.view insertSubview:_backgroundImageView atIndex:0];
     
 #pragma mark - ReactiveCocoa Bindings
     //1
@@ -266,7 +267,7 @@
         bkg = [UIImage imageNamed:@"sunnyBg"];
     }
     
-    else if ([imageName isEqualToString:@"broken"] || [imageName isEqualToString:@"few"]) {
+    else if ([imageName isEqualToString:@"broken"] || [imageName containsString: @"few"]) {
         
         if ([currentdate floatValue] >= 18.0 || [currentdate floatValue] <= 6.0) {
             bkg = [UIImage imageNamed:@"brokenN"];
@@ -291,7 +292,7 @@
     CGRect bounds = self.view.bounds;
     
     self.backgroundImageView.frame = bounds;
-    self.blurredImageView.frame = bounds;
+//    self.blurredImageView.frame = bounds;
     self.tableView.frame = bounds;
 }
 
@@ -421,7 +422,7 @@
     NSLog(@"%.2f", percent);
     //3
     //Assign the resulting value to the blur image’s alpha property to change how much of the blurred image you’ll see as you scroll
-    self.blurredImageView.alpha = percent;
+//    self.blurredImageView.alpha = percent;
 }
 
 - (void)didReceiveMemoryWarning {

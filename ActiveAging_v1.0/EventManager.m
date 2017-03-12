@@ -78,14 +78,14 @@ static EventManager * _store = nil;
     
 //    NSLog(@"am: %@\npm: %@\n", amString, pmString);
 
-    _eventsObtained = [NSMutableDictionary new];
+//    _eventsObtained = [NSMutableDictionary new];
 
     dispatch_async(dispatch_get_main_queue(), ^{
          int counter = 0;
-        NSMutableArray * test  = [NSMutableArray new];
+        NSMutableArray * allEvents  = [NSMutableArray new];
         
             for (EKEvent * e in events) {
-                [test addObject:e];
+                [allEvents addObject:e];
                 
                 NSError * error = nil;
 
@@ -100,51 +100,23 @@ static EventManager * _store = nil;
                 }
                 counter++;
             } //end of for (EKEvent * e in events)
-        done(test);
+        done(allEvents);
     });
 
 } //end of NSMutableArray
 
 // ================ Data from EventsListTableView ================= //
--(void) comparedWithStoredEvents:(NSDate *)newEventStartDateTime newEventEndDateTime:(NSDate *)newEventEndDateTime complete:(Donehandler)done {
-    
-    
-    NSPredicate * predicate = [_store predicateForEventsWithStartDate:newEventStartDateTime
-                                                              endDate:newEventEndDateTime
-                                                            calendars:calendarArray];
-    comparedWithNewEvent = [_store eventsMatchingPredicate:predicate];
-    
-    
-    
-    if (!comparedWithNewEvent){
-        done([@[@(true)] mutableCopy]);
-        return;
-    }
-    
-    addEvent.startDate = newEventStartDateTime;
-    
-    for (EKEvent * e in comparedWithNewEvent) {
-         if (addEvent.startDate != e.startDate) {
-             done([@[@(true)] mutableCopy]);
-         } else {
-             done([@[@(false), e.eventIdentifier] mutableCopy]);
-//             [eventListVC isNewEventAdded:false];
-         }
-    }
-}
 
+/// MARK: REMOVE EVENTS
 - (void) eventToBeRemoved: (NSDictionary *) event complete:(Donehandler) done {
     NSString * startDateTimeStr = event[@"startDateTime"];
-//    NSString * titleStr = event[@"title"];
     NSString * endDateTimeStr = event[@"endDateTime"];
-//    NSString * detailStr = event[@"detail"];
-//    NSString * locationStr = event[@"location"];
-    
     
     NSDateFormatter * dateFormatter = [NSDateFormatter new];
     dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
     NSDate * startDateTime = [dateFormatter dateFromString:startDateTimeStr];
+    
     if (startDateTime == nil){
         dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
         startDateTime = [dateFormatter dateFromString:startDateTimeStr];
@@ -166,6 +138,7 @@ static EventManager * _store = nil;
     }];
 }
 
+/// MARK: ADD NEW EVENTS
 -(void) newEventToBeAdded:(NSDictionary *)newEvent complete:(Donehandler)done {
     NSString * startDateTimeStr = newEvent[@"startDateTime"];
     NSString * titleStr = newEvent[@"title"];
@@ -181,15 +154,13 @@ static EventManager * _store = nil;
         dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
         startDateTime = [dateFormatter dateFromString:startDateTimeStr];
     }
+    
     NSDate * endDateTime = [dateFormatter dateFromString:endDateTimeStr];
-//    endDateTime = [NSDate dateWithTimeIntervalSinceReferenceDate:162000];
+
     addEvent = [EKEvent eventWithEventStore:_store];
     [addEvent setCalendar:[_store defaultCalendarForNewEvents]];
     _defaultCalendar = _store.defaultCalendarForNewEvents;
     calendarArray = @[self.defaultCalendar];
-
-    
-    [self comparedWithStoredEvents:startDateTime newEventEndDateTime:endDateTime complete:done];
     
     //Create new event if event does not exist
     addEvent.title = titleStr;
@@ -206,16 +177,16 @@ static EventManager * _store = nil;
     
     if (result) {
         [[NSUserDefaults standardUserDefaults] setObject:itemIdentifier     forKey:@"itemIdentifier"];
-//        [eventListVC isNewEventAdded:true];
-    } else {
+    }
+    else {
         NSLog(@"Event External Identifier not saved:%@", error);
     }
 }
 
--(void) checkNewEvetn:(NSDictionary *)newEvent complete:(Donehandler)done {
+-(void) checkNewEvent:(NSDictionary *)newEvent complete:(Donehandler)done {
+    
     NSString * startDateTimeStr = newEvent[@"startDateTime"];
     NSString * endDateTimeStr = newEvent[@"endDateTime"];
-
     
     NSDateFormatter * dateFormatter = [NSDateFormatter new];
     dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
@@ -226,13 +197,83 @@ static EventManager * _store = nil;
         startDateTime = [dateFormatter dateFromString:startDateTimeStr];
     }
     NSDate * endDateTime = [dateFormatter dateFromString:endDateTimeStr];
-    //    endDateTime = [NSDate dateWithTimeIntervalSinceReferenceDate:162000];
-    addEvent = [EKEvent eventWithEventStore:_store];
-    [addEvent setCalendar:[_store defaultCalendarForNewEvents]];
-    _defaultCalendar = _store.defaultCalendarForNewEvents;
-    calendarArray = @[self.defaultCalendar];
-    
     
     [self comparedWithStoredEvents:startDateTime newEventEndDateTime:endDateTime complete:done];
 }
+
+/// MARK: COMPARE STORED EVENTS
+-(void) comparedWithStoredEvents:(NSDate *)newEventStartDateTime newEventEndDateTime:(NSDate *)newEventEndDateTime complete:(Donehandler)done {
+    
+    NSPredicate * predicate = [_store predicateForEventsWithStartDate:newEventStartDateTime
+                                                              endDate:newEventEndDateTime
+                                                            calendars:calendarArray];
+    comparedWithNewEvent = [_store eventsMatchingPredicate:predicate];
+    
+    
+    
+    if (!comparedWithNewEvent){
+        done([@[@(true)] mutableCopy]);
+        return;
+    }
+    
+    NSInteger counter = 0;
+    addEvent.startDate = newEventStartDateTime;
+    for (EKEvent * e in comparedWithNewEvent) {
+        if (newEventStartDateTime == e.startDate) {
+            // if event at the same time was found
+            counter++;
+            if (counter>1){
+                done([@[@(false), e.eventIdentifier] mutableCopy]);
+                return;
+            }
+        }
+    }
+    
+    done([@[@(true)] mutableCopy]);
+}
+
+- (void)fetchAllEvents:(NSDate *)startingFromDate complete:(Donehandler)done {
+    
+    if (_eventsAccessGranted){
+        
+        // Let's get the default calendar associated with our event store
+        _defaultCalendar = _store.defaultCalendarForNewEvents;
+        
+        //Only search the default calendar for our events
+        if (self.defaultCalendar){
+            calendarArray = @[self.defaultCalendar];
+        }
+        
+        NSDate * startFrom = [startingFromDate dateByAddingTimeInterval:-604800*10];
+        //This is 10 weeks in seconds
+        
+        NSPredicate * fetchAllPredicate = [_store predicateForEventsWithStartDate:startFrom endDate:[NSDate distantFuture] calendars:calendarArray];
+        
+        events = [_store eventsMatchingPredicate:fetchAllPredicate];
+        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+            int counter = 0;
+            NSMutableArray * allEvents  = [NSMutableArray new];
+            
+            for (EKEvent * e in events) {
+                [allEvents addObject:e];
+                
+                NSError * error = nil;
+                
+                NSString * itemIdentifier = e.calendarItemIdentifier;
+                
+                BOOL result = [_store saveEvent:e span:EKSpanThisEvent error:&error];
+                
+                if (result) {
+                    [[NSUserDefaults standardUserDefaults] setObject:itemIdentifier     forKey:@"itemIdentifier"];
+                } else {
+                    NSLog(@"Event Identifier not saved:%@", error);
+                }
+                counter++;
+            } //end of for (EKEvent * e in events)
+            done(allEvents);
+//        });
+    }
+} //end of NSMutableArray
+
 @end

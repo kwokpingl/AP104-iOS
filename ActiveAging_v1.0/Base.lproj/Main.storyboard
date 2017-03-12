@@ -71,7 +71,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22:22" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HfG-l1-uIo">
-                                <rect key="frame" x="119" y="309" width="256" height="49"/>
+                                <rect key="frame" x="119" y="309" width="256" height="48.5"/>
                                 <fontDescription key="fontDescription" name="Tensentype-XiaoXiaoXinF" family="Tensentype XiaoXiaoXinF" pointSize="40"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -82,7 +82,7 @@
                                 <state key="normal" title="緊急連絡"/>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="imD-qP-nm2">
-                                <rect key="frame" x="202" y="78" width="95" height="95"/>
+                                <rect key="frame" x="202" y="77" width="95" height="95"/>
                                 <fontDescription key="fontDescription" name="Tensentype-XiaoXiaoXinF" family="Tensentype XiaoXiaoXinF" pointSize="25"/>
                                 <state key="normal" backgroundImage="ha1.png"/>
                                 <connections>
@@ -122,7 +122,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d4f-TP-RYk">
-                                <rect key="frame" x="55" y="129" width="99" height="101"/>
+                                <rect key="frame" x="55" y="128" width="99" height="101"/>
                                 <fontDescription key="fontDescription" name="Tensentype-XiaoXiaoXinF" family="Tensentype XiaoXiaoXinF" pointSize="30"/>
                                 <state key="normal" title="活動" backgroundImage="Sample Frame 3.png"/>
                                 <connections>
@@ -130,7 +130,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="97H-Zq-UY9">
-                                <rect key="frame" x="172" y="252" width="125" height="25"/>
+                                <rect key="frame" x="172" y="251.5" width="125" height="24.5"/>
                                 <fontDescription key="fontDescription" name="Tensentype-XiaoXiaoXinF" family="Tensentype XiaoXiaoXinF" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

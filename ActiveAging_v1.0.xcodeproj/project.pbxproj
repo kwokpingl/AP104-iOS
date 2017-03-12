@@ -74,6 +74,8 @@
 		E76220A61E4FF9C200D0618C /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E76220A51E4FF9C200D0618C /* TodayViewController.m */; };
 		E76220A91E4FF9C200D0618C /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E76220A71E4FF9C200D0618C /* MainInterface.storyboard */; };
 		E76220AD1E4FF9C200D0618C /* ActiveAgingWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E76220A01E4FF9C200D0618C /* ActiveAgingWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E7A73BC91E72DFF300631F6A /* eventDot.png in Resources */ = {isa = PBXBuildFile; fileRef = E7A73BC51E72DFF300631F6A /* eventDot.png */; };
+		E7A73BCA1E72DFF300631F6A /* eventDot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7A73BC61E72DFF300631F6A /* eventDot@2x.png */; };
 		E7A88A0C1E61B0B800047433 /* sunset.png in Resources */ = {isa = PBXBuildFile; fileRef = E7A88A0B1E61B0B800047433 /* sunset.png */; };
 		E7A88A141E61DFB400047433 /* sunnyBk.png in Resources */ = {isa = PBXBuildFile; fileRef = E7A88A131E61DFB400047433 /* sunnyBk.png */; };
 		E7A88A161E630ED000047433 /* rainBg.png in Resources */ = {isa = PBXBuildFile; fileRef = E7A88A151E630ED000047433 /* rainBg.png */; };
@@ -264,6 +266,8 @@
 		E76220A81E4FF9C200D0618C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		E76220AA1E4FF9C200D0618C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E76220B21E4FF9DE00D0618C /* ActiveAging_v1.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ActiveAging_v1.0.entitlements; sourceTree = "<group>"; };
+		E7A73BC51E72DFF300631F6A /* eventDot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = eventDot.png; sourceTree = "<group>"; };
+		E7A73BC61E72DFF300631F6A /* eventDot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "eventDot@2x.png"; sourceTree = "<group>"; };
 		E7A88A0B1E61B0B800047433 /* sunset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sunset.png; sourceTree = "<group>"; };
 		E7A88A131E61DFB400047433 /* sunnyBk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sunnyBk.png; sourceTree = "<group>"; };
 		E7A88A151E630ED000047433 /* rainBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rainBg.png; sourceTree = "<group>"; };
@@ -596,6 +600,8 @@
 			isa = PBXGroup;
 			children = (
 				E700A17F1E4732E90001725A /* 1.jpg */,
+				E7A73BC51E72DFF300631F6A /* eventDot.png */,
+				E7A73BC61E72DFF300631F6A /* eventDot@2x.png */,
 				E70C46AA1E365E750007FEC4 /* ViewController.h */,
 				E70C46AB1E365E750007FEC4 /* ViewController.m */,
 				E70C46AF1E365F410007FEC4 /* EventManager.h */,
@@ -779,6 +785,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7A88A161E630ED000047433 /* rainBg.png in Resources */,
+				E7A73BCA1E72DFF300631F6A /* eventDot@2x.png in Resources */,
+				E7A73BC91E72DFF300631F6A /* eventDot.png in Resources */,
 				E700A1A01E4748770001725A /* HaTime@2x.png in Resources */,
 				E700A1801E4732E90001725A /* 1.jpg in Resources */,
 				E7A88A2F1E649D9C00047433 /* few-day.png in Resources */,

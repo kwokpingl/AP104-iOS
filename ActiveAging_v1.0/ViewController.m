@@ -34,9 +34,11 @@ static void * __KVOContext;
     NSCalendar *lunarCalendar;
     NSArray<NSString *> *lunarChars;
     
-    
     NSMutableArray * eventsSpecifications;
     NSMutableArray * allEventsArray;
+    
+    NSDictionary * newEvent;
+    EKEvent * addNewevent;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -107,14 +109,14 @@ static void * __KVOContext;
 //    backgroundImageView.alpha = 0.5;
 //    [self.view insertSubview:backgroundImageView atIndex:0];
     
-#pragma mark - calendar appearance setup
+/// MARK: calendar appearance setup
     _calendar.appearance.adjustsFontSizeToFitContentSize = false;
     [_calendar.appearance setHeaderTitleFont:[UIFont systemFontOfSize:28]];
     [_calendar.appearance setTitleFont:[UIFont systemFontOfSize:25]];
     [_calendar.appearance setSubtitleFont:[UIFont systemFontOfSize:12]];
     [_calendar.appearance setWeekdayFont:[UIFont systemFontOfSize:15]];
     
-#pragma mark - date and data setup
+/// MARK: date and data setup
     dateFormatter = [NSDateFormatter new];
     dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
@@ -128,7 +130,7 @@ static void * __KVOContext;
     
     chosenDate = [NSDate date];
     
-#pragma mark - UIPanGestureRecognizer setup
+/// MARK: UIPanGestureRecognizer setup
     UIPanGestureRecognizer * panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.calendar action:@selector(handleScopeGesture:)];
     
     panGesture.delegate = self;
@@ -141,25 +143,29 @@ static void * __KVOContext;
     // While the scope gesture begin, the pan gesture of tableView should cancel.
     [self.tableView.panGestureRecognizer requireGestureRecognizerToFail:panGesture];
     
-#pragma mark - Calendar Scope set up
+/// MARK: Calendar Scope set up
     [self.calendar addObserver:self forKeyPath:@"scope" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:__KVOContext];
-    
-//    self.calendar.scope = FSCalendarScopeWeek;
+
     self.calendar.scope = FSCalendarScopeMonth;
-    
-//    if ([self.extensionContext respondsToSelector:@selector(setWidgetLargestAvailableDisplayMode:)]) {
-//        
-//        self.extensionContext.widgetLargestAvailableDisplayMode = NCWidgetDisplayModeExpanded;
-//        
-//    } else {
-//        self.preferredContentSize = CGSizeMake(340, self.calendarHeight.constant);
-//    }
     
     [self chineseCalendar];
     [self widgetConfiguration];
+    
+    [self getAllEvents:chosenDate];
 }
 
-#pragma mark - Request access
+#pragma mark - viewDidAppear
+-(void)viewDidAppear:(BOOL)animated{
+    [_eventManager sortTimeOrder:chosenDate complete:^(NSMutableArray *eventArray) {
+        allEventsArray = [[NSMutableArray alloc] initWithArray:eventArray];
+        [self updateAuthorizationStatusToAccessEventStore];
+    }];
+    
+    [super viewDidAppear:animated];
+}
+
+
+#pragma mark - ===Request Access to Event===
 -(void) requestAccessToEventType {
     [_eventManager requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError * _Nullable error) {
         if (!granted)
@@ -183,18 +189,8 @@ static void * __KVOContext;
     }];
 }
 
-#pragma mark - viewDidAppear
--(void)viewDidAppear:(BOOL)animated{
-    [_eventManager sortTimeOrder:chosenDate complete:^(NSMutableArray *eventArray) {
-        allEventsArray = [[NSMutableArray alloc] initWithArray:eventArray];
-        [self updateAuthorizationStatusToAccessEventStore];
-    }];
-    
-    [super viewDidAppear:animated];
-}
-
 /* ============== UpdateAuthorizationStatusToAccessEventStore ================= */
-#pragma mark - UpdateAuthorizationStatusToAccessEventStore
+#pragma mark - ===UpdateAuthorizationStatusToAccessEventStore===
 - (void) updateAuthorizationStatusToAccessEventStore {
     
     EKAuthorizationStatus authorizationStatus = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
@@ -236,7 +232,7 @@ static void * __KVOContext;
 }
 
 #pragma mark - FSCalendarDataSource
-#pragma mark - <FSCalendarDelegate>
+/// MARK: <FSCalendarDelegate>
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     chosenDate = date;
@@ -266,36 +262,51 @@ static void * __KVOContext;
     NSLog(@"%s",__FUNCTION__);
 }
 
-/* =========================== Widget ========================== */
-#pragma mark - Widget
-- (void)widgetActiveDisplayModeDidChange:(NCWidgetDisplayMode)activeDisplayMode withMaximumSize:(CGSize)maxSize
-{
-    if (activeDisplayMode == NCWidgetDisplayModeCompact) {
+- (void) getAllEvents: (NSDate * ) dateToStartFrom {
+    
+    [_eventManager fetchAllEvents:dateToStartFrom complete:^(NSMutableArray *eventArray) {
         
-        [self.calendar setScope:FSCalendarScopeWeek animated:YES];
-        self.calendar.appearance.headerMinimumDissolvedAlpha = 0.5;
-        
-    } else if (activeDisplayMode == NCWidgetDisplayModeExpanded) {
-        
-        [self.calendar setScope:FSCalendarScopeMonth animated:YES];
-        self.calendar.appearance.headerMinimumDissolvedAlpha = 0.5;
+        if (eventArray != nil) {
+            
+           dispatch_async(dispatch_get_main_queue(), ^{
+               for (int i = 0; i < eventArray.count; i++) {
+                EKEvent * event = eventArray[i];
+                [self calendar:_calendar imageForDate:event.startDate];
+               }
+           });
+        }
+    }];
+}
+
+-(UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date {
+    
+    [gregorian component:NSCalendarUnitDay fromDate:date];
+    
+    if (date != nil) {
+        return [UIImage imageNamed:@"eventDot"];
+    } else {
+        return nil;
     }
 }
 
-//- (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler
-//{
-    // Perform any setup necessary in order to update the view.
-    
-    // If an error is encountered, use NCUpdateResultFailed
-    // If there's no update required, use NCUpdateResultNoData
-    // If there's an update, use NCUpdateResultNewData
-    
-//    completionHandler(NCUpdateResultNewData);
+//- (NSArray<UIColor *> *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventDefaultColorsForDate:(NSDate *)date {
+//    
 //}
 
-//- (UIEdgeInsets)widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets
+/* =========================== Widget ========================== */
+//#pragma mark - Widget
+//- (void)widgetActiveDisplayModeDidChange:(NCWidgetDisplayMode)activeDisplayMode withMaximumSize:(CGSize)maxSize
 //{
-//    return UIEdgeInsetsZero;
+//    if (activeDisplayMode == NCWidgetDisplayModeCompact) {
+//        
+//        [self.calendar setScope:FSCalendarScopeWeek animated:YES];
+//        self.calendar.appearance.headerMinimumDissolvedAlpha = 0.5;
+//        
+//    } else if (activeDisplayMode == NCWidgetDisplayModeExpanded) {
+//        
+//        [self.calendar setScope:FSCalendarScopeMonth animated:YES];
+//        self.calendar.appearance.headerMinimumDissolvedAlpha = 0.5;
+//    }
 //}
 
 #pragma mark - UIColor calendar
@@ -321,7 +332,6 @@ static void * __KVOContext;
 }
 
 #pragma mark - KVO
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
     if (context == __KVOContext) {
@@ -402,11 +412,6 @@ static void * __KVOContext;
     return cell;
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return 50;
-//}
-
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self performSegueWithIdentifier:@"eventDetail" sender:self];
     
@@ -434,8 +439,6 @@ static void * __KVOContext;
             editEventViewController.event = allEventsArray[indexPath.row];
         }
         
-        
-        
         //Allow event editing
         editEventViewController.allowsEditing = true;
     }
@@ -451,6 +454,8 @@ static void * __KVOContext;
     addController.eventStore = _eventManager;
 //    addController.event = nil;
     
+    addNewevent = [EKEvent eventWithEventStore:addController.eventStore];
+    
     //Set addcontroller viewdelegate
     addController.editViewDelegate = self;
     
@@ -463,14 +468,50 @@ static void * __KVOContext;
 -(void)eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action {
     
     ViewController * __weak weakSelf = self;
-    
+    if (action != EKEventEditViewActionCanceled) {
+        
+            
+            //Re-fetch all events happening in the next 24 hrs
+            
+            //                newEvent = @{@"title" : cal.title,
+            //                             @"startDateTime" : addNewevent.startDate,
+            //                             @"endDateTime" : addNewevent.endDate,
+            //                             @"detail" : addNewevent.description,
+            //                             @"location" : addNewevent.location,
+            //                             };
+            
+            NSString * startDate = [dateFormatter stringFromDate: controller.event.startDate];
+            NSString * endDate = [dateFormatter stringFromDate: controller.event.endDate];
+            
+            newEvent = @{@"title" : controller.event.title,
+                         @"startDateTime" : startDate,
+                         @"endDateTime" : endDate,
+                         @"detail" : controller.event.description,
+                         @"location" : controller.event.location,
+                         };
+            [_eventManager checkNewEvent:newEvent complete:^(NSMutableArray *eventArray) {
+                if ([eventArray[0] isEqual:@(0)]){
+                    NSError * error;
+                    [controller.eventStore removeEvent:controller.event span:EKSpanThisEvent error:&error];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"" message:@"時間上有沖突喔，無法儲存。" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction * ok = [UIAlertAction actionWithTitle:@"知道了" style:0 handler:nil];
+                        [alert addAction:ok];
+                        [self presentViewController:alert animated:true completion:nil];
+                    });
+                    
+                    if (error){
+                        NSLog(@"ERROR : %@", error.description);
+                    }
+                    
+                }
+            }];
+        }
     //Dismiss the modal view controller
     [self dismissViewControllerAnimated:YES completion:^{
-        
-        if (action != EKEventEditViewActionCanceled) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-               
-                //Re-fetch all events happening in the next 24 hrs
+
+        dispatch_async(dispatch_get_main_queue(), ^{
                  [_eventManager sortTimeOrder:[NSDate date] complete:^(NSMutableArray *eventArray) {
                      [self widgetConfiguration];
                  }];
@@ -479,7 +520,7 @@ static void * __KVOContext;
                 [weakSelf.tableView reloadData];
                 
             }); //end of dispatch_async
-        } // end of if (action != EKEventEditViewActionCanceled)
+//        } // end of if (action != EKEventEditViewActionCanceled)
     }]; // end of self dismiss
 }
 
