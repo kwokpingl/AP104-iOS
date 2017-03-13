@@ -14,12 +14,14 @@
 
 - (void) setUserInfo: (NSString *) username userPassword: (NSString *) password;
 - (void) setProfileImage: (UIImage *) img;
--(void) setUserID:(NSInteger)userID;
+- (void) setUserID:(NSInteger)userID;
+- (void) setDeviceToken: (NSString *) deviceToken;
 
 - (NSString *) getUsername;
 - (NSString *) getPassword;
 - (UIImage *) getProfileImage;
 - (NSInteger) getUserID;
+- (NSString *) getDeviceToken;
 - (BOOL) isShareLocation;
 - (void) changeShareLocation;
 @end

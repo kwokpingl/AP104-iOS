@@ -12,13 +12,18 @@
 #import "UserInfo.h"
 #import <UIKit/UIKit.h>
 
+typedef void(^UpdateSuccess)(BOOL done);
+
 @interface DataManager : NSObject
 
 + (void) prepareDatabase;
 
-+ (void) updateContactDatabase;
++ (void) updateContactDatabase: (UpdateSuccess) done;
 
 + (void) updateEventDatabase;
+
++ (void) updateEmergencyDatabaseWithAction: (NSString *) action
+                                andDataDic:(NSDictionary *) dic;
 
 + (NSMutableArray *) fetchDatabaseFromTable: (NSString *) table;
 

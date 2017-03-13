@@ -1,0 +1,120 @@
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "01D-aB-HiQ"; */
+"01D-aB-HiQ.text" = "Label";
+
+/* Class = "UILabel"; text = "活動日期"; ObjectID = "0MX-D7-u2x"; */
+"0MX-D7-u2x.text" = "活動日期";
+
+/* Class = "UILabel"; text = "不詳"; ObjectID = "0Xq-dC-wJH"; */
+"0Xq-dC-wJH.text" = "不詳";
+
+/* Class = "UILabel"; text = "活動地點"; ObjectID = "1WF-ts-04T"; */
+"1WF-ts-04T.text" = "活動地點";
+
+/* Class = "UILabel"; text = "網址:"; ObjectID = "1rY-gK-E4b"; */
+"1rY-gK-E4b.text" = "網址:";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "2q5-2A-Jg8"; */
+"2q5-2A-Jg8.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "活動資訊"; ObjectID = "4OY-NG-7xu"; */
+"4OY-NG-7xu.title" = "活動資訊";
+
+/* Class = "UILabel"; text = "傳真:"; ObjectID = "B3o-1Q-stx"; */
+"B3o-1Q-stx.text" = "傳真:";
+
+/* Class = "UILabel"; text = "無"; ObjectID = "Brd-qK-t26"; */
+"Brd-qK-t26.text" = "無";
+
+/* Class = "UILabel"; text = "無"; ObjectID = "BvW-SH-L9B"; */
+"BvW-SH-L9B.text" = "無";
+
+/* Class = "UILabel"; text = " 無"; ObjectID = "CsU-oU-iw8"; */
+"CsU-oU-iw8.text" = " 無";
+
+/* Class = "UILabel"; text = "手機:"; ObjectID = "D8B-Sm-qLb"; */
+"D8B-Sm-qLb.text" = "手機:";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Fbh-Fd-AtE"; */
+"Fbh-Fd-AtE.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Fx9-AE-CFH"; */
+"Fx9-AE-CFH.text" = "Label";
+
+/* Class = "UILabel"; text = "聯絡方法"; ObjectID = "H8H-s5-zZO"; */
+"H8H-s5-zZO.text" = "聯絡方法";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "HIy-6h-KJr"; */
+"HIy-6h-KJr.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "HYr-i3-nVi"; */
+"HYr-i3-nVi.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "舉辦\n單位 ："; ObjectID = "Kom-qV-xWk"; */
+"Kom-qV-xWk.text" = "舉辦\n單位 ：";
+
+/* Class = "UILabel"; text = "電話:"; ObjectID = "MJq-Im-RXb"; */
+"MJq-Im-RXb.text" = "電話:";
+
+/* Class = "UIButton"; normalTitle = "緊急連絡"; ObjectID = "OBY-ye-ik8"; */
+"OBY-ye-ik8.normalTitle" = "緊急連絡";
+
+/* Class = "UILabel"; text = "報名日期"; ObjectID = "PbK-J8-GXH"; */
+"PbK-J8-GXH.text" = "報名日期";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "RB6-QH-4NL"; */
+"RB6-QH-4NL.text" = "Label";
+
+/* Class = "UILabel"; text = "電郵:"; ObjectID = "RPL-RW-6uE"; */
+"RPL-RW-6uE.text" = "電郵:";
+
+/* Class = "UILabel"; text = "無"; ObjectID = "TxX-R3-drZ"; */
+"TxX-R3-drZ.text" = "無";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "UUQ-Zy-DWq"; */
+"UUQ-Zy-DWq.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "選地點"; ObjectID = "WaL-WG-heA"; */
+"WaL-WG-heA.normalTitle" = "選地點";
+
+/* Class = "UIButton"; normalTitle = "活動記錄"; ObjectID = "Yb2-V1-3m5"; */
+"Yb2-V1-3m5.normalTitle" = "活動記錄";
+
+/* Class = "UILabel"; text = "無"; ObjectID = "e1e-nU-dgN"; */
+"e1e-nU-dgN.text" = "無";
+
+/* Class = "UILabel"; text = "無"; ObjectID = "iQG-KW-r3N"; */
+"iQG-KW-r3N.text" = "無";
+
+/* Class = "UILabel"; text = "地址:"; ObjectID = "ihG-3M-F29"; */
+"ihG-3M-F29.text" = "地址:";
+
+/* Class = "UILabel"; text = "地圖"; ObjectID = "kOI-3D-XF9"; */
+"kOI-3D-XF9.text" = "地圖";
+
+/* Class = "UILabel"; text = "地區:"; ObjectID = "n9I-yM-6v9"; */
+"n9I-yM-6v9.text" = "地區:";
+
+/* Class = "UILabel"; text = "活動內容"; ObjectID = "nwe-s5-Uew"; */
+"nwe-s5-Uew.text" = "活動內容";
+
+/* Class = "UILabel"; text = "距離 :"; ObjectID = "oDX-96-gln"; */
+"oDX-96-gln.text" = "距離 :";
+
+/* Class = "UILabel"; text = "無"; ObjectID = "rpN-pR-NRo"; */
+"rpN-pR-NRo.text" = "無";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "rsg-r6-sRP"; */
+"rsg-r6-sRP.text" = "Label";
+
+/* Class = "UILabel"; text = "無"; ObjectID = "v6p-wH-srG"; */
+"v6p-wH-srG.text" = "無";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "vg7-lI-Mmf"; */
+"vg7-lI-Mmf.text" = "Label";
+
+/* Class = "UILabel"; text = "無"; ObjectID = "x6P-rL-Ifa"; */
+"x6P-rL-Ifa.text" = "無";
+
+/* Class = "UILabel"; text = "負責人 :"; ObjectID = "zTT-6G-Zc1"; */
+"zTT-6G-Zc1.text" = "負責人 :";

@@ -11,70 +11,54 @@
 
 #pragma mark - === URLs ===
 /// MARK: SERVER_BASIC
-//#define BASE_URL                @"http://activeaging.xp3.biz"
 #define BASE_URL        @"http://192.168.43.109/ActiveAging"
-//#define BASE_URL        @"http://localhost:8888//ActiveAging"
-
-/// MARK: USER_ID URL
-#define LOGIN_URL               [BASE_URL stringByAppendingPathComponent:@"php/login.php"]
-#define TEST_URL            [BASE_URL stringByAppendingPathComponent:@"php/test.php"]
-#define DATA_KEY                @"data"
-
-
-
+/// MARK: EVENTS_URL
+#define EVENTS_REGISTER_URL     [BASE_URL stringByAppendingPathComponent:@"php/eventRegistration.php"]
+/// MARK: VERIFICATION_CODE_URL
+#define VERIFICATION_CODE_URL   [BASE_URL stringByAppendingPathComponent:@"php/verificationCode.php"]
+/// MARK: UPDATE TOKEN
+#define UPDATE_TOKEN_URL        [BASE_URL stringByAppendingPathComponent:@"php/updateDeviceToken.php"]
+/// MARK: USERGROUPS_URL
+#define USER_GROUP_URL          [BASE_URL stringByAppendingPathComponent:@"php/userGroups.php"]
 /// MARK: PICTURE_URL
 #define UPLOAD_PIC_URL          [BASE_URL stringByAppendingPathComponent:@"php/uploadImage.php"]
-#define USER_PIC_URL            [BASE_URL stringByAppendingPathComponent:@"pic/userPic"]
 #define EVENT_PIC_URL           [BASE_URL stringByAppendingPathComponent:@"pic/eventPic"]
+/// MARK: SEND INVITATION
+#define SEND_PUSH_URL           [BASE_URL stringByAppendingPathComponent:@"php/sendInvitation.php"]
+/// MARK: PICTURE URL
+#define USER_PIC_URL            [BASE_URL stringByAppendingPathComponent:@"pic/userPic"]
+/// MARK: USER_ID URL
+#define LOGIN_URL               [BASE_URL stringByAppendingPathComponent:@"php/login.php"]
+#define TEST_URL                [BASE_URL stringByAppendingPathComponent:@"php/test.php"]
 
-
-/// MARK: EVENTS_URL
-#define EVENTS_REGISTER_URL          [BASE_URL stringByAppendingPathComponent:@"php/eventRegistration.php"]
-#define USER_EVENT_FETCH @"fetch"
-#define USER_EVENT_JOIN @"join"
-#define USER_EVENT_QUIT @"quit"
-
-#define USER_EVENT_STATUS_KEY   @"joinedEvents"
-
-
-/// MARK: VERIFICATION_CODE_URL
-#define VERIFICATION_CODE_URL          [BASE_URL stringByAppendingPathComponent:@"php/verificationCode.php"]
-#define VERIFICATION_KEY            @"validationCode"
-#define VERIFICATION_ACTION_DELETE @"delete"
-#define VERIFICATION_ACTION_SEND    @"send"
-#define VERIFICATION_ACTION_CHECK   @"check"
-
-/// MARK: userGROUP_URL
-#define USER_GROUP_URL          [BASE_URL stringByAppendingPathComponent:@"php/userGroups.php"]
 
 #pragma mark - === KEYS ===
 /// MARK: COMMON_KEYS
 #define ACTION_KEY              @"action"
-
+#define DATA_KEY                @"data"
 /// MARK: ECHO_KEYS
-#define ECHO_RESULT_KEY @"result"
-#define ECHO_MESSAGE_KEY    @"message"
-#define ECHO_ERROR_KEY  @"error"
-
-
+#define ECHO_RESULT_KEY         @"result"
+#define ECHO_MESSAGE_KEY        @"message"
+#define ECHO_ERROR_KEY          @"error"
 /// MARK: USER_KEYS
 #define AUTHORIZATION_KEY       @"authorization"
-#define USER_ID_KEY             @"user_ID"
-#define USER_NAME_KEY           @"userName"
-#define USER_PASSWORD_KEY       @"userPassword"
-#define USER_PHONENUMBER_KEY    @"userPhoneNumber"
+#define VERIFICATION_KEY        @"validationCode"
 #define USER_CUR_LON_KEY        @"userCurrentLongitude"
-#define USER_CUR_LAT_KEY    @"userCurrentLatitude"
-#define USER_PIC_KEY                   @"userPic"
-
+#define USER_CUR_LAT_KEY        @"userCurrentLatitude"
+#define USER_PHONENUMBER_KEY    @"userPhoneNumber"
+#define USER_PASSWORD_KEY       @"userPassword"
+#define USER_TOKEN_KEY          @"user_Token"
+#define USER_NAME_KEY           @"userName"
+#define USER_ID_KEY             @"user_ID"
+#define USER_PIC_KEY            @"userPic"
 
 /// MARK: EVENT_KEYS
 #define EVENT_ID_KEY            @"event_ID"
     // description 資訊
 #define EVENT_TITLE_KEY         @"event_title"
 #define EVENT_DESCRIPTION_KEY   @"event_description"
-#define EVENT_START_KEY     @"event_startingDateTime"
-#define EVENT_END_KEY       @"event_endingDateTime"
+#define EVENT_START_KEY         @"event_startingDateTime"
+#define EVENT_END_KEY           @"event_endingDateTime"
     // registration time 報名期間
 #define EVENT_REG_BEGIN_KEY     @"event_registerBeginDateTime"
 #define EVENT_REG_END_KEY       @"event_registerEndDateTime"
@@ -94,32 +78,53 @@
 #define EVENT_WEBPAGE_KEY       @"event_webpage"
     // pic 圖檔
 #define EVENT_PIC_KEY           @"event_pic"
+    // for USER
+#define USER_EVENT_STATUS_KEY   @"joinedEvents"
+
+/// MARK: AUTHORIZATION
+#define USER_AUTHORIZATION  @"user"
+#define ORG_AUTHORIZATION   @"organization"
 
 
 /// MARK: GROUP_KEYS
-#define GROUP_ID_KEY    @"group_ID"
-#define GROUP_NAME_KEY  @"group_name"
-#define USER_ROLE_KEY      @"role"
-#define ROLE_MASTER     @"1"
+#define GROUP_ID_KEY        @"group_ID"
+#define GROUP_NAME_KEY      @"group_name"
+#define GROUP_MEMBER_KEY    @"member_ID"
+#define USER_ROLE_KEY       @"role"
+#define ROLE_MASTER         @"1"
 #define ROLE_PARTICIPANT    @"-1"
 
 
 #pragma mark - === ACTIONS ===
 
 /// MARK: USER_ACTIONS
-#define ACTION_CHECK        @"checkAvailability"
-#define ACTION_ADD          @"create"
-#define ACTION_GET_ID       @"getID"
-#define ACTION_DELETE       @"delete"
+#define ACTION_UPDATELOCATION   @"updateLocation"
+#define ACTION_UPDATETOKEN      @"updateToken"
+#define ACTION_UPDATENAME       @"updateName"
+#define ACTION_SENDSMS          @"send SMS"
+#define ACTION_GET_ID           @"getID"
+#define ACTION_DELETE           @"delete"
+#define ACTION_CHECK            @"checkAvailability"
+#define ACTION_ADD              @"create"
 
 /// MARK: GROUP_ACTIONS
-#define GROUP_ACTION_FETCH  @"fetchGroup"
-#define GROUP_ACTION_ADDMEMBER  @"addMember"
 #define GROUP_ACTION_DROPMEMBER @"dropMember"
-#define GROUP_ACTION_CREATE @"createGroup"
-#define GROUP_ACTION_DROP   @"dropGroup"
+#define GROUP_ACTION_ADDMEMBER  @"addMember"
+#define GROUP_ACTION_UPDATENAME @"updateName"
+#define GROUP_ACTION_UPDATEROLE @"updateRole"
+#define GROUP_ACTION_FETCH      @"fetchGroup"
+#define GROUP_ACTION_CREATE     @"createGroup"
+#define GROUP_ACTION_DROP       @"dropGroup"
 
+/// MARK: EVENT ACTIONS
+#define USER_EVENT_FETCH        @"fetch"
+#define USER_EVENT_JOIN         @"join"
+#define USER_EVENT_QUIT         @"quit"
 
+/// MARK: VERIFICATION ACTION
+#define VERIFICATION_ACTION_DELETE @"delete"
+#define VERIFICATION_ACTION_SEND   @"send"
+#define VERIFICATION_ACTION_CHECK  @"check"
 
 /*
  1	event_ID	
@@ -163,13 +168,15 @@
 #define keyAttrDescription  @"This is your login password for Acitve Aging"
 #define keyAttrService      @"biz.xp3.activeaging_test5"
 
-
+#define MAXIMUM_EMERGENCY_GROUP 5
 #define MAXIMUM_PERSONAL_GROUP 3
 #define MAXIMUM_MEMBER_PER_GROUP 20
 
 /// MARK: LOGIN_PAGE
 #define PHONE_NUMBER_REX @"[0][9][0-9]{8}"
 #define PHONE_NUMBER_LENGTH 10
+#define NAME_REX @"[a-zA-Z\u4e00-\u9fa5]+"
+#define GROUP_NAME_REX @"[0-9a-zA-Z\u4e00-\u9fa5 ]+"
 
 
 /// MARK: CLLocation
@@ -179,7 +186,7 @@
 #define DATE_FORMAT @"YYYY-MM-dd HH:mm:ss"
 
 /// MARK: USERDEFAULTS
-#define SHOULD_SHARE_LOCATION_KEY @"shareLocation";
+#define SHOULD_SHARE_LOCATION_KEY @"shareLocation"
 
 #endif /* Definitions_h */
 

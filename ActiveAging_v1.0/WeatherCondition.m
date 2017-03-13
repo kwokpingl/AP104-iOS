@@ -19,24 +19,78 @@
     //Map the condition codes to an image file (e.g. “01d” to “weather-clear.png”)
     if (!_imageMap) {
         _imageMap = @{
-                      @"01d" : @"weather-clear",
-                      @"02d" : @"weather-few",
-                      @"03d" : @"weather-few",
-                      @"04d" : @"weather-broken",
-                      @"09d" : @"weather-shower",
-                      @"10d" : @"weather-rain",
-                      @"11d" : @"weather-tstorm",
-                      @"13d" : @"weather-snow",
-                      @"50d" : @"weather-mist",
-                      @"01n" : @"weather-moon",
-                      @"02n" : @"weather-few-night",
-                      @"03n" : @"weather-few-night",
-                      @"04n" : @"weather-broken",
-                      @"09n" : @"weather-shower",
-                      @"10n" : @"weather-rain-night",
-                      @"11n" : @"weather-tstorm",
-                      @"13n" : @"weather-snow",
-                      @"50n" : @"weather-mist",
+                      @"800" : @"weather-clear",
+                      @"801" : @"few-day",
+                      @"802" : @"few-day",
+                      @"803" : @"broken", //04d
+                      @"804" : @"broken", //04d
+                      
+                      @"300" : @"shower", //09d
+                      @"301" : @"shower",
+                      @"302" : @"shower",
+                      @"310" : @"shower",
+                      @"311" : @"shower",
+                      @"312" : @"shower",
+                      @"313" : @"shower",
+                      @"314" : @"shower",
+                      @"321" : @"shower",
+                      @"520" : @"shower",
+                      @"521" : @"shower",
+                      @"522" : @"shower",
+                      @"523" : @"shower",
+                      @"531" : @"shower",
+                      
+                      @"500" : @"rain", //10d
+                      @"501" : @"rain", //img check
+                      @"502" : @"rain",
+                      @"503" : @"rain",
+                      @"504" : @"rain",
+                      
+                      @"200" : @"tstorm", //11d
+                      @"201" : @"tstorm", //img check
+                      @"202" : @"tstorm",
+                      @"210" : @"tstorm",
+                      @"211" : @"tstorm",
+                      @"212" : @"tstorm",
+                      @"221" : @"tstorm",
+                      @"230" : @"tstorm",
+                      @"231" : @"tstorm",
+                      @"232" : @"tstorm",
+                      
+                      @"511" : @"snow", //13d - freezing rain
+                      @"600" : @"snow", //snow
+                      @"601" : @"snow",
+                      @"602" : @"snow",
+                      @"611" : @"snow",
+                      @"612" : @"snow",
+                      @"615" : @"snow",
+                      @"616" : @"snow",
+                      @"620" : @"snow",
+                      @"621" : @"snow",
+                      @"622" : @"snow",
+                      
+                      @"701" : @"mist", //50d
+                      @"711" : @"mist",
+                      @"721" : @"mist",
+                      @"731" : @"mist",
+                      @"741" : @"mist",
+                      @"751" : @"mist",
+                      @"761" : @"mist",
+                      @"762" : @"mist",
+                      @"771" : @"mist",
+                      @"781" : @"mist",
+                      
+                      @"800" : @"moon", //01n //img check
+//                      @"801" : @"few", //02n //img check
+//                      @"802" : @"few", //03n
+                      @"803" : @"broken", //04n
+                      @"804" : @"broken", //04n //img check
+//                      @"09n" : @"weather-shower",
+//                      @"10n" : @"weather-rain-night",
+//                      @"11n" : @"weather-tstorm",
+//                      @"13n" : @"weather-snow",
+//                      @"50n" : @"weather-mist",
+                      @"962" : @"typhoon",  //img check
                       };
     }
     return _imageMap;
@@ -91,14 +145,6 @@
     return [self dateJSONTransformer];
 }
 
-//+(NSValueTransformer *) conditionDescriptionJSONTransformer {
-//    return [MTLValueTransformer reversibleTransformerWithForwardBlock:^(NSArray * values){
-//        return [values firstObject];
-//    } reverseBlock:^(NSString * str) {
-//        return @[str];
-//    }];
-//}
-
 + (NSValueTransformer *)conditionDescriptionJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSArray *weather, BOOL *success, NSError **error) {
         return [weather.firstObject valueForKey:@"description"];
@@ -111,7 +157,7 @@
 
 +(NSValueTransformer *) iconJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSArray *weather, BOOL *success, NSError **error) {
-        return [weather.firstObject valueForKey:@"icon"];
+        return [NSString stringWithFormat:@"%@",[weather.firstObject valueForKey:@"id"]];
     }];
 }
 

@@ -182,9 +182,10 @@ typedef enum : NSUInteger {
     }
     [_currentVC willMoveToParentViewController:nil];
     
-    [newVC.view setFrame:_currentVC.view.frame];
-    [_scrollView addSubview:newVC.view];
-    [_scrollView setContentSize:newVC.view.frame.size];
+    UIView * view = newVC.view;
+    [view setFrame:_currentVC.view.frame];
+    [_scrollView addSubview:view];
+    [_scrollView setContentSize:CGSizeMake(view.frame.size.width, view.frame.size.height+200)];
     _currentVC = newVC;
 }
 
@@ -418,6 +419,8 @@ typedef enum : NSUInteger {
         
     }
 }
+
+
 
 
 @end

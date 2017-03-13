@@ -11,7 +11,7 @@
 #import "DataManager.h"
 #import "LocationManager.h"
 #import "UserInfo.h"
-#import "ContactTableViewCell.h"
+#import "MapTableViewCell.h"
 #import "MemberDetailViewController.h"
 
 #import "MemberAnnotationView.h"
@@ -34,78 +34,70 @@ typedef enum : NSUInteger {
 typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nullable error);
 
 @interface MapViewController () <MKMapViewDelegate,UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource, LocationManagerDelegate>
-@property (weak, nonatomic) IBOutlet MKMapView *mapview;
-@property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
-@property (weak, nonatomic) IBOutlet UIView *groupView;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIView *memberDetailView;
-@property (weak, nonatomic) IBOutlet UISwitch *shareLocationSwitch;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *directionStyleSwitcher;
+@property (weak, nonatomic) IBOutlet UISwitch *shareLocationSwitch;
+@property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
+@property (weak, nonatomic) IBOutlet UIView *memberDetailView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet MKMapView *mapview;
+@property (weak, nonatomic) IBOutlet UIView *groupView;
 
-@property (assign) NSInteger chosenGroup;
-// use to determine wheather Group/Event was chosen
-@property (strong, nonatomic) NSArray * generalGroupList;
-// contains the Title of Groups (ie Personal Groups, Other Groups, Activities ...)
-// PICKER 0
-@property (strong, nonatomic) NSMutableArray * groupList;
-// contains details of the Groups
-// PICKER 1
-@property (strong, nonatomic) NSMutableArray * targetList;
-// contains detail of a Certain group / Certain event
-// TABLE
-@property (strong, nonatomic) NSMutableArray * eventList;
-// contains detail of Joined Events
-// TABLE
 @property (strong, nonatomic) NSMutableDictionary * friendListDict;
-// contains details of a Specific friend
-@property (strong, nonatomic) NSMutableArray * targetFriendList;
+@property (strong, nonatomic) NSMutableArray * targetFriendList; // contains details of a Specific friend
 @property (strong, nonatomic) NSMutableArray * eventsLocations;
+@property (strong, nonatomic) NSMutableArray * targetList; // contains detail of a Certain group / Certain event
+@property (strong, nonatomic) NSMutableArray * groupList; // contains details of the Groups
+@property (strong, nonatomic) NSMutableArray * eventList; // contains detail of Joined Events
 
-
-@property (strong, nonatomic) MKRoute * currentRoute;
-@property (strong, nonatomic) MKPolyline * routeOverlay;
+@property (strong, nonatomic) NSArray * generalGroupList; // contains the Title of Groups (ie Personal Groups, Other Groups, Activities ...)
 @property (strong, nonatomic) NSArray <MKRouteStep *> * routeStep;
 @property (strong, nonatomic) UIViewController * currentVC;
+@property (strong, nonatomic) MKPolyline * routeOverlay;
+@property (strong, nonatomic) MKRoute * currentRoute;
+
 @property (assign) CLLocationCoordinate2D targetLocation;
+@property (assign) NSInteger chosenGroup; // use to determine wheather Group/Event was chosen
 @end
 
 @implementation MapViewController{
     
+    MKDirectionsTransportType transportationType;
     ServerManager * _serverMgr;
-    LocationManager * _locationMgr;
     UserInfo * _userInfo;
     CLLocation * specificLocation;
     MKPolyline * polyLine;
-    MKDirectionsTransportType transportationType;
-    
     BOOL shareLocation;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
 
     // SETUP SINGLETONs
-    _locationMgr = [LocationManager shareInstance];
-    if (_locationMgr.accessGranted){
-        [_locationMgr startMonitoringSignificatnLocationChanges];
-    }
-    _locationMgr.delegate = self;
     _userInfo = [UserInfo shareInstance];
+//    [LocationManager shareInstance] = [LocationManager shareInstance];
+    
+    if ([LocationManager shareInstance].accessGranted){
+        [[LocationManager shareInstance] startMonitoringSignificatnLocationChanges];
+    }
+    
     
     // Check if user wish to ShareLocation
-    shareLocation = [[[NSUserDefaults standardUserDefaults]
-                      objectForKey:@"shareLocation"] boolValue];
+    shareLocation = [[[NSUserDefaults standardUserDefaults] objectForKey:@"shareLocation"] boolValue];
     
     // SETUP VIEWS
-    [_mapview setShowsUserLocation:true];
-    [_mapview setDelegate:self];
-    [_pickerview setDelegate:self];
-    [_pickerview setDataSource:self];
-    [_tableView setDelegate:self];
-    [_tableView setDataSource:self];
-    [_groupView setHidden:true];
-    [_memberDetailView setHidden:true];
     [_shareLocationSwitch setOn:shareLocation];
+    [_mapview setShowsUserLocation:true];
+    [_memberDetailView setHidden:true];
+    [_pickerview setDataSource:self];
+    [_tableView setDataSource:self];
+    [[LocationManager shareInstance] setDelegate:self];
+    [_pickerview setDelegate:self];
+    [_tableView setDelegate:self];
+    [_mapview setDelegate:self];
+    [_groupView setHidden:true];
+    
     
     [self setupInfo];
 }
@@ -115,7 +107,7 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    [_mapview locatePointA:_locationMgr.location.coordinate];
+    [_mapview locatePointA:[LocationManager shareInstance].location.coordinate];
     [_pickerview selectRow:0 inComponent:0 animated:true];
     [self pickerView:_pickerview didSelectRow:0 inComponent:0];
 }
@@ -125,15 +117,15 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
 - (void) locationControllerDidUpdateLocation: (CLLocation *) location{
     
     // Update the database
-    [DataManager updateContactDatabase];
+    [DataManager updateContactDatabase:^(BOOL done) {
+        
+    }];
     
     if ([_currentVC isKindOfClass:[MemberDetailViewController class]] && ![_memberDetailView isHidden]){
         NSInteger userID = ((MemberDetailViewController *) _currentVC).userID;
         NSArray * tempArray = [DataManager fetchUserInfoFromTableWithUserID:userID];
-        NSLog(@"tempArray : %@", tempArray);
         CLLocationDegrees lon = [tempArray.lastObject[USER_CUR_LON_KEY] doubleValue];
         CLLocationDegrees lat = [tempArray.lastObject[USER_CUR_LAT_KEY] doubleValue];
-        
         _targetLocation = CLLocationCoordinate2DMake(lat, lon);
     }
     
@@ -155,19 +147,16 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
         return nil;
     }
     
+    // if annotation is MemberPointAnnotation
     if ([annotation isKindOfClass:[MemberPointAnnotation class]]){
-    
         float distance = ((MemberAnnotationView *) annotation).distance;
-        MemberAnnotationView * pin = [[MemberAnnotationView alloc]
-                                  initWithAnnotation:annotation distance:distance];
+        MemberAnnotationView * pin = [[MemberAnnotationView alloc] initWithAnnotation:annotation distance:distance];
         return pin;
     }
     
-    
+    // if annotation is CustomPointAnnotation
     if ([annotation isKindOfClass:[CustomPointAnnotation class]]){
-        InfrastructureAnnotationView *annotationView =
-        [[InfrastructureAnnotationView alloc] initWithAnnotation:annotation
-                                                 reuseIdentifier:((CustomPointAnnotation *)annotation).type];
+        InfrastructureAnnotationView * annotationView = [[InfrastructureAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:((CustomPointAnnotation *)annotation).type];
         return annotationView;
     }
     
@@ -177,14 +166,14 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
 -(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
 {
     MKPolylineRenderer * line = [[MKPolylineRenderer alloc] initWithPolyline:overlay];
-    [line setLineWidth:5.0];
     [line setStrokeColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.5]];
+    [line setLineWidth:5.0];
     return line;
 }
 
 -(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    [_mapview setRegionBetweenA:[view.annotation coordinate] andB:_locationMgr.location.coordinate];
+    [_mapview setRegionBetweenA:[view.annotation coordinate] andB:[LocationManager shareInstance].location.coordinate];
     _targetLocation = view.annotation.coordinate;
     [self showDirection:_targetLocation];
     
@@ -209,14 +198,21 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
         }
         
     }
+    /// MARK: INFRASTRUCTURE
     if ([view.annotation isKindOfClass:[CustomPointAnnotation class]]){
         vc.userID = -1;
         NSString * phoneNumber = ((CustomPointAnnotation *) view.annotation).phone;
-        phoneNumber = [phoneNumber stringByReplacingOccurrencesOfString:@"+886 " withString:@""];
-        phoneNumber = [phoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
-        vc.phoneNumber = phoneNumber;
-        vc.customImage = ((CustomPointAnnotation *) view.annotation).image;
-        vc.name = ((CustomPointAnnotation *) view.annotation).title;
+        
+        if (phoneNumber != nil){
+            phoneNumber = [phoneNumber stringByReplacingOccurrencesOfString:@"+886 " withString:@""];
+            phoneNumber = [phoneNumber stringByReplacingOccurrencesOfString:@"-" withString:@""];
+            phoneNumber = [@"0" stringByAppendingString:phoneNumber];
+            phoneNumber = [[phoneNumber componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"0123456789-+()"] invertedSet]] componentsJoinedByString:@""];
+            [vc setPhoneNumber: phoneNumber];
+        }
+        
+        [vc setCustomImage: ((CustomPointAnnotation *) view.annotation).image];
+        [vc setName: ((CustomPointAnnotation *) view.annotation).title];
     }
     [self setSubView:vc];
     
@@ -250,7 +246,6 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
      didSelectRow:(NSInteger)row
       inComponent:(NSInteger)component{
     
-    
     if (component == 0)
     {
         [_mapview removeAnnotations:_mapview.annotations];
@@ -260,18 +255,14 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
         switch (row) {
                 // Personal Groups Chosen
             case personalGroups:
-                [_targetList addObject:@{GROUP_ID_KEY:@(0),
-                                         GROUP_NAME_KEY: @"請選組",
-                                         USER_ROLE_KEY:@(0)}];
+                [_targetList addObject:@{GROUP_ID_KEY:@(0), GROUP_NAME_KEY: @"請選組", USER_ROLE_KEY:@(0)}];
                 [_targetList addObjectsFromArray:_groupList[0]];
                 _chosenGroup = personalGroups;
                 break;
                 
                 // Other Groups Chosen
             case otherGroups:
-                [_targetList addObject:@{GROUP_ID_KEY:@(0),
-                                         GROUP_NAME_KEY: @"請選組",
-                                         USER_ROLE_KEY:@(0)}];
+                [_targetList addObject:@{GROUP_ID_KEY:@(0), GROUP_NAME_KEY: @"請選組", USER_ROLE_KEY:@(0)}];
                 [_targetList addObjectsFromArray:_groupList[1]];
                 _chosenGroup = otherGroups;
                 break;
@@ -279,19 +270,21 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
                 // Activities Chosen
             case activities:
             {
-                [_targetList addObject:@{EVENT_ID_KEY:@(0),
-                                         EVENT_TITLE_KEY: @"請選活動"}];
-                _chosenGroup = activities;
+                [_targetList addObject:@{EVENT_ID_KEY:@(0), EVENT_TITLE_KEY: @"請選活動"}];
                 [_targetList addObjectsFromArray:_eventList[0]];
+                _chosenGroup = activities;
+                
                 // Show all joined activities' locations
                 [_mapview removeAnnotations:_mapview.annotations];
                 NSMutableArray * coordinates = [NSMutableArray new];
                 for (int i = 1; i < _targetList.count; i++)
                 {
-                    [coordinates addObject:@[_targetList[i][EVENT_LAT_KEY], _targetList[i][EVENT_LON_KEY]]];
+                    [coordinates addObject:@[_targetList[i][EVENT_LAT_KEY],
+                                            _targetList[i][EVENT_LON_KEY]]];
                 }
                 
-                [coordinates addObject:@[@(_locationMgr.location.coordinate.latitude), @(_locationMgr.location.coordinate.longitude)]];
+                [coordinates addObject:@[@([LocationManager shareInstance].location.coordinate.latitude),
+                                        @([LocationManager shareInstance].location.coordinate.longitude)]];
                 
                 [_mapview recenterMap:coordinates];
                 [self showAnnotation];
@@ -299,10 +292,11 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
                 break;
                 
             default:
+                [self policsStationSearch:[LocationManager shareInstance].location.coordinate];
+                [_mapview locatePointA:[LocationManager shareInstance].location.coordinate];
+                [self hospitalSearch:[LocationManager shareInstance].location.coordinate];
                 _targetList = [NSMutableArray new];
-                [_mapview locatePointA:_locationMgr.location.coordinate];
-                [self hospitalSearch:_locationMgr.location.coordinate];
-                [self policsStationSearch:_locationMgr.location.coordinate];
+                
                 break;
         }
         [_pickerview reloadComponent:1];
@@ -328,8 +322,8 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
                 {
                     [_targetFriendList addObject:@{USER_NAME_KEY:@"全部"}];
                     [_targetFriendList addObjectsFromArray:_friendListDict[@(groupID)]];
-                    [_groupView setHidden:false];
                     [_directionStyleSwitcher setHidden:true];
+                    [_groupView setHidden:false];
                     [_tableView reloadData];
                 }
             }
@@ -347,9 +341,10 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
                 }
                 
                 MemberDetailViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"MemberDetailViewController"];
-                vc.phoneNumber = _targetList[row][EVENT_ORGN_PHONE_KEY];
-                vc.userID = 0;
-                vc.eventImageName = _targetList[row][EVENT_PIC_KEY];
+                [vc setPhoneNumber: _targetList[row][EVENT_ORGN_PHONE_KEY]];
+                [vc setEventImageName: _targetList[row][EVENT_PIC_KEY] ];
+                [vc setUserID:0];
+                
                 [self setSubView:vc];
             }
             else {
@@ -359,7 +354,8 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
                     [coordinates addObject:@[_targetList[i][EVENT_LAT_KEY], _targetList[i][EVENT_LON_KEY]]];
                 }
                 
-                [coordinates addObject:@[@(_locationMgr.location.coordinate.latitude), @(_locationMgr.location.coordinate.longitude)]];
+                [coordinates addObject:@[@([LocationManager shareInstance].location.coordinate.latitude),
+                                        @([LocationManager shareInstance].location.coordinate.longitude)]];
                 
                 [_mapview recenterMap:coordinates];
             }
@@ -378,11 +374,11 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ContactTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    cell.titleLabel.text = _targetFriendList[indexPath.row][USER_NAME_KEY];
+    MapTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    [cell.titleLabel setText: _targetFriendList[indexPath.row][USER_NAME_KEY] ];
     [cell.titleLabel setNumberOfLines:0];
     if (indexPath.row == 0){
-        cell.subtitleLabel.text = @"";
+        [cell.subtitleLabel setText: @""];
     }
     else{
         if (![_targetFriendList[indexPath.row][USER_CUR_LON_KEY] isEqualToString:@"<null>"]
@@ -415,12 +411,12 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
                         expectedTime = @"未知";
                     }
                     [cell.subtitleLabel setNumberOfLines:0];
-                    cell.subtitleLabel.text = expectedTime;
+                    [cell.subtitleLabel setText: expectedTime];
                 }
             }];
         }
         else {
-            cell.subtitleLabel.text = @"未知";
+            [cell.subtitleLabel setText:@"未知" ];
         }
     }
     
@@ -445,7 +441,7 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
             [coordinates addObject:@[_targetFriendList[i][USER_CUR_LAT_KEY], _targetFriendList[i][USER_CUR_LON_KEY]]];
         }
         
-        [coordinates addObject:@[@(_locationMgr.location.coordinate.latitude), @(_locationMgr.location.coordinate.longitude)]];
+        [coordinates addObject:@[@([LocationManager shareInstance].location.coordinate.latitude), @([LocationManager shareInstance].location.coordinate.longitude)]];
         
         [_mapview recenterMap:coordinates];
     }
@@ -456,7 +452,7 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
             lon = [_targetFriendList[indexPath.row][USER_CUR_LON_KEY] doubleValue];
             lat = [_targetFriendList[indexPath.row][USER_CUR_LAT_KEY] doubleValue];
             _targetLocation = CLLocationCoordinate2DMake(lat, lon);
-            [_mapview setRegionBetweenA:_targetLocation andB:_locationMgr.location.coordinate];
+            [_mapview setRegionBetweenA:_targetLocation andB:[LocationManager shareInstance].location.coordinate];
             
             [self showDirection:_targetLocation];
             MemberDetailViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"MemberDetailViewController"];
@@ -524,10 +520,11 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
                 location = CLLocationCoordinate2DMake(lat, lon);
                 annotation = [MemberPointAnnotation new];
                 
+                [annotation setDistance: [[LocationManager shareInstance] distanceFromLocationUsingLongitude:lon Latitude:lat]];
                 [annotation setTitle:_targetFriendList[i][USER_NAME_KEY]];
-                [annotation setTag:i];
                 [annotation setCoordinate:location];
-                annotation.distance = [_locationMgr distanceFromLocationUsingLongitude:lon Latitude:lat];
+                [annotation setTag:i];
+                
                 
                 [_mapview addAnnotation:annotation];
             }
@@ -541,10 +538,11 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
             location = CLLocationCoordinate2DMake(lat, lon);
             if (CLLocationCoordinate2DIsValid(location)){
                 annotation = [MemberPointAnnotation new];
-                [annotation setTag:i];
+                [annotation setDistance:[[LocationManager shareInstance] distanceFromLocationUsingLongitude:lon Latitude:lat]];
                 [annotation setTitle:_targetList[i][EVENT_TITLE_KEY]];
                 [annotation setCoordinate:location];
-                annotation.distance = [_locationMgr distanceFromLocationUsingLongitude:lon Latitude:lat];
+                [annotation setTag:i];
+                
                 
                 [_mapview addAnnotation:annotation];
             }
@@ -557,18 +555,19 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
 
 
 - (void) showDirection : (CLLocationCoordinate2D) destination {
-    MKDirectionsRequest * directionRequest = [MKDirectionsRequest new];
-    MKMapItem * sourceMapItem = [MKMapItem mapItemForCurrentLocation];
     MKPlacemark * destinationPlacemark = [[MKPlacemark alloc] initWithCoordinate:destination];
     MKMapItem * destinationMapItem = [[MKMapItem alloc] initWithPlacemark:destinationPlacemark];
-    [directionRequest setSource:sourceMapItem];
-    [directionRequest setDestination:destinationMapItem];
+    MKDirectionsRequest * directionRequest = [MKDirectionsRequest new];
+    MKMapItem * sourceMapItem = [MKMapItem mapItemForCurrentLocation];
+    
     [directionRequest setTransportType:transportationType];
+    [directionRequest setDestination:destinationMapItem];
+    [directionRequest setSource:sourceMapItem];
     
     MKDirections * directions = [[MKDirections alloc] initWithRequest:directionRequest];
     [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse * _Nullable response, NSError * _Nullable error) {
         if (error){
-            NSLog(@"ERRROR in MKDirections : %@", error);
+            NSLog(@"ERROR in MKDirections : %@", error);
             return;
         }
         _currentRoute = [response.routes firstObject];
@@ -578,12 +577,14 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
 }
 
 - (void) plotRouteOnMap: (MKRoute *) route {
-    if (_routeOverlay){ [_mapview removeOverlay:_routeOverlay]; }
+    if (_routeOverlay){
+        [_mapview removeOverlay:_routeOverlay];
+    }
     
     // Update
     _routeOverlay = route.polyline;
-    [_mapview addOverlay:_routeOverlay level:MKOverlayLevelAboveRoads];
     _routeStep = route.steps;
+    [_mapview addOverlay:_routeOverlay level:MKOverlayLevelAboveRoads];
     
     if (_currentVC && [_currentVC isKindOfClass:[MemberDetailViewController class]]){
         [((MemberDetailViewController *) _currentVC) setNextStep:[NSString stringWithFormat:@"%@", _routeStep.firstObject.instructions]];
@@ -593,12 +594,14 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
 
 /// GET ESTIMATED TIME of ARRIVAL
 - (void) getETA : (CLLocationCoordinate2D) destination withDonehandler: (MKETAHandler) handler {
-    MKDirectionsRequest * directionRequest = [MKDirectionsRequest new];
-    [directionRequest setSource:[MKMapItem mapItemForCurrentLocation]];
     MKPlacemark * destinationPlacemark = [[MKPlacemark alloc] initWithCoordinate:destination];
     MKMapItem * destinationMapItem = [[MKMapItem alloc] initWithPlacemark:destinationPlacemark];
+    MKDirectionsRequest * directionRequest = [MKDirectionsRequest new];
+    
+    [directionRequest setSource:[MKMapItem mapItemForCurrentLocation]];
     [directionRequest setDestination:destinationMapItem];
     [directionRequest setTransportType:transportationType];
+    
     MKDirections * directions = [[MKDirections alloc] initWithRequest:directionRequest];
     [directions calculateETAWithCompletionHandler:handler];
 }
@@ -606,38 +609,39 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
 #pragma mark - SETUPs
 - (void) setupInfo {
     // 0. setup GENERAL GROUP LIST
+    
+    _friendListDict = [NSMutableDictionary new]; // contains friend lists of a given group
+    _targetFriendList = [NSMutableArray new]; //
+    _targetList = [NSMutableArray new]; // contains the group of interest
+    _groupList = [NSMutableArray new]; // contains the groups' info
+    _eventList = [NSMutableArray new]; // contains the events' info
     _generalGroupList = @[@"目前位置",
                           @"個人群組",
                           @"其他群組",
                           @"我的活動"];
     
-    
-    _groupList = [NSMutableArray new]; // contains the groups' info
-    _eventList = [NSMutableArray new]; // contains the events' info
-    _friendListDict = [NSMutableDictionary new]; // contains friend lists of a given group
-    _targetList = [NSMutableArray new]; // contains the group of interest
-    _targetFriendList = [NSMutableArray new]; //
-    
     // 1. update the Database from Server
-    [DataManager updateContactDatabase];
-    
-    // 2. setup GROUP_LIST
-    [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:1]];
-    [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:-1]];
-    
-    NSMutableArray * tempGroups = [NSMutableArray new];
-    [tempGroups addObjectsFromArray:[DataManager fetchDatabaseFromTable:GROUP_LIST_TABLE]];
-    
-    // 3. setup FRIEND_LIST (based on GROUPS)
-    for (int i = 0; i < tempGroups.count; i++)
-    {
-        NSInteger groupID = [tempGroups[i][GROUP_ID_KEY] integerValue];
-        NSArray * tempArray = [[NSArray alloc] initWithArray:[DataManager fetchUserInfoFromTableWithGroupID:groupID]];
-        [_friendListDict setObject:tempArray forKey:@(groupID)];
-    }
-    
-    // 4. setup EVENT_LIST
-    [_eventList addObject:[DataManager fetchEventsFromTable]];
+    [DataManager updateContactDatabase:^(BOOL done) {
+        if (done){
+            // 2. setup GROUP_LIST
+            [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:1]];
+            [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:-1]];
+            
+            NSMutableArray * tempGroups = [NSMutableArray new];
+            [tempGroups addObjectsFromArray:[DataManager fetchDatabaseFromTable:GROUP_LIST_TABLE]];
+            
+            // 3. setup FRIEND_LIST (based on GROUPS)
+            for (int i = 0; i < tempGroups.count; i++)
+            {
+                NSInteger groupID = [tempGroups[i][GROUP_ID_KEY] integerValue];
+                NSArray * tempArray = [[NSArray alloc] initWithArray:[DataManager fetchUserInfoFromTableWithGroupID:groupID]];
+                [_friendListDict setObject:tempArray forKey:@(groupID)];
+            }
+            
+            // 4. setup EVENT_LIST
+            [_eventList addObject:[DataManager fetchEventsFromTable]];
+        }
+    }];
     
 }
 
@@ -655,9 +659,10 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
     
     // add vc to _memberDetailView and displays it
     [vc.view setFrame:(CGRect){{0,0},_memberDetailView.frame.size}];
-    [_memberDetailView addSubview:vc.view];
+    
     [_memberDetailView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
     [_memberDetailView setClipsToBounds:true];
+    [_memberDetailView addSubview:vc.view];
     [_memberDetailView setHidden:false];
     
     _currentVC = vc;
@@ -665,12 +670,13 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
 
 #pragma mark - Annotations for HOSPITAL and POLICE STATION
 - (void) hospitalSearch : (CLLocationCoordinate2D) location {
+    
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.1, 0.1);
+    MKCoordinateRegion region = MKCoordinateRegionMake(location, span);
     MKLocalSearchRequest * request = [MKLocalSearchRequest new];
     NSString * naturalLanguageQuery = @"hospital";
-    [request setNaturalLanguageQuery:naturalLanguageQuery];
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.01, 0.01);
-    MKCoordinateRegion region = MKCoordinateRegionMake(location, span);
     
+    [request setNaturalLanguageQuery:naturalLanguageQuery];
     [request setRegion:region];
     
     MKLocalSearch * localSearch = [[MKLocalSearch alloc] initWithRequest:request];
@@ -685,27 +691,30 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
             if (obj.name){
                 
                 CustomPointAnnotation * annotation = [CustomPointAnnotation new];
-                [annotation setCoordinate:obj.placemark.coordinate];
-                [annotation setTitle:obj.name];
-                [annotation  setAddress:obj.placemark.addressDictionary[UITextContentTypeFullStreetAddress]];
-                [annotation setPhone:obj.phoneNumber];
+                
+                [annotation setAddress:obj.placemark.addressDictionary[UITextContentTypeFullStreetAddress]];
                 [annotation setImage:[UIImage imageNamed:@"Hospital Annotation"]];
+                [annotation setCoordinate:obj.placemark.coordinate];
                 [annotation setType:naturalLanguageQuery];
-                NSLog(@"PHONE NUMBER %@", obj.phoneNumber);
+                [annotation setPhone:obj.phoneNumber];
+                [annotation setTitle:obj.name];
+  
                 [annotations addObject:annotation];
             }
         }];
-        [_mapview addAnnotations:annotations];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_mapview addAnnotations:annotations];
+        });
     }];
 }
 
 - (void) policsStationSearch : (CLLocationCoordinate2D) location {
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.1,0.1);
+    MKCoordinateRegion region = MKCoordinateRegionMake(location, span);
     MKLocalSearchRequest * request = [MKLocalSearchRequest new];
     NSString * naturalLanguageQuery = @"police";
-    [request setNaturalLanguageQuery:naturalLanguageQuery];
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.1, 0.1);
-    MKCoordinateRegion region = MKCoordinateRegionMake(location, span);
     
+    [request setNaturalLanguageQuery:naturalLanguageQuery];
     [request setRegion:region];
     
     MKLocalSearch * localSearch = [[MKLocalSearch alloc] initWithRequest:request];
@@ -719,18 +728,25 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
         [response.mapItems enumerateObjectsUsingBlock:^(MKMapItem * obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if (obj.name){
                 CustomPointAnnotation * annotation = [CustomPointAnnotation new];
-                [annotation setCoordinate:obj.placemark.coordinate];
-                [annotation setTitle:obj.name];
-                [annotation  setAddress:obj.placemark.addressDictionary[UITextContentTypeFullStreetAddress]];
-                [annotation setPhone:obj.phoneNumber];
+                [annotation setAddress:obj.placemark.addressDictionary[UITextContentTypeFullStreetAddress]];
                 [annotation setImage:[UIImage imageNamed:@"Police Station Annotation"]];
+                [annotation setCoordinate:obj.placemark.coordinate];
                 [annotation setType:naturalLanguageQuery];
-                NSLog(@"PHONE NUMBER %@", obj.phoneNumber);
+                [annotation setPhone:obj.phoneNumber];
+                [annotation setTitle:obj.name];
+                
                 [annotations addObject:annotation];
             }
         }];
-        [_mapview addAnnotations:annotations];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_mapview addAnnotations:annotations];
+        });
     }];
+}
+
+-(void)dealloc {
+    NSLog(@"MAP RELEASE");
+    NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
 }
 
 

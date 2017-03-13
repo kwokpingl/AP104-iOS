@@ -10,7 +10,6 @@
 
 @interface ContactTableViewCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UILabel * titleLabel;
-@property (strong, nonatomic) IBOutlet UILabel * subtitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView * imageView;
 
 @end

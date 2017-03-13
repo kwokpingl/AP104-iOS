@@ -40,6 +40,7 @@ static EventManager * _store = nil;
 #pragma mark - sortTimeOrder
 -(void) sortTimeOrder: (NSDate *) dateSelected complete:(Donehandler)done{
     
+
     if (_eventsAccessGranted){
     
     
@@ -83,6 +84,7 @@ static EventManager * _store = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
          int counter = 0;
         NSMutableArray * test  = [NSMutableArray new];
+        
             for (EKEvent * e in events) {
                 [test addObject:e];
                 

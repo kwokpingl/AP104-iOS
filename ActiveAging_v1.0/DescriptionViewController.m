@@ -27,15 +27,35 @@
     
     [_descriptionTitleLabel setAdjustsFontSizeToFitWidth:true];
     [_descriptionLabel setNumberOfLines:0];
-//    [_descriptionLabel.layer setBorderColor:[UIColor blackColor].CGColor];
-//    [_descriptionLabel.layer setCornerRadius:_descriptionLabel.frame.size.width/10];
-//    [_descriptionLabel.layer setBorderWidth:0.5];
     [_descriptionLabel setText:_eventDetailDict[EVENT_DESCRIPTION_KEY]];
+    
+    [self.view setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, [self getLabelHeight:_descriptionLabel]*2.0)];
+    
+//    if ([self getLabelHeight:_descriptionLabel] > self.view.frame.size.height){
+//    
+//        [self.view setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, [self getLabelHeight:_descriptionLabel])];
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (CGFloat)getLabelHeight:(UILabel*)label
+{
+    CGSize constraint = CGSizeMake(label.frame.size.width, CGFLOAT_MAX);
+    CGSize size;
+    
+    NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
+    CGSize boundingBox = [label.text boundingRectWithSize:constraint
+                                                  options:NSStringDrawingUsesLineFragmentOrigin
+                                               attributes:@{NSFontAttributeName:label.font}
+                                                  context:context].size;
+    
+    size = CGSizeMake(ceil(boundingBox.width), ceil(boundingBox.height));
+    
+    return size.height;
 }
 
 /*

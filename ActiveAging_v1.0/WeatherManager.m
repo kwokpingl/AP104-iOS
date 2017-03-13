@@ -8,17 +8,20 @@
 
 #import "WeatherManager.h"
 #import "WeatherClient.h"
+#import "LocationManager.h"
 #import <TSMessage.h>
 
-@interface WeatherManager ()
+
+
+@interface WeatherManager ()<LocationManagerDelegate>
 
 //declare as readwrite to change the values behind the scenes
 @property (nonatomic, strong, readwrite) WeatherCondition * currentCondition;
-@property (nonatomic, strong, readwrite) CLLocation * currentLocation;
-@property (nonatomic, strong, readwrite) NSArray * hourlyForecast;
-@property (nonatomic, strong, readwrite) NSArray * dailyForecast;
-
-@property (nonatomic, strong) CLLocationManager * locationManager;
+@property (nonatomic, readwrite) CLLocation * currentLocation;
+@property (nonatomic, readwrite) NSArray * hourlyForecast;
+@property (nonatomic, readwrite) NSArray * dailyForecast;
+@property CLLocationManager * locationManager;
+@property (nonatomic, strong) LocationManager * locationMgr;
 @property (nonatomic, assign) BOOL isFirstUpdate;
 @property (nonatomic, strong) WeatherClient * client;
 
@@ -30,7 +33,7 @@
     static id _shareManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _shareManager = [self new];
+        _shareManager = [WeatherManager new];
     });
     
     return _shareManager;
@@ -39,9 +42,14 @@
 - (id) init {
     if (self = [super init]) {
         //1
-        _locationManager = [CLLocationManager new];
-        _locationManager.delegate = self;
-        [_locationManager requestAlwaysAuthorization];
+        
+#warning ALTERNATED 1
+//        _locationManager = [CLLocationManager new];
+//        _locationManager.delegate = self;
+//        [_locationManager requestAlwaysAuthorization];
+        
+        _locationMgr = [LocationManager shareInstance];
+        _locationMgr.delegate = self;
         
         //2
         //Creates the WXClient object for the manager. This handles all networking and data parsing
@@ -79,35 +87,41 @@
 #pragma mark - trigger weather fetching when a location is found
 - (void) findCurrentLocation {
     self.isFirstUpdate = YES;
-    [self.locationManager startUpdatingLocation];
+    #warning ALTERNATED 1
+//    [self.locationManager startUpdatingLocation];
+    [_locationMgr startUpdatingLocation];
 }
 
--(void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+#warning ALTERNATED 1
+//-(void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+-(void)locationControllerDidUpdateLocation:(CLLocation *)location{
     //1
-    if (self.isFirstUpdate) {
-        self.isFirstUpdate = NO;
-        return;
-    }
+//    if (self.isFirstUpdate) {
+//        self.isFirstUpdate = NO;
+//        return;
+//    }
     
-    CLLocation * location = [locations lastObject];
+//    CLLocation * location = [locations lastObject];
     
     //2
     if (location.horizontalAccuracy > 0) {
         //3
+        [_locationMgr stopUpdatingLocation];
         self.currentLocation = location;
-        [self.locationManager stopUpdatingLocation];
+//        [self.locationManager stopUpdatingLocation];
     }
 }
 
+
 - (RACSignal *) updateCurrentConditions {
-    return [[self.client fetchCurrentConditionsForLocation:self.currentLocation.coordinate]
+    return [[self.client fetchCurrentConditionsForLocation:_currentLocation.coordinate]
             doNext:^(WeatherCondition * condition) {
                 self.currentCondition = condition;
             }];
 }
 
 - (RACSignal *) updateHourlyForecast {
-    return [[self.client fetchHourlyForecastForLocation:self.currentLocation.coordinate]
+    return [[self.client fetchHourlyForecastForLocation:_currentLocation.coordinate]
             doNext:^(NSArray * conditions) {
     self.hourlyForecast = conditions;
     }];

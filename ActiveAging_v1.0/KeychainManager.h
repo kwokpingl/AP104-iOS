@@ -28,7 +28,7 @@ typedef void (^USERINFO)(NSString * userName, NSString * userPhoneNumber);
 //- (void) resetKeychain;
 //- (void) retrieveUserInfo;
 - (void) retrieveUserInfo: (USERINFO) userinfo;
-
+- (BOOL) updateKeychain: (NSString *) object forKey: (NSString *) key;
 - (void) deleteKeychain: (NSString *) username Password: (NSString *) userPassword;
 
 @end

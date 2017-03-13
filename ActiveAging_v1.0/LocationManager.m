@@ -22,6 +22,7 @@ static LocationManager * _myLocationMgr;
 @implementation LocationManager{
     NSDate * locationMgrStartTime;
     ServerManager * serMgr;
+    UserInfo * _userInfo;
 }
 
 + (instancetype) shareInstance {
@@ -35,6 +36,9 @@ static LocationManager * _myLocationMgr;
 - (id) init{
     self = [super init];
     if (self){
+        // SETUP CLLocationManager
+        _locationMgr = [CLLocationManager new];
+        [_locationMgr setDelegate:self];
         
         // check for authorization
         CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
@@ -86,7 +90,18 @@ static LocationManager * _myLocationMgr;
     }
     
     if ([[UserInfo shareInstance] isShareLocation]){
-#warning Update Position
+        _userInfo = [UserInfo shareInstance];
+        NSString * lat = [NSString stringWithFormat:@"%.6f", locations.lastObject.coordinate.latitude];
+        NSString * lon = [NSString stringWithFormat:@"%.6f", locations.lastObject.coordinate.longitude];
+        
+        [serMgr updateLocationForAuthorization:@"user" andLat:lat andLon:lon completion:^(NSError *error, id result) {
+            if (![result[ECHO_RESULT_KEY] boolValue]){
+                NSLog(@"\nUPDATE LOCATION ERROR: %@", error);
+            }
+            else{
+                NSLog(@"\nUPDATE LCOATION SUCCESS");
+            }
+        }];
     }
     
 }
@@ -106,6 +121,7 @@ static LocationManager * _myLocationMgr;
 - (void) stopUpdatingLocation {
     if (_isUpdatingLocation){
         [_locationMgr stopUpdatingLocation];
+        [_locationMgr stopMonitoringSignificantLocationChanges];
         _isUpdatingLocation = false;
     }
 }
@@ -167,5 +183,4 @@ static LocationManager * _myLocationMgr;
     }
     
 }
-
 @end

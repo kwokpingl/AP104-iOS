@@ -15,6 +15,7 @@ static UserInfo * userInfo = nil;
     NSString * _password;
     UIImage * _profileImg;
     NSInteger _userID;
+    NSString * _deviceToken;
     BOOL shareLocation;
 }
 + (instancetype) shareInstance{
@@ -44,6 +45,10 @@ static UserInfo * userInfo = nil;
     _userID = userID;
 }
 
+- (void) setDeviceToken: (NSString *) deviceToken {
+    _deviceToken = deviceToken;
+}
+
 - (void) changeShareLocation{
     
     shareLocation = !shareLocation;
@@ -68,6 +73,10 @@ static UserInfo * userInfo = nil;
 
 - (NSInteger) getUserID{
     return _userID;
+}
+
+- (NSString *) getDeviceToken{
+    return _deviceToken;
 }
 
 - (BOOL) isShareLocation {

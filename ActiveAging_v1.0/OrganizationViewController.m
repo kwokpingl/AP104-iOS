@@ -54,24 +54,32 @@
         [_imageView setContentMode:UIViewContentModeScaleAspectFit];
     }
     
+    [_webSiteTitleLabel setAdjustsFontSizeToFitWidth:true];
     [_organizationLabel setAdjustsFontSizeToFitWidth:true];
     [_organizerLabel setAdjustsFontSizeToFitWidth:true];
-    [_webSiteTitleLabel setAdjustsFontSizeToFitWidth:true];
+    [_faxNumberLabel setAdjustsFontSizeToFitWidth:true];
     [_cellphoneLabel setAdjustsFontSizeToFitWidth:true];
     [_phoneLabel setAdjustsFontSizeToFitWidth:true];
-    [_faxNumberLabel setAdjustsFontSizeToFitWidth:true];
     [_emailLabel setAdjustsFontSizeToFitWidth:true];
+
+    [_cellPhoneBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    [_phoneBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    [_emailBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    [_cellPhoneBtn.titleLabel setNumberOfLines:0];
+    [_phoneBtn.titleLabel setNumberOfLines:0];
+    [_emailBtn.titleLabel setNumberOfLines:0];
     
-    [_organizationTitleLabel setNumberOfLines:0];
     [_organizationTitleLabel setText:_eventDictionary[EVENT_ORGNTION_KEY]];
-    [_organizerTitleLabel setNumberOfLines:0];
     [_organizerTitleLabel setText:_eventDictionary[EVENT_ORGN_NAME_KEY]];
+    [_organizationTitleLabel setTextAlignment:NSTextAlignmentLeft];
+    [_organizationTitleLabel setNumberOfLines:0];
+    [_organizerTitleLabel setNumberOfLines:0];
+    [_organizerTitleLabel setTextAlignment:NSTextAlignmentLeft];
     
     NSString * key = EVENT_ORGN_CELL_KEY;
     [_cellPhoneBtn setHidden:true];
     if (_eventDictionary[key]!= [NSNull null]){
         NSString * numberStr = [NSString stringWithFormat:@"0%ld",[_eventDictionary[key] integerValue]];
-//        numberStr = @"0918756081";
         [_cellPhoneBtn setTitle:numberStr forState:UIControlStateNormal];
         [_cellPhoneBtn setPhoneNumber:numberStr];
         [_cellPhoneBtn addTarget:self action:@selector(makeACall:) forControlEvents:UIControlEventTouchUpInside];
@@ -82,7 +90,7 @@
     key = EVENT_ORGN_PHONE_KEY;
     [_phoneBtn setHidden:true];
     if (_eventDictionary[key]!= [NSNull null]){
-        NSString * numberStr = [NSString stringWithFormat:@"0%@",_eventDictionary[key]];
+        NSString * numberStr = [NSString stringWithFormat:@"%@",_eventDictionary[key]];
         [_phoneBtn setTitle:numberStr forState:UIControlStateNormal];
         [_phoneBtn setPhoneNumber:_eventDictionary[key]];
         [_phoneBtn addTarget:self action:@selector(makeACall:) forControlEvents:UIControlEventTouchUpInside];

@@ -29,6 +29,15 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>activeAging</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSApplicationCategoryType</key>
@@ -53,26 +62,39 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>api.openweathermap.org/</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
 	</dict>
 	<key>NSCalendarsUsageDescription</key>
-	<string>這APP必須使用日歷服務才能完整地為您服務</string>
+	<string>「哈啦哈啦趣」必須使用日曆服務才能完整地為您服務</string>
 	<key>NSCameraUsageDescription</key>
-	<string>請允許使用您的照相機</string>
+	<string>請允許「哈啦哈啦趣」使用您的照相機</string>
 	<key>NSContactsUsageDescription</key>
-	<string>這APP必須使用您的連絡人才能完整地呈現功能</string>
+	<string>「哈啦哈啦趣」必須使用您的連絡人才能完整地呈現功能</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>這APP必須使用定位服務才能正常運行</string>
+	<string>「哈啦哈啦趣」必須使用定位服務才能正常運行</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>請允許使用您的麥克風</string>
+	<string>請允「哈啦哈啦趣」許使用您的麥克風</string>
 	<key>NSMotionUsageDescription</key>
-	<string>這APP必須使用您的運動傳感器</string>
+	<string>「哈啦哈啦趣」必須使用您的運動傳感器</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>這APP必須使用您的圖庫才能完整呈現全部功能</string>
-	<key>NSRemindersUsageDescription</key>
-	<string>這APP必須使用reminder才能正常運行</string>
+	<string>「哈啦哈啦趣」必須使用您的圖庫才能完整呈現全部功能</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Tensentype-XiaoXiaoXinF.ttf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

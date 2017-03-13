@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>ActiveAgingWidget.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>11</integer>
+		</dict>
 		<key>ActiveAging_v1.0.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -13,6 +18,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>3DB322011E114FF7002A9FD9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E762209F1E4FF9C200D0618C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

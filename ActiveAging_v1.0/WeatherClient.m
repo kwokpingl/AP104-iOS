@@ -12,7 +12,7 @@
 
 @interface WeatherClient ()
 
-@property (nonatomic, strong) NSURLSession * session;
+@property NSURLSession * session;
 
 @end
 

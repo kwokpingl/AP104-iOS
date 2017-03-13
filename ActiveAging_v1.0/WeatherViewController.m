@@ -10,17 +10,26 @@
 #import <LBBlurredImage/UIImageView+LBBlurredImage.h>
 #import "WeatherManager.h"
 
-@interface WeatherViewController () <CLLocationManagerDelegate> {
-    CLLocationManager * locationManager;
+//static NSInteger counter = 0;
+static dispatch_once_t onceToken;
+
+#define WIDGET_NAME @"group.ActiveAging.TodayExtensionSharingDefaults"
+@interface WeatherViewController ()  {
+    UILabel * temperatureLabel;
+    UILabel * conditionsLabel;
+    UIImageView * iconView;
+    UILabel * hiloLabel;
+    NSString * imageName;
+    UIImage * bkg;
 }
 
-@property (nonatomic, strong) UIImageView * backgrounImageView;
-@property (nonatomic, strong) UIImageView * blurredImageView;
-@property (nonatomic, strong) UITableView * tableView;
+@property UIImageView * backgroundImageView;
+@property UIImageView * blurredImageView;
+@property UITableView * tableView;
 @property (nonatomic, assign) CGFloat screenHeight;
 
-@property (nonatomic, strong) NSDateFormatter * hourlyFormatter;
-@property (nonatomic, strong) NSDateFormatter * dailyFormatter;
+@property NSDateFormatter * hourlyFormatter;
+@property NSDateFormatter * dailyFormatter;
 
 @end
 
@@ -36,36 +45,25 @@
         _hourlyFormatter.locale = twLocale;
         
         _dailyFormatter = [NSDateFormatter new];
-        _dailyFormatter.dateFormat =@"EEEE";
+        _dailyFormatter.dateFormat = @"EEEE";
         _dailyFormatter.locale = twLocale;
     }
     return self;
 }
 
-#pragma mark - viewDidLoad
+#pragma mark - VIEW
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-#pragma mark - set up Image View & table View
+    NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
+/// MARK: set up Image View & table View
     //1
     self.screenHeight = [UIScreen mainScreen].bounds.size.height;
-    UIImage * background = [UIImage imageNamed:@"LaunchScreen"];
-    
-    //2
-    self.backgrounImageView = [[UIImageView alloc] initWithImage:background];
-    self.backgrounImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.view addSubview:self.backgrounImageView];
-    
-    //3
-    self.blurredImageView = [UIImageView new];
-    self.blurredImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.blurredImageView.alpha = 0;
-    [self.blurredImageView setImageToBlur:background blurRadius:10 completionBlock:nil];
-    [self.view addSubview:self.blurredImageView];
+    self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     
     //4
-    self.tableView = [UITableView new];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -73,7 +71,7 @@
     self.tableView.pagingEnabled = YES;
     [self.view addSubview:self.tableView];
     
-#pragma mark - set up frames and margins
+/// MARK: set up frames and margins
     //Set up layout frames and margins
     //1
     CGRect headerFrame = [UIScreen mainScreen].bounds;
@@ -82,7 +80,7 @@
     //3
     CGFloat temperatureHeight = 110;
     CGFloat hiloHeight = 40;
-    CGFloat iconHeight = 30;
+    CGFloat iconHeight = 80;
     
     //4
     CGRect hiloFrame = CGRectMake(inset,
@@ -101,73 +99,104 @@
                                   iconHeight);
     //5
     CGRect conditionsFrame = iconFrame;
-    conditionsFrame.size.width = self.view.bounds.size.width - (((2 * inset) + iconHeight) + 10);
-    conditionsFrame.origin.x = iconFrame.origin.x + (iconHeight + 10);
+    conditionsFrame.size.width = self.view.bounds.size.width - (((2 * inset) + iconHeight) + 30);
+    conditionsFrame.origin.x = iconFrame.origin.x + (iconHeight + 30);
     
-#pragma mark - set up labels
+/// MARK: set up labels
     //1
     UIView * header = [[UIView alloc] initWithFrame:headerFrame];
     header.backgroundColor = [UIColor clearColor];
     self.tableView.tableHeaderView = header;
     
     //2 - bottom left
-    UILabel * temperatureLabel = [[UILabel alloc] initWithFrame:temperatureFrame];
+    temperatureLabel = [[UILabel alloc] initWithFrame:temperatureFrame];
     temperatureLabel.backgroundColor = [UIColor clearColor];
-    temperatureLabel.textColor = [UIColor orangeColor];
+    temperatureLabel.textColor = [UIColor blackColor];
     temperatureLabel.text = @"0°";
-    temperatureLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:120];
+    temperatureLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:120];
     [header addSubview:temperatureLabel];
     
-    UILabel * hiloLabel = [[UILabel alloc] initWithFrame: hiloFrame];
+    hiloLabel = [[UILabel alloc] initWithFrame: hiloFrame];
     hiloLabel.backgroundColor = [UIColor clearColor];
-    hiloLabel.textColor = [UIColor orangeColor];
+    hiloLabel.textColor = [UIColor blackColor];
     hiloLabel.text = @"0° / 0°";
-    hiloLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:28];
+    hiloLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:28];
     [header addSubview:hiloLabel];
     
-    // top
-    //    UILabel * cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, 30)];
-    //    cityLabel.backgroundColor = [UIColor clearColor];
-    //    cityLabel.textColor = [UIColor whiteColor];
-    //    cityLabel.text = @"Loading";
-    //    cityLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
-    //    cityLabel.textAlignment = NSTextAlignmentCenter;
-    //    [header addSubview:cityLabel];
-    
-    UILabel * conditionsLabel = [[UILabel alloc] initWithFrame:conditionsFrame];
+    conditionsLabel = [[UILabel alloc] initWithFrame:conditionsFrame];
     conditionsLabel.backgroundColor = [UIColor clearColor];
-    conditionsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:45];
-    conditionsLabel.textColor = [UIColor orangeColor];
+    conditionsLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:45];
+    conditionsLabel.textColor = [UIColor blackColor];
+    conditionsLabel.numberOfLines = 0;
+    conditionsLabel.adjustsFontSizeToFitWidth = true;
     [header addSubview: conditionsLabel];
     
     //3 - bottom left
-    UIImageView * iconView = [[UIImageView alloc] initWithFrame:iconFrame];
+    iconView = [[UIImageView alloc] initWithFrame:iconFrame];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
     iconView.backgroundColor = [UIColor clearColor];
     [header addSubview:iconView];
     
-#pragma mark - Observe the current Condition
+//    NSLog(@"COUNTER %ld", ++counter);
+/// MARK: Observe the current Condition
+    
     //1
     //Observes the currentCondition key on the WeatherManager singleton
     [[RACObserve([WeatherManager sharedManager], currentCondition)
-      
       //2
       //Delivers any changes on the main thread since you’re updating the UI
       deliverOn: RACScheduler.mainThreadScheduler]
      subscribeNext: ^(WeatherCondition * newCondition) {
          
-         // 3
-         //Updates the text labels with weather data; you’re using newCondition for the text and not the singleton. The subscriber parameter is guaranteed to be the new value
-         temperatureLabel.text = [NSString stringWithFormat:@"%.0f°",newCondition.temperature.floatValue];
-         conditionsLabel.text = [newCondition.condition capitalizedString];
-         //         cityLabel.text = [newCondition.locationName capitalizedString];
+         if (newCondition!=nil){
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 // 3
+                 //Updates the text labels with weather data; you’re using newCondition for the text and not the singleton. The subscriber parameter is guaranteed to be the new value
+                 temperatureLabel.text = [NSString stringWithFormat:@"%.0f°C",newCondition.temperature.floatValue];
+                 conditionsLabel.text = [newCondition.condition capitalizedString];
+                 
+                 // 4
+                 //Uses the mapped image file name to create an image and sets it as the icon for the view
+                 
+                 NSDate * date = [NSDate date];
+                 NSDateFormatter * dateformat = [NSDateFormatter new];
+                 dateformat.dateFormat = @"HH";
+                 NSString * currentdate = [dateformat stringFromDate:date];
+                 
+                 if ([[newCondition imageName] containsString:@"few"]) {
+                     if ([currentdate floatValue] >= 18.0 || [currentdate floatValue] <= 6.0) {
+                         iconView.image = [UIImage imageNamed:@"few-night"];
+                         
+                     } else {
+                         iconView.image = [UIImage imageNamed:@"few-day"];
+                     }
+                 }
+                 else {
+                     iconView.image = [UIImage imageNamed:[newCondition imageName]];
+                 }
+                 
+                 imageName = [newCondition imageName];
+                 
+                 [self.backgroundImageView setImage:[self setBackgroundImage]];
+                 
+                 self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+                 
+                 for (UIView * view in self.view.subviews){
+                     if ([view isKindOfClass:[UIImageView class]]){
+                         [view removeFromSuperview];
+                         NSLog(@"VIEW FOUND");
+                     }
+                 }
+                 
+                 [self.view insertSubview:_backgroundImageView atIndex:0];
+                 
+                 [self widgetConfiguration];
+             });
+         }
          
-         // 4
-         //Uses the mapped image file name to create an image and sets it as the icon for the view
-         iconView.image = [UIImage imageNamed:[newCondition imageName]];
      }];
     
-#pragma mark - ReactiveCocoa Bindings
+/// MARK: ReactiveCocoa Bindings
     //1
     //The RAC(…) macro helps keep syntax clean. The returned value from the signal is assigned to the text key of the hiloLabel object
     RAC(hiloLabel, text) = [[RACSignal combineLatest:@[
@@ -186,39 +215,39 @@
                             deliverOn:RACScheduler.mainThreadScheduler];
     //The code above binds high and low temperature values to the hiloLabel‘s text property
     
-#pragma mark - ReactiveCocoa observables to reload data
+/// MARK: ReactiveCocoa observables to reload data
     [[RACObserve([WeatherManager sharedManager], hourlyForecast)
       deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(NSArray *newForecast) {
-         [self.tableView reloadData];
+         dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+         });
      }];
     
     
     [[RACObserve([WeatherManager sharedManager], dailyForecast)
       deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(NSArray *newForecast) {
-         [self.tableView reloadData];
+         dispatch_async(dispatch_get_main_queue(), ^{
+           [self.tableView reloadData];
+         });
      }];
     
     [[WeatherManager sharedManager] findCurrentLocation];
-    
-    //[[WeatherManager sharedManager] init];
+
     
 } //end of viewDidLoad
-
--(UIStatusBarStyle) preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
-}
 
 -(void) viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
     CGRect bounds = self.view.bounds;
     
-    self.backgrounImageView.frame = bounds;
-    self.blurredImageView.frame = bounds;
+    self.backgroundImageView.frame = bounds;
     self.tableView.frame = bounds;
 }
+
+
 
 //=================== TableView ========================//
 #pragma mark - UITableViewDataSource
@@ -232,7 +261,6 @@
     if (section == 0) {
         return MIN([[WeatherManager sharedManager].hourlyForecast count], 6) + 1;
     }
-    
     //2
     return MIN([[WeatherManager sharedManager].dailyForecast count], 6) + 1;
 }
@@ -270,8 +298,8 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.detailTextLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.textColor = [UIColor blackColor];
+    cell.detailTextLabel.textColor = [UIColor blackColor];
     
     return cell;
 }
@@ -284,7 +312,7 @@
     return self.screenHeight / (CGFloat)cellCount;
 }
 
-#pragma mark - configureHeaderCell
+/// MARK: CONFIGURE_HEADER_CELL
 -(void) configureHeaderCell: (UITableViewCell *)cell title:(NSString *) title {
     cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:18];
     cell.textLabel.text = title;
@@ -293,7 +321,7 @@
 }
 
 - (void)configureHourlyCell:(UITableViewCell *)cell weather:(WeatherCondition *)weather {
-    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:30];
+    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:30];
     cell.detailTextLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:30];
     
     NSLocale * twLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
@@ -303,11 +331,12 @@
     _hourlyFormatter.locale = twLocale;
     
     NSString * weatherDate = [_hourlyFormatter stringFromDate:weather.date];
-//    cell.textLabel.text = [_hourlyFormatter stringFromDate:weather.date];
     cell.textLabel.text = weatherDate;
     
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f°C",weather.temperature.floatValue];
     cell.imageView.image = [UIImage imageNamed:[weather imageName]];
+    NSLog(@"%@",imageName);
+    NSLog(@"%@",cell.imageView.image);
     cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
@@ -315,18 +344,18 @@
     
     NSLocale * twLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
     _dailyFormatter = [NSDateFormatter new];
-    _dailyFormatter.dateFormat =@"EEEE";
+    _dailyFormatter.dateFormat = @"EEEE";
     _dailyFormatter.locale = twLocale;
     
     NSString * dailyWeather = [_dailyFormatter stringFromDate:weather.date];
     cell.textLabel.text = dailyWeather;
+    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:25];
     
-    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:25];
     cell.detailTextLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:25];
-//    cell.textLabel.text = [self.dailyFormatter stringFromDate:weather.date];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f°C / %.0f°C",
                                  weather.tempHigh.floatValue,
                                  weather.tempLow.floatValue];
+    
     cell.imageView.image = [UIImage imageNamed:[weather imageName]];
     cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
 }
@@ -336,30 +365,105 @@
     //1
     //Cap the offset at 0 so attempting to scroll past the start of the table won’t affect blurring
     CGFloat height = scrollView.bounds.size.height;
-    CGFloat position = MAX(scrollView.contentOffset.y, 0.0);
+    CGFloat declineHeight = height/6.0;
+    CGFloat alpha;
+    UIBlurEffect * blur;
+    UIVisualEffectView * effectView;
+    CGFloat currentHeight = scrollView.contentOffset.y;
     
-    //2
-    //Divide the offset by the height with a maximum of 1 so that your offset is capped at 100%
-    CGFloat percent = MIN(position / height, 1.0);
     
-    //3
-    //Assign the resulting value to the blur image’s alpha property to change how much of the blurred image you’ll see as you scroll
-    self.blurredImageView.alpha = percent;
+    
+    if (currentHeight >= declineHeight){
+    
+        blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        effectView = [[UIVisualEffectView alloc] initWithEffect:blur];
+        [effectView setBackgroundColor:[UIColor clearColor]];
+        [effectView setFrame:_backgroundImageView.bounds];
+        dispatch_once(&onceToken, ^{
+            [_backgroundImageView addSubview:effectView];
+        });
+        
+    }
+    else if (currentHeight < declineHeight){
+        alpha = 1;
+        effectView = nil;
+        for(UIView * view in self.backgroundImageView.subviews){
+            if ([view isKindOfClass:[UIVisualEffectView class]]){
+                [view removeFromSuperview];
+            }
+        }
+        onceToken = 0;
+    }
+    
+    
+    
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
+#pragma mark - PRIVATE METHODS
+- (UIImage * ) setBackgroundImage {
+    
+    NSDate * date = [NSDate date];
+    NSDateFormatter * dateformat = [NSDateFormatter new];
+    dateformat.dateFormat = @"HH";
+    NSString * currentdate = [dateformat stringFromDate:date];
+    
+    if ([imageName isEqualToString:@"tstorm"]) {
+        bkg = [UIImage imageNamed:@"tstormBg"];
+    }
+    
+    else if ([imageName isEqualToString:@"moon"]) {
+        bkg = [UIImage imageNamed:@"nightClear"];
+    }
+    
+    else if ([imageName isEqualToString:@"rain"] || [imageName isEqualToString:@"shower"]) {
+        bkg = [UIImage imageNamed:@"rainBg"];
+    }
+    
+    else if ([imageName isEqualToString:@"sunny"]) {
+        bkg = [UIImage imageNamed:@"sunnyBg"];
+    }
+    
+    else if ([imageName isEqualToString:@"broken"] || [imageName containsString:@"few"]) {
+        
+        if ([currentdate floatValue] >= 18.0 || [currentdate floatValue] <= 6.0) {
+            bkg = [UIImage imageNamed:@"brokenN"];
+        } else {
+            bkg = [UIImage imageNamed:@"sunset"];
+        }
+    }
+    
+    else {
+        bkg = [UIImage imageNamed:@"LaunchScreen"];
+    }
+    return bkg;
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+-(UIStatusBarStyle) preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
+
+- (void)dealloc {
+    NSLog(@"DEALLOC");
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
+}
+
+
+#pragma mark - widgetConfiguration
+-(void) widgetConfiguration {
+    NSUserDefaults * sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WIDGET_NAME];
+    
+    [sharedDefaults setObject:temperatureLabel.text forKey:@"currentTempTxt"];
+    
+    [sharedDefaults setObject:conditionsLabel.text forKey:@"currentConditions"];
+    
+    [sharedDefaults synchronize];
+}
+
 
 @end

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface EmergencyButton : UIButton
-
+- (void) callNumbers;
 @end

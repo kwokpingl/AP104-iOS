@@ -9,6 +9,10 @@
 #import "HomePageViewController.h"
 #import "WeatherManager.h"
 #import "EmergencyButton.h"
+#import "LocationManager.h"
+#import "EmergencyViewController.h"
+
+#define BUTTON_SIDE (self.view.frame.size.height/7.0)
 
 @interface HomePageViewController ()
 
@@ -22,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *settingsBtn;
 @property (weak, nonatomic) IBOutlet UIButton *mapBtn;
 @property (weak, nonatomic) IBOutlet EmergencyButton *emergencyBtn;
+@property (strong, nonatomic) LocationManager * locationMgr;
 
 @end
 
@@ -29,9 +34,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
-     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showClock) userInfo:nil repeats:YES];
+    // Do any additional setup after loading the view.
+    [self pageSetup];
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showClock) userInfo:nil repeats:YES];
     
     //Start
     [[RACObserve([WeatherManager sharedManager], currentCondition)
@@ -43,51 +49,31 @@
          
          NSString * temp = [NSString stringWithFormat:@"%.0f°C",newCondition.temperature.floatValue];
          [_weatherBtn setTitle:temp forState:UIControlStateNormal];
-
-         [_weatherBtn setImage: [UIImage imageNamed:[newCondition imageName]]forState:UIControlStateNormal];
+         
+         UIImage * image = [[UIImage imageNamed:[newCondition imageName]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+         
+         [_weatherBtn setImage: image forState:UIControlStateNormal];
          _weatherBtn.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
          _weatherBtn.titleLabel.numberOfLines = 0;
      }];
     
     [[WeatherManager sharedManager] findCurrentLocation];
     
+    _locationMgr = [LocationManager shareInstance];
+    if ([_locationMgr accessGranted]){
+        [_locationMgr startMonitoringSignificatnLocationChanges];
+    }
     
-    
+    [_emergencyBtn addTarget:self action:@selector(callEmergency)
+            forControlEvents:UIControlEventTouchUpInside];
 }
 
--(void) showClock {
+- (void) viewWillAppear:(BOOL)animated {
     
-    NSDate * now = [NSDate date];
-    NSDateFormatter * timeFormatter = [NSDateFormatter new];
-    NSDateFormatter * dateFormatter = [NSDateFormatter new];
-    
-#pragma mark - set _timeLabel
-    timeFormatter.dateStyle = NSDateFormatterNoStyle;
-    timeFormatter.timeStyle = NSDateFormatterShortStyle;
-    timeFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
-//    NSLog(@"%@", [timeFormatter stringFromDate:now]);
-    
-    _timeLabel.text = [timeFormatter stringFromDate:now];
-    
-//#pragma mark - set _timeLabel Background Image
-//    UIImage * timeBackgroundImage = [UIImage imageNamed:@"HaTime"];
-//    CGSize imgSize = _timeLabel.frame.size;
-//    UIGraphicsBeginImageContext(imgSize);
-//    [timeBackgroundImage drawInRect:CGRectMake(0, 0, imgSize.width, imgSize.height)];
-//    UIImage * newTimeImage = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    _timeLabel.backgroundColor = [UIColor colorWithPatternImage:newTimeImage];
-    
-#pragma mark - set _dateLabel
-    dateFormatter.dateStyle = NSDateFormatterLongStyle;
-    dateFormatter.timeStyle = NSDateFormatterNoStyle;
-    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
-//    NSLog(@"%@", [dateFormatter stringFromDate:now]);
-    
-    _dateLabel.text = [dateFormatter stringFromDate:now];
-    
-    [self setup];
+    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -95,9 +81,107 @@
 }
 
 
-- (void) setup{
-    [_timeLabel setFrame:CGRectMake(0, 0, self.view.frame.size.width/2.0, self.view.frame.size.height/5.0)];
-    [_timeLabel setBounds:CGRectMake(self.view.frame.size.width/2.0, self.view.frame.size.height/4, _timeLabel.frame.size.width, _timeLabel.frame.size.height)];
+- (void) callEmergency {
+    EmergencyViewController * vc = [EmergencyViewController new];
+    [self.navigationController pushViewController:vc animated:true];
+}
+
+-(void) showClock {
+    NSDate * now = [NSDate date];
+    NSDateFormatter * timeFormatter = [NSDateFormatter new];
+    NSDateFormatter * dateFormatter = [NSDateFormatter new];
+    
+#pragma mark - set _timeLabel
+    timeFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
+    timeFormatter.dateStyle = NSDateFormatterNoStyle;
+    timeFormatter.timeStyle = NSDateFormatterShortStyle;
+    
+    _timeLabel.text = [timeFormatter stringFromDate:now];
+    
+#pragma mark - set _dateLabel
+    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
+    dateFormatter.dateStyle = NSDateFormatterLongStyle;
+    dateFormatter.timeStyle = NSDateFormatterNoStyle;
+    
+    _dateLabel.text = [dateFormatter stringFromDate:now];
+}
+
+
+- (void) pageSetup{
+    CGFloat timeLabelHeight = self.view.frame.size.height/10.0;
+    
+    [_timeLabel setFrame:CGRectMake(self.view.frame.size.width*1.0/3.0,
+                                    self.view.frame.size.height *2.0/3.0 - timeLabelHeight,
+                                    self.view.frame.size.width *2.0/3.0,
+                                    timeLabelHeight)];
+    [_dateLabel setFrame:CGRectMake(_timeLabel.frame.origin.x,
+                                    _timeLabel.frame.origin.y-10.0,
+                                    _timeLabel.frame.size.width * 2.0/3.0,
+                                    _timeLabel.frame.size.height/3.0)];
+    [_emergencyBtn setFrame:CGRectMake(self.view.frame.size.width/4.0,
+                                       self.view.frame.size.height * 9.0/10.0,
+                                       self.view.frame.size.width/2.0,
+                                       self.view.frame.size.height/10.0)];
+    [_settingsBtn setFrame:CGRectMake(self.view.frame.size.width-10.0-BUTTON_SIDE,
+                                      _timeLabel.frame.origin.y + _timeLabel.frame.size.height + 20 ,
+                                      BUTTON_SIDE,
+                                      BUTTON_SIDE)];
+    [_contactBtn setFrame:CGRectMake(self.view.frame.size.width/3.0,
+                                     _timeLabel.frame.origin.y + _timeLabel.frame.size.height + 5.0,
+                                     BUTTON_SIDE*4/3,
+                                     BUTTON_SIDE*4/3)];
+    [_mapBtn setFrame:CGRectMake(10,
+                                 _dateLabel.frame.origin.y,
+                                 BUTTON_SIDE,
+                                 BUTTON_SIDE)];
+    [_calendarBtn setFrame:CGRectMake(_mapBtn.frame.origin.x + 5.0,
+                                      _mapBtn.frame.origin.y * 2.0/3.0,
+                                      BUTTON_SIDE,
+                                      BUTTON_SIDE)];
+    [_activityBtn setFrame:CGRectMake(_calendarBtn.frame.size.width * 3.0/4.0 + _calendarBtn.frame.origin.x,
+                                      _calendarBtn.frame.origin.y * 2.0/3.0,
+                                      BUTTON_SIDE,
+                                      BUTTON_SIDE)];
+    [_weatherBtn setFrame:CGRectMake(self.view.frame.size.width/2.0,
+                                     _activityBtn.frame.origin.y/2.0,
+                                     BUTTON_SIDE*4/3,
+                                     BUTTON_SIDE*4/3)];
+    
+    [_timeLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:50]];
+    [_timeLabel setAdjustsFontSizeToFitWidth:true];
+    [_timeLabel setNumberOfLines:1];
+    
+    [_dateLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:25]];
+    [_dateLabel setAdjustsFontSizeToFitWidth:true];
+    [_dateLabel setNumberOfLines:1];
+    
+    [_emergencyBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
+    [_emergencyBtn setTitle:@"緊急連絡" forState:UIControlStateNormal];
+    [_emergencyBtn setBackgroundColor:[UIColor whiteColor]];
+    
+    [_settingsBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
+    [_settingsBtn setTitle:@"設定" forState:UIControlStateNormal];
+    [_settingsBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    
+    [_contactBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:100]];
+    [_contactBtn.titleLabel setBaselineAdjustment:UIBaselineAdjustmentAlignCenters];
+    [_contactBtn setTitle:@"聯絡人" forState:UIControlStateNormal];
+    [_contactBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    
+    [_mapBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
+    [_mapBtn setTitle:@"地圖" forState:UIControlStateNormal];
+    [_mapBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    
+    [_calendarBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
+    [_calendarBtn.titleLabel setBaselineAdjustment:UIBaselineAdjustmentAlignCenters];
+    [_calendarBtn setTitle:@"日曆" forState:UIControlStateNormal];
+    [_calendarBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    
+    [_activityBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
+    [_activityBtn setTitle:@"活動" forState:UIControlStateNormal];
+    [_activityBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    
+    [_weatherBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
 }
 
 

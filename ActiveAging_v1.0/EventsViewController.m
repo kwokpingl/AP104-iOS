@@ -25,16 +25,20 @@
 
 @interface EventsViewController ()<UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource>{
     
-    NSDictionary * eventsDict;
-    NSMutableArray * currentArray;
+    NSMutableArray * locationEventArray;
     NSMutableArray * locationsArray;
+    NSMutableArray * currentArray;
+    NSDictionary * eventsDict;
+    
     NSMutableDictionary * locationsDictionary;
     NSMutableDictionary * allEventJoinBased;
-    NSMutableArray * locationEventArray;
+    
+    UIRefreshControl * refreshControl;
     ServerManager * _serverMgr;
-    UserInfo * _userInfo;
-    NSString * currentPage;
     NSInteger targetLocation;
+    NSString * currentPage;
+    UserInfo * _userInfo;
+    
 }
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationItem;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -48,20 +52,35 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
+    
     _serverMgr = [ServerManager shareInstance];
     _userInfo = [UserInfo shareInstance];
     
-    [_tableView setDelegate: self];
-    [_tableView setDataSource: self];
-    _tableView.tableFooterView = [UITableViewHeaderFooterView new];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLineEtched];
+    [_tableView setTableFooterView: [UITableViewHeaderFooterView new]];
     [_tableView setSeparatorColor:[UIColor blackColor]];
+    [_tableView setDataSource: self];
+    [_tableView setDelegate: self];
     
     currentPage = @"notJoined";
     
-    UIBarButtonItem * backButton = [[UIBarButtonItem alloc] initWithTitle:@"回活動頁面" style:UIBarButtonItemStylePlain target:nil action:nil];
+    UIBarButtonItem * backButton = [[UIBarButtonItem alloc] initWithTitle:@"回活動頁面"
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:nil
+                                                                   action:nil];
     [self.navigationItem setBackBarButtonItem:backButton];
     [self updateEvents];
+    refreshControl = [UIRefreshControl new];
+    [refreshControl setBackgroundColor:[UIColor purpleColor]];
+    [refreshControl setTintColor:[UIColor whiteColor]];
+    [refreshControl addTarget:self action:@selector(updateEvents) forControlEvents:UIControlEventValueChanged];
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 10) {
+        _tableView.refreshControl = refreshControl;
+    } else {
+        _tableView.backgroundView = refreshControl;
+    }
     
 }
 
@@ -192,6 +211,7 @@
                 [_tableView setRowHeight:UITableViewAutomaticDimension];
                 targetLocation = 0;
                 [_tableView reloadData];
+                [refreshControl endRefreshing];
             });
         }
     }];
@@ -277,12 +297,10 @@
     [view addSubview:ok];
     [view addSubview:cancel];
     [view addSubview:locationPicker];
-    
-    [locationPicker setDelegate:self];
-    [locationPicker setDataSource:self];
-    
     [self.view addSubview:view];
     
+    [locationPicker setDataSource:self];
+    [locationPicker setDelegate:self];
     [locationPicker selectRow:targetLocation inComponent:0 animated:false];
     [self pickerView:locationPicker didSelectRow:targetLocation inComponent:0];
 }
@@ -315,6 +333,10 @@
 
 - (void) updateList {
     [self updateEvents];
+}
+
+- (void)dealloc {
+    NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
 }
 
 @end

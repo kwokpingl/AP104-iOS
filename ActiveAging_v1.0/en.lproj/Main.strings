@@ -1,0 +1,93 @@
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "4IU-km-1NX"; */
+"4IU-km-1NX.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "日曆"; ObjectID = "5eV-35-wac"; */
+"5eV-35-wac.normalTitle" = "日曆";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "97H-Zq-UY9"; */
+"97H-Zq-UY9.text" = "Date";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "9Vr-sy-s1n"; */
+"9Vr-sy-s1n.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "今天有啥好玩的呢?"; ObjectID = "FHj-f7-mVz"; */
+"FHj-f7-mVz.title" = "今天有啥好玩的呢?";
+
+/* Class = "UIButton"; normalTitle = "設定"; ObjectID = "Fgr-ks-YO9"; */
+"Fgr-ks-YO9.normalTitle" = "設定";
+
+/* Class = "UIButton"; normalTitle = "個人設定>"; ObjectID = "HCd-kD-FbP"; */
+"HCd-kD-FbP.normalTitle" = "個人設定>";
+
+/* Class = "UILabel"; text = "22:22"; ObjectID = "HfG-l1-uIo"; */
+"HfG-l1-uIo.text" = "22:22";
+
+/* Class = "UIButton"; normalTitle = "地圖"; ObjectID = "ITB-8l-xUF"; */
+"ITB-8l-xUF.normalTitle" = "地圖";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "JwT-pX-t4c"; */
+"JwT-pX-t4c.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "驗証碼"; ObjectID = "O37-2q-gDM"; */
+"O37-2q-gDM.placeholder" = "驗証碼";
+
+/* Class = "UIButton"; normalTitle = "聯絡人"; ObjectID = "SES-wc-SET"; */
+"SES-wc-SET.normalTitle" = "聯絡人";
+
+/* Class = "UILabel"; text = "想要貼上美照嗎?\n點一下圖即可"; ObjectID = "SVe-eV-qt4"; */
+"SVe-eV-qt4.text" = "想要貼上美照嗎?\n點一下圖即可";
+
+/* Class = "UIButton"; normalTitle = "緊急連絡"; ObjectID = "Uqu-T7-1pG"; */
+"Uqu-T7-1pG.normalTitle" = "緊急連絡";
+
+/* Class = "UIButton"; normalTitle = "更改"; ObjectID = "Vw5-jz-n9N"; */
+"Vw5-jz-n9N.normalTitle" = "更改";
+
+/* Class = "UIButton"; normalTitle = "活動"; ObjectID = "d4f-TP-RYk"; */
+"d4f-TP-RYk.normalTitle" = "活動";
+
+/* Class = "UITextField"; placeholder = "請輸入您的名"; ObjectID = "hfm-Th-vp9"; */
+"hfm-Th-vp9.placeholder" = "請輸入您的名";
+
+/* Class = "UIButton"; normalTitle = "刪除帳號"; ObjectID = "j8Z-Il-mIb"; */
+"j8Z-Il-mIb.normalTitle" = "刪除帳號";
+
+/* Class = "UITextField"; placeholder = "09xxxxxxxx"; ObjectID = "jZS-R1-24M"; */
+"jZS-R1-24M.placeholder" = "09xxxxxxxx";
+
+/* Class = "UITextField"; placeholder = "請輸入您的姓"; ObjectID = "l7U-Ae-Lps"; */
+"l7U-Ae-Lps.placeholder" = "請輸入您的姓";
+
+/* Class = "UINavigationItem"; title = "個人設定"; ObjectID = "mZ1-7A-DJ5"; */
+"mZ1-7A-DJ5.title" = "個人設定";
+
+/* Class = "UINavigationItem"; title = "請輸入驗證碼"; ObjectID = "nxw-eA-Bb3"; */
+"nxw-eA-Bb3.title" = "請輸入驗證碼";
+
+/* Class = "UILabel"; text = "個人設定"; ObjectID = "o60-An-NSE"; */
+"o60-An-NSE.text" = "個人設定";
+
+/* Class = "UIButton"; normalTitle = "<回上一頁"; ObjectID = "pvA-kz-Nwn"; */
+"pvA-kz-Nwn.normalTitle" = "<回上一頁";
+
+/* Class = "UINavigationItem"; title = "請貼上亮亮照片"; ObjectID = "tFe-VM-huG"; */
+"tFe-VM-huG.title" = "請貼上亮亮照片";
+
+/* Class = "UILabel"; text = "歡迎來到\n\n\n「哈啦哈啦趣」\n\n\n希望您會喜歡"; ObjectID = "tfv-gC-qgL"; */
+"tfv-gC-qgL.text" = "歡迎來到\n\n\n「哈啦哈啦趣」\n\n\n希望您會喜歡";
+
+/* Class = "UIButton"; normalTitle = "完成"; ObjectID = "vat-dV-OOd"; */
+"vat-dV-OOd.normalTitle" = "完成";
+
+/* Class = "UIButton"; normalTitle = "還差一些>"; ObjectID = "xBE-Tp-aMJ"; */
+"xBE-Tp-aMJ.normalTitle" = "還差一些>";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "yhy-AD-nhC"; */
+"yhy-AD-nhC.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "下一步>"; ObjectID = "yqR-QZ-VkX"; */
+"yqR-QZ-VkX.normalTitle" = "下一步>";
+
+/* Class = "UILabel"; text = "驗証碼"; ObjectID = "zgM-wI-mCl"; */
+"zgM-wI-mCl.text" = "驗証碼";

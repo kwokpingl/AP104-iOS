@@ -8,7 +8,6 @@
 
 #import "DataManager.h"
 
-
 @interface DataManager(){
 }
 
@@ -32,7 +31,7 @@
     
     // Create tables
     // FOR CONTACTS
-    query = [NSString stringWithFormat: @"create table %@ (%@ int, %@ int, %@ text, %@ text, %@ text, %@ text, %@ text, primary key(%@, %@))",CONTACT_LIST_TABLE,GROUP_ID_KEY, USER_ID_KEY, USER_NAME_KEY, USER_CUR_LAT_KEY, USER_CUR_LON_KEY, USER_PHONENUMBER_KEY, USER_PIC_KEY, GROUP_ID_KEY, USER_ID_KEY];
+    query = [NSString stringWithFormat: @"create table %@ (%@ int, %@ int, %@ text, %@ text, %@ text, %@ text, %@ text, %@ int, primary key(%@, %@))",CONTACT_LIST_TABLE, GROUP_ID_KEY, USER_ID_KEY, USER_NAME_KEY, USER_CUR_LAT_KEY, USER_CUR_LON_KEY, USER_PHONENUMBER_KEY, USER_PIC_KEY, USER_ROLE_KEY, GROUP_ID_KEY, USER_ID_KEY];
     [sqlMgr executeQuery:query];
     
     // FOR GROUPS
@@ -42,12 +41,12 @@
     
     
     // FOR EMERGENCY CONTACTS
-    query = [NSString stringWithFormat:@"create table %@ (%@ integer primary key autoincrement, %@ text, %@ text)",EMERGENCY_TABLE, USER_ID_KEY, USER_NAME_KEY, USER_PHONENUMBER_KEY];
+    query = [NSString stringWithFormat:@"create table %@ (%@ text primary key, %@ text, %@ text, %@ text)",EMERGENCY_TABLE, USER_ID_KEY, USER_NAME_KEY, USER_PHONENUMBER_KEY, USER_PIC_KEY];
     [sqlMgr executeQuery:query];
 }
 
-
-+ (void) updateContactDatabase{
+#pragma mark - UPDATE
++ (void) updateContactDatabase: (UpdateSuccess) done{
     ServerManager * serverMgr = [ServerManager shareInstance];
     UserInfo * userInfo = [UserInfo shareInstance];
     SQLite3DBManager * sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
@@ -55,7 +54,6 @@
     
     [serverMgr retrieveGroupInfo:userInfo.getUserID completion:^(NSError *error, id result) {
         if ([result[ECHO_RESULT_KEY] boolValue]){
-//            NSLog(@"UPDATE DB SUCCESS: %@",result[ECHO_MESSAGE_KEY]);
             
             NSArray * groupArray = result[ECHO_MESSAGE_KEY][@"groups"];
             NSArray * contactArray = result[ECHO_MESSAGE_KEY][@"members"];
@@ -71,19 +69,21 @@
             for (int i = 0; i <contactArray.count; i++){
                 NSInteger groupID = [contactArray[i][GROUP_ID_KEY] integerValue];
                 NSInteger userID = [contactArray[i][USER_ID_KEY] integerValue];
+                NSInteger userRole = [contactArray[i][USER_ROLE_KEY] integerValue];
                 NSString * userName = contactArray[i][USER_NAME_KEY];
                 NSString * userLat = contactArray[i][USER_CUR_LAT_KEY];
                 NSString * userLon = contactArray[i][USER_CUR_LON_KEY];
                 NSString * userPhone = contactArray[i][USER_PHONENUMBER_KEY];
                 NSString * userPic = contactArray[i][USER_PIC_KEY];
-                NSString * query = [NSString stringWithFormat: @"insert into %@ values ('%ld','%ld','%@','%@','%@','%@','%@')", CONTACT_LIST_TABLE, groupID,userID, userName,userLat,userLon, userPhone, userPic];
+                NSString * query = [NSString stringWithFormat: @"insert into %@ values ('%ld','%ld','%@','%@','%@','%@','%@', '%ld')", CONTACT_LIST_TABLE, groupID,userID, userName,userLat,userLon, userPhone, userPic, userRole];
                 [sqlMgr executeQuery:query];
             }
             NSLog(@"SUCCESS");
-            
+            done(true);
         }
         else{
             NSLog(@"Error: %@", result[ECHO_ERROR_KEY]);
+            done(false);
         }
     }];
 }
@@ -121,6 +121,24 @@
             NSLog(@"ERROR: %@", result[ECHO_ERROR_KEY]);
         }
     }];
+}
+
++ (void) updateEmergencyDatabaseWithAction: (NSString *) action andDataDic:(NSDictionary *) dic{
+    SQLite3DBManager * sqlMgr = [[SQLite3DBManager alloc] initWithDatabaseFilename:MOBILE_DATABASE];
+    
+    NSString * query;
+    
+    if ([action isEqualToString:ACTION_ADD]){
+        query = [NSString stringWithFormat:@"insert into %@ values ('%@', '%@', '%@', '%@')", EMERGENCY_TABLE, dic[USER_ID_KEY], dic[USER_NAME_KEY], dic[USER_PHONENUMBER_KEY], dic[USER_PIC_KEY]];
+        [sqlMgr executeQuery:query];
+    }
+    else if ([action isEqualToString:ACTION_DELETE]){
+        query = [NSString stringWithFormat:@"delete from %@ where %@ = '%@'", EMERGENCY_TABLE,USER_ID_KEY, dic[USER_ID_KEY]];
+        [sqlMgr executeQuery:query];
+    }
+    else{
+        return;
+    }
 }
 
 #pragma mark - RETRIEVE INFO

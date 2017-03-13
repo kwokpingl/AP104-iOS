@@ -15,7 +15,7 @@
 - (id)mtl_valueForJSONKeyPath:(NSString *)JSONKeyPath success:(BOOL *)success error:(NSError **)error {
     NSArray *components = [JSONKeyPath componentsSeparatedByString:@"."];
     
-    NSLog(@"JSONKeyPath: %@", JSONKeyPath);
+//    NSLog(@"JSONKeyPath: %@", JSONKeyPath);
     
     id result = self;
     for (NSString *component in components) {
@@ -54,7 +54,7 @@
     
     if ([components.firstObject isEqualToString:@"temp"] || [components.lastObject isEqualToString:@"temp"] ||[components.lastObject isEqualToString:@"temp_max"] ||[components.lastObject isEqualToString:@"temp_min"] ){
         result = [self convertToDegreeCelFromF:result];
-        NSLog(@"%@",result);
+//        NSLog(@"%@",result);
     }
     return result;
 }

@@ -1,0 +1,12 @@
+
+/* Class = "UILabel"; text = "current temp"; ObjectID = "KY9-8z-LvP"; */
+"KY9-8z-LvP.text" = "current temp";
+
+/* Class = "UILabel"; text = "conditions"; ObjectID = "be8-II-ehU"; */
+"be8-II-ehU.text" = "conditions";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "n6I-Oo-ZgY"; */
+"n6I-Oo-ZgY.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "yHc-Tp-3hz"; */
+"yHc-Tp-3hz.text" = "Label";

@@ -29,7 +29,7 @@
                                 <state key="normal" title="緊急聯絡"/>
                             </button>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="v73-xW-QFI">
-                                <rect key="frame" x="0.0" y="89" width="375" height="280"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="369"/>
                             </mapView>
                             <pickerView contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="rFS-K1-078">
                                 <rect key="frame" x="0.0" y="373" width="375" height="216"/>
@@ -43,7 +43,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="305"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="Gu4-l9-SaW" customClass="ContactTableViewCell">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="Gu4-l9-SaW" customClass="MapTableViewCell">
                                                 <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gu4-l9-SaW" id="0hA-CT-pXN">
@@ -63,7 +63,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JLz-Dp-DSY">
-                                                            <rect key="frame" x="0.0" y="1" width="49" height="49"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="49" height="49"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="JLz-Dp-DSY" secondAttribute="height" multiplier="1:1" id="Ewi-qV-DWj"/>
                                                             </constraints>
@@ -80,9 +80,9 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="imageView" destination="JLz-Dp-DSY" id="t0a-lj-KDj"/>
-                                                    <outlet property="subtitleLabel" destination="0hj-rk-Vw6" id="nYc-1q-N69"/>
-                                                    <outlet property="titleLabel" destination="kEy-c9-faM" id="g37-eT-5Bm"/>
+                                                    <outlet property="imageView" destination="JLz-Dp-DSY" id="c39-8n-VHo"/>
+                                                    <outlet property="subtitleLabel" destination="0hj-rk-Vw6" id="ZUz-d0-NfC"/>
+                                                    <outlet property="titleLabel" destination="kEy-c9-faM" id="ewD-xY-aFh"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -101,7 +101,7 @@
                                 <color key="backgroundColor" red="1" green="0.86410001359999999" blue="0.028262648599999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="o2v-px-TO7">
-                                <rect key="frame" x="94" y="72" width="187.5" height="29"/>
+                                <rect key="frame" x="94" y="72" width="187.5" height="38"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                 <segments>
                                     <segment title="步行"/>
@@ -272,7 +272,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="prl-Ol-Di8" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Aj2-pC-X1y">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Aj2-pC-X1y">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

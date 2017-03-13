@@ -134,7 +134,6 @@
             NSLog(@"FAILED: %@", result[@"error"]);
             // TEMP
             [_userInfo setProfileImage:_photoImageView.image];
-            
         }
         
         

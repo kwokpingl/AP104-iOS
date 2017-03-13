@@ -46,6 +46,7 @@
 
 + (void) getEventImage: (NSString *) eventImageName completion:(DoneHandler) done {
     
+    
     UIImage * image = [self loadImageWithFileName:eventImageName];
     if (image == nil){
         [self getImageFromServer:EVENT_PIC_URL WithImageName:eventImageName completion:^(NSError *error, id result) {
@@ -79,12 +80,19 @@
 + (NSURL *) getFullURLWithFileName: (NSString *) fileName{
     NSArray * paths = [[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask];
     NSURL * targetDocURL = paths.firstObject;
+    
     NSString * fullFileName = fileName;
+    
+    if ([fileName isKindOfClass:[NSNull class]]){
+        fullFileName = @"default.jpg";
+    }
+    
     NSURL * finalTargetURL = [targetDocURL URLByAppendingPathComponent:fullFileName];
     return finalTargetURL;
 }
 
 + (void) getImageFromServer:(NSString *)URLString WithImageName:(NSString *)imageName completion:(DoneHandler) done{
+    
     ServerManager * serverMgr = [ServerManager shareInstance];
     [serverMgr downloadPictureWithImgFileName:imageName FromURL:URLString completion:done];
 }

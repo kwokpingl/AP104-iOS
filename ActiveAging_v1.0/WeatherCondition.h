@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSNumber * windBearing;
 @property (nonatomic, strong) NSNumber * windSpeed;
 @property (nonatomic, strong) NSString * icon;
+//@property (nonatomic, strong) NSString * id;
 
 -(NSString *) imageName;
 
