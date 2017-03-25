@@ -7,7 +7,6 @@
 //
 
 #import "EventDetailViewController.h"
-#import "EventDetailSorter.h"
 #import "ImageManager.h"
 #import "ServerManager.h"
 #import "UserInfo.h"
@@ -130,6 +129,7 @@ typedef enum : NSUInteger {
         [temp setTag:i];
         [temp addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [temp setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+        [temp setBackgroundImage:[self imageWithColor:[UIColor brownColor]] forState:UIControlStateDisabled];
         
         if (i == 0) {
             [temp setEnabled:false];
@@ -184,6 +184,7 @@ typedef enum : NSUInteger {
     
     UIView * view = newVC.view;
     [view setFrame:_currentVC.view.frame];
+    [_scrollView setContentOffset:CGPointZero];
     [_scrollView addSubview:view];
     [_scrollView setContentSize:CGSizeMake(view.frame.size.width, view.frame.size.height+200)];
     _currentVC = newVC;
@@ -208,9 +209,9 @@ typedef enum : NSUInteger {
         [button setEnabled:true];
     }
     [sender setEnabled:false];
-    
     switch (sender.tag) {
-        case btnOrganization:{
+        case btnOrganization:
+        {
             NSLog(@"ORGANIZATION");
             OrganizationViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:destinationViewControllers[btnOrganization]];
             vc.eventDictionary = [[NSDictionary alloc] initWithDictionary:_eventDetailDict];
@@ -218,21 +219,24 @@ typedef enum : NSUInteger {
             [self changeSubviews:vc];
         }
             break;
-        case btnDescription:{
+        case btnDescription:
+        {
             NSLog(@"CONTENT");
             DescriptionViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:destinationViewControllers[btnDescription]];
             vc.eventDetailDict = [[NSDictionary alloc] initWithDictionary:_eventDetailDict];
             [self changeSubviews:vc];
         }
             break;
-        case btnLocation:{
+        case btnLocation:
+        {
             NSLog(@"LOCATION");
             LocationViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:destinationViewControllers[btnLocation]];
             vc.eventDetailDict = [[NSDictionary alloc] initWithDictionary:_eventDetailDict];
             [self changeSubviews:vc];
         }
             break;
-        case btnTime:{
+        case btnTime:
+        {
             NSLog(@"TIME");
             TimeViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:destinationViewControllers[btnTime]];
             vc.eventDetailDict = [[NSDictionary alloc] initWithDictionary:_eventDetailDict];
@@ -261,7 +265,7 @@ typedef enum : NSUInteger {
                                        EVENT_ADDRESS_KEY: _eventDetailDict[EVENT_ADDRESS_KEY],
                                        EVENT_DESCRIPTION_KEY: _eventDetailDict[EVENT_DESCRIPTION_KEY]
                                        };
-        [_eventMgr checkNewEvetn:eventDetail complete:^(NSMutableArray *eventArray) {
+        [_eventMgr checkNewEvent:eventDetail complete:^(NSMutableArray *eventArray) {
             [self isNewEventAdded:([eventArray[0] intValue] == 1)?true:false];
                 
         }];
@@ -269,52 +273,45 @@ typedef enum : NSUInteger {
         
     }else {
         action = USER_EVENT_QUIT;
-        [_serverMgr retrieveEventInfo:action
-                               UserID:_userInfo.getUserID
-                              EventID:_eventDetailDict[EVENT_ID_KEY] completion:^(NSError *error, id result) {
-                                  NSString * alertTitle, * alertMessage;
-                                  
-                                  if ([result[ECHO_RESULT_KEY] boolValue]){
-                                      alertTitle = @"成功退出";
-                                      alertMessage = @"系統以消除此項目";
-                                      
-                                      [self requestAccessToEventType];
-                                      NSDictionary * eventDetail = @{EVENT_START_KEY:_eventDetailDict[EVENT_START_KEY],
+        [_serverMgr retrieveEventInfo:action UserID:_userInfo.getUserID EventID:_eventDetailDict[EVENT_ID_KEY] completion:^(NSError *error, id result) {
+            NSString * alertTitle, * alertMessage;
+            if ([result[ECHO_RESULT_KEY] boolValue]){
+                alertTitle = @"成功退出";
+                alertMessage = @"系統以消除此項目";
+                
+                [self requestAccessToEventType];
+                
+                NSDictionary * eventDetail = @{EVENT_START_KEY:_eventDetailDict[EVENT_START_KEY],
                                                                      EVENT_END_KEY: _eventDetailDict[EVENT_END_KEY],
                                                                      EVENT_TITLE_KEY: _eventDetailDict[EVENT_TITLE_KEY],
                                                                      EVENT_ADDRESS_KEY: _eventDetailDict[EVENT_ADDRESS_KEY],
                                                                      EVENT_DESCRIPTION_KEY: _eventDetailDict[EVENT_DESCRIPTION_KEY]
                                                                      };
-                                      [_eventMgr eventToBeRemoved:eventDetail complete:^(NSMutableArray *eventArray) {
-                                          if ([eventArray.lastObject boolValue]){
-                                              NSLog(@"SUCCESS");
-                                              [DataManager updateEventDatabase];
-                                          }
-                                          else{
-                                              NSLog(@"FAILED");
-                                          }
-                                      }];
-                                      
-                                  }
-                                  else{
-                                      alertTitle = @"失敗";
-                                      alertMessage = @"請與開發者聯繫,並敘述發生的問題。";
-                                  }
-                                  
-                                  UIAlertController * alert = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
-                                  UIAlertAction * ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                      [delegate updateList];
-                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                          [self returnButtonPressed];
-                                      });
-                                  }];
-                                  [alert addAction:ok];
-                                  dispatch_async(dispatch_get_main_queue(), ^{
-                                      [self presentViewController:alert animated:true completion:nil];
-                                      
-                                  });
+                [_eventMgr eventToBeRemoved:eventDetail complete:^(NSMutableArray *eventArray) {
+                    if ([eventArray.lastObject boolValue]){
+                        NSLog(@"SUCCESS");
+                        [DataManager updateEventDatabase];
+                    }else{
+                        NSLog(@"FAILED");
+                    }
+                }];
+            }else{
+                alertTitle = @"失敗";
+                alertMessage = @"請與開發者聯繫,並敘述發生的問題。";
+            }
+            UIAlertController * alert = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction * ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [delegate updateList];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self returnButtonPressed];
+                });
+            }];
+            
+            [alert addAction:ok];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self presentViewController:alert animated:true completion:nil];
+            });
         }];
-        
     }
     
     [DataManager updateEventDatabase];
@@ -326,11 +323,22 @@ typedef enum : NSUInteger {
 /// MARK: REQUEST_ACCESS_TO_EVENT_TYPE
 -(void) requestAccessToEventType {
     [_eventMgr requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError * _Nullable error) {
+        if (error)
+        {
+            NSLog(@"%@", error);
+            return;
+        }
         if (!granted)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"無法存取" message:@"「哈啦哈啦趣」無法存取您的行事曆喔，請允許我們使用您的日曆。" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"無法存取" message:@"「哈啦哈啦趣」無法存取您的行事曆。" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction * ok = [UIAlertAction actionWithTitle:@"瞭解" style:UIAlertActionStyleDefault handler:nil];
+                UIAlertAction * redirect = [UIAlertAction actionWithTitle:@"設定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                }];
+                [alert addAction:ok];
+                [alert addAction:redirect];
                 
                 [self presentViewController:alert animated:YES completion:nil];
             });
@@ -338,11 +346,7 @@ typedef enum : NSUInteger {
             return;
         }
         
-        if (error)
-        {
-            NSLog(@"%@", error);
-        }
-    }];
+        _eventMgr.eventsAccessGranted = granted;    }];
 }
 
 
@@ -420,7 +424,19 @@ typedef enum : NSUInteger {
     }
 }
 
+- (UIImage *)imageWithColor:(UIColor *)color {
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
 
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+ 
+ return image;
+}
 
 
 @end

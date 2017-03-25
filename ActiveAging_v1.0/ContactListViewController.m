@@ -15,11 +15,14 @@
 #import "UserInfo.h"
 #import "DataManager.h"
 #import "ImageManager.h"
+#import "EmergencyButton.h"
 
 #import <ContactsUI/ContactsUI.h>
 #import <Contacts/Contacts.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMessageComposeViewController.h>
 
 typedef enum {
     alertAddMember,
@@ -48,7 +51,7 @@ typedef enum {
     showingMembers
 }tableViewInfo;
 
-@interface ContactListViewController ()<UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, CNContactViewControllerDelegate, CNContactPickerDelegate, UITextFieldDelegate>
+@interface ContactListViewController ()<UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, CNContactViewControllerDelegate, CNContactPickerDelegate, UITextFieldDelegate, MFMessageComposeViewControllerDelegate>
 {
     ServerManager * _serverMgr;
     UserInfo * _userInfo;
@@ -80,7 +83,7 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIPickerView * pickerView;
 @property (weak, nonatomic) IBOutlet UIView *subView;
-@property (weak, nonatomic) IBOutlet UIButton *emergencyButton;
+@property (strong, nonatomic) EmergencyButton *emergencyButton;
 @end
 
 @implementation ContactListViewController
@@ -88,7 +91,9 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
+//    NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
     
     // Initiate Singletons
     _serverMgr = [ServerManager shareInstance];
@@ -99,27 +104,19 @@ typedef enum {
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _tableView.tableFooterView = [UITableViewHeaderFooterView new];
+    _tableView.backgroundColor = [UIColor clearColor];
+//    _tableView.tableFooterView = [UITableViewHeaderFooterView new];
+//    _tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
     _pickerView.delegate = self;
     _pickerView.dataSource = self;
     pickerViewArray = @[@"請選群組",@"個人群組",@"其他群組",@"緊急聯絡人"];
     
-    
-    
-    
-    // SETUP NAVIGATION BAR
-    UIBarButtonItem * returnBtn = [[UIBarButtonItem alloc] initWithTitle:@"<回首頁"
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:@selector(dismissView:)];
-    returnBtn.tag = returnBarButton;
-    
+    _emergencyButton = [EmergencyButton new];
     [_emergencyButton addTarget:self action:@selector(callEmergency) forControlEvents:UIControlEventTouchUpInside];
-    
+    [self.view addSubview:_emergencyButton];
     
     currentGroup = -1;
     
-    [self.navigationItem setLeftBarButtonItem:returnBtn];
     [self reloadGroupList]; // UPDATE THE DATABASE
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -132,16 +129,17 @@ typedef enum {
 #pragma mark - === TABLEVIEW ===
 /// MARK: SETUPs
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    _tableView.contentInset = UIEdgeInsetsZero;
     return targetList.count;
 }
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 1;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 60.0;
+    return 60;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 5.0;
+    return 0;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 5.0;
@@ -429,15 +427,12 @@ rowHeightForComponent:(NSInteger)component{
             
             ok = [UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action)
             {
-                [self quitGroupAlert];
-                                        }];
+                [self quitGroupAlert];}];
             
             
             [alert addAction:ok];
             [alert addAction:cancel];
-            [self presentViewController:alert
-                               animated:true
-                             completion:nil];
+            [self presentViewController:alert animated:true completion:nil];
         }
             break;
             
@@ -481,15 +476,10 @@ rowHeightForComponent:(NSInteger)component{
                                }
                                else
                                {
-#warning SEND SMS
-                                   if ([result[ECHO_MESSAGE_KEY] isEqualToString:ACTION_SENDSMS]){
-                                       NSLog(@"MESSAGE : %@", ACTION_SENDSMS);
-                                   }
+                                   [self sendSMS:phoneNumber];
                                }
                            }
                         }];
-                        
-                        
                     }
                     
                 }
@@ -621,7 +611,7 @@ rowHeightForComponent:(NSInteger)component{
                        // update role
                         
                         NSDictionary * data = @{USER_ID_KEY: @(_userInfo.getUserID),
-                                                GROUP_NAME_KEY: targetList[selectedSection][GROUP_NAME_KEY]};
+                                                GROUP_ID_KEY: targetList[selectedSection][GROUP_ID_KEY]};
                         
                         [_serverMgr updateUserGroupsWithAction:GROUP_ACTION_UPDATEROLE dataInfo:data completion:^(NSError *error, id result) {
                             NSString * message;
@@ -636,6 +626,7 @@ rowHeightForComponent:(NSInteger)component{
                                 
                                 if(success){
                                     message = @"成功加入";
+                                    [self changeBadgeNumber:-1];
                                 }
                                 else{
                                     message = result[ECHO_MESSAGE_KEY];
@@ -668,6 +659,7 @@ rowHeightForComponent:(NSInteger)component{
                                 success = [result[ECHO_RESULT_KEY] boolValue];
                                 if(success){
                                     message = @"成功退出";
+                                    [self changeBadgeNumber:-1];
                                 }
                                 else{
                                     message = result[ECHO_MESSAGE_KEY];
@@ -687,7 +679,7 @@ rowHeightForComponent:(NSInteger)component{
                 else{
                     /// MARK:: ACCESS
                     UIAlertAction * access = [UIAlertAction actionWithTitle:@"查看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        [self getContact:currentGroup];
+                        [self getContact:selectedSection];
                     }];
                     
                     /// MARK:: QUIT
@@ -807,13 +799,18 @@ rowHeightForComponent:(NSInteger)component{
             
             if (error) {
                 NSLog(@"%@", error);
+                return;
             }
             
             if (!granted) {
                 
                 UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"無法存取" message:@"「哈啦哈啦趣」無法讀取您的電話簿。" preferredStyle: UIAlertControllerStyleAlert];
                 UIAlertAction * ok = [UIAlertAction actionWithTitle:@"瞭解" style:UIAlertActionStyleDefault handler:nil];
+                UIAlertAction * redirect = [UIAlertAction actionWithTitle:@"設定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                }];
                 [alert addAction:ok];
+                [alert addAction:redirect];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self presentViewController:alert animated:YES completion:nil];
@@ -1090,6 +1087,7 @@ rowHeightForComponent:(NSInteger)component{
 
 ///MARK: GET_CONTACT_A_GROUP
 - (void) getContact: (NSInteger) groupRow{
+    
     NSInteger groupID = [targetList[groupRow][GROUP_ID_KEY] integerValue];
     NSString * groupName = targetList[groupRow][GROUP_NAME_KEY];
     role = [targetList[groupRow][USER_ROLE_KEY] integerValue];
@@ -1110,6 +1108,7 @@ rowHeightForComponent:(NSInteger)component{
     [_tableView reloadData];
 }
 
+/// MARK: CHECK PREDICATE
 - (BOOL) check: (NSString *) type withString: (NSString *) str {
     
     NSPredicate * predicate;
@@ -1137,21 +1136,23 @@ rowHeightForComponent:(NSInteger)component{
 }
 
 
+/// MARK: Alternate Badge Number
+- (void) changeBadgeNumber: (NSInteger) adjustNumber {
+    NSInteger badgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber;
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber+adjustNumber];
+}
+
 - (void) endEditing:(id) sender{
     [self.view endEditing:true];
 }
 
-- (void) dismissView: (id)sender{
-     [self dismissViewControllerAnimated:true completion:nil];
-}
 
 - (void)dealloc {
     NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
 }
 
 - (void) callEmergency {
-    EmergencyViewController * vc = [EmergencyViewController new];
-    [self.navigationController pushViewController:vc animated:true];
+    [_emergencyButton callNumbers:self.navigationController];
 }
 
 
@@ -1189,6 +1190,34 @@ rowHeightForComponent:(NSInteger)component{
     NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", targetList[selectedSection][USER_PHONENUMBER_KEY]]];
     NSLog(@"NSURL url = %@", url);
     [[UIApplication sharedApplication] openURL:url];
+}
+
+#pragma mark - SEND SMS
+- (void) sendSMS:(NSString *) number{
+    if([MFMessageComposeViewController canSendText]){
+        MFMessageComposeViewController * controller = [MFMessageComposeViewController new];
+        NSString * body = [NSString stringWithFormat:@"%@想邀請您加入「哈啦哈啦趣」喔",[UserInfo shareInstance].getUsername];
+        controller.body = body;
+        controller.recipients = [NSArray arrayWithObject:number];
+        controller.messageComposeDelegate = self;
+        [self presentViewController:controller animated:true completion:nil];
+    }
+}
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result{
+    [self dismissViewControllerAnimated:true completion:nil];
+    switch (result) {
+        case MessageComposeResultCancelled:
+            break;
+        case MessageComposeResultSent:
+            [self showMessageAlert:@"傳送成功" success:true];
+            break;
+        case MessageComposeResultFailed:
+            [self showMessageAlert:@"傳送失敗" success:false];
+            break;
+        default:
+            break;
+    }
 }
 
 @end

@@ -27,12 +27,12 @@
     //this is nil if you take out sim card.
     if (code == nil) {
         
-//        UIAlertController *alertView = [UIAlertController alertControllerWithTitle:@"錯誤訊息" message:@"沒發現 Sim 卡" preferredStyle:UIAlertControllerStyleAlert];
-//        UIAlertAction * cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-//        
-//        
-//        [alertView addAction:cancel];
-//        [self.superview.view]
+        UIAlertController *alertView = [UIAlertController alertControllerWithTitle:@"錯誤訊息" message:@"沒發現 Sim 卡" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        
+        
+        [alertView addAction:cancel];
+        
         NSLog(@"NO SIM: %@", _phoneNumber);
         
         return;

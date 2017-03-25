@@ -25,17 +25,22 @@
 
 @implementation EmergencyButton
 
-
-- (void) callNumbers{
-//    _observer = [CXCallObserver new];
-//    [_observer setDelegate:self queue:nil];
-//    [self getEmergencyNumbers];
-//    counter = 0;
+- (void) callNumbers: (UINavigationController *) controller{
     EmergencyViewController * vc = [EmergencyViewController new];
-    
-    
-    [self.superview addSubview:vc.view];
-    
+    [controller presentViewController:vc animated:true completion:nil];
+}
+
+-(void)didMoveToSuperview {
+    self.imageView.image = [UIImage imageNamed:@"Emer"];
+    [self setTitle:@"緊急連絡" forState:UIControlStateNormal];
+    [self.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:40]];
+    self.tintColor = [UIColor whiteColor];
+    [self setBackgroundImage:[UIImage imageNamed:@"Emer"] forState:UIControlStateNormal];
+    [self setFrame:CGRectMake(self.superview.frame.size.width/4.0,
+                              self.superview.frame.size.height * 9.0/10.0,
+                              self.superview.frame.size.width/2.0,
+                              self.superview.frame.size.height/10.0)];
+    [self setEnabled:true];
 }
 
 //- (void) stopCalls {

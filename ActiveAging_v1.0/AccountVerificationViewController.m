@@ -14,35 +14,38 @@
 #import "DataManager.h"
 #import "Definitions.h"
 #import "WeatherManager.h"
-//#import "LocationManager.h"
+#import "EventManager.h"
+#import "Reachability.h"
 
 @interface AccountVerificationViewController () <CLLocationManagerDelegate> {
     KeychainManager * _keychainMgr;
     UserInfo * _userInfo;
     ServerManager * _serverMgr;
     WeatherManager * _weatherMgr;
+    Reachability * reachability;
     
-    BOOL foundKeychain;
-    NSTimer * timer;
     UITapGestureRecognizer * gestureKeyNotFound;
     UITapGestureRecognizer * gestureKeyFound;
+    BOOL foundKeychain;
+    NSTimer * timer;
     
     // WEATHER
-    CLLocationManager * locationManager;
     UILabel * temperatureLabel;
     UILabel * conditionsLabel;
-    UIImageView * iconView;
     NSString * imageName;
+    UIImageView * iconView;
     
-    NSDate * date;
     NSDateFormatter * dateFormat;
     NSString * currentDate;
+    NSDate * date;
+    
+    NSInteger counter;
 }
 @property (strong, nonatomic) UIView * welcomeView;
 @property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
-//@property (strong, nonatomic) IBOutlet UIButton * resetButton;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, assign) CGFloat screenHeight;
+@property UIButton * enterButton;
 @end
 
 @implementation AccountVerificationViewController
@@ -72,34 +75,26 @@
                                                               action:@selector(segueSwitching)];
     [gestureKeyFound setEnabled:false];
     [self.view addGestureRecognizer:gestureKeyFound];
-    
-    
+    [self requestAccessToEventType];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     // ADD IMAGE VIEW
-    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
+                                                               0,
+                                                               self.view.frame.size.width,
+                                                               self.view.frame.size.height)];
     [_imageView setImage:[UIImage imageNamed:@"LaunchScreen"]];
     [_imageView.layer setZPosition:0];
     [self.view addSubview:_imageView];
     
     [_welcomeLabel.layer setZPosition:1.0];
     [_welcomeLabel setFrame:CGRectMake(0, self.view.frame.size.height/3.0, self.view.frame.size.width, self.view.frame.size.height/5.0)];
-    
-//    _resetButton = [[UIButton alloc] initWithFrame:_welcomeLabel.frame];
-//    [_resetButton addTarget:self action:@selector(resetButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-//    [_resetButton setHidden:true];
-//    [self.view addSubview: _resetButton];
-    
     timer = [NSTimer timerWithTimeInterval:2.0 repeats:false block:^(NSTimer * _Nonnull timer) {
         [self segueSwitching];
     }];
     
     _weatherMgr = [WeatherManager sharedManager];
-    
-    [_weatherMgr findCurrentLocation];
-    
-    
     [self checkKeyChain];
 }
 
@@ -113,9 +108,27 @@
     [self.navigationController.view setBackgroundColor:[UIColor clearColor]];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [reachability stopNotifier];
+}
+
 -(UIStatusBarStyle) preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }
+
+#pragma mark - ===REACHABILITY===
+//- (void) reachabilityChanged{
+//    if (reachability.currentReachabilityStatus == NotReachable){
+//        [_welcomeLabel setText:@"發生錯誤\n請確定網路開啟\n再點選這裡登入"];
+//        [_welcomeLabel setBackgroundColor:[UIColor whiteColor]];
+//        [gestureKeyNotFound setEnabled:true];
+//        [_enterButton setEnabled:false];
+//    }
+//    else{
+//        [self checkKeyChain];
+//    }
+//    NSLog(@"%ld", counter++);
+//}
 
 #pragma mark - ===WEATHER FORCAST===
 - (void) setupHeartTouchingNotice {
@@ -125,22 +138,23 @@
     _welcomeView = [[UIView alloc] initWithFrame:mainFrame];
     [_welcomeView insertSubview:_imageView atIndex:0];
     
-    UIButton * enterButton = [[UIButton alloc] initWithFrame:CGRectMake(0, _welcomeLabel.frame.origin.y/2.0, self.view.frame.size.width, _welcomeLabel.frame.origin.y/2.0)];
-    [enterButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [enterButton setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.6]];
-    [enterButton setTitleColor:[UIColor blueColor]
+    _enterButton = [[UIButton alloc] initWithFrame:CGRectMake(0, _welcomeLabel.frame.origin.y/2.0, self.view.frame.size.width, _welcomeLabel.frame.origin.y/2.0)];
+    [_enterButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_enterButton setEnabled:false];
+    [_enterButton setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.6]];
+    [_enterButton setTitleColor:[UIColor blueColor]
                       forState:UIControlStateNormal];
-    [enterButton.titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
-    [enterButton.titleLabel setFont:[UIFont systemFontOfSize:25]];
+    [_enterButton.titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    [_enterButton.titleLabel setFont:[UIFont systemFontOfSize:25]];
     
     
-    UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(enterButton.frame.size.width*3.0/4.0, enterButton.frame.size.height*2.0/3.0, enterButton.frame.size.width/4.0, enterButton.frame.size.height/3.0)];
-    [label setBounds:enterButton.frame];
+    UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(_enterButton.frame.size.width*3.0/4.0, _enterButton.frame.size.height*2.0/3.0, _enterButton.frame.size.width/4.0, _enterButton.frame.size.height/3.0)];
+    [label setBounds:_enterButton.frame];
     [label setBackgroundColor:[UIColor clearColor]];
     [label setTextColor:[UIColor blueColor]];
     
-    [enterButton addSubview:label];
-    [_welcomeView addSubview:enterButton];
+    [_enterButton addSubview:label];
+    [_welcomeView addSubview:_enterButton];
     
 /// MARK: set up frames and margins
     //Set up layout frames and margins
@@ -174,6 +188,7 @@
     temperatureLabel.textColor = [UIColor blackColor];
     temperatureLabel.text = @"0°";
     temperatureLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:120];
+    temperatureLabel.adjustsFontSizeToFitWidth = true;
     [_welcomeView addSubview:temperatureLabel];
     
     conditionsLabel = [[UILabel alloc] initWithFrame:conditionsFrame];
@@ -229,12 +244,10 @@
                  [_imageView setContentMode:UIViewContentModeScaleAspectFill];
                  
                  //5 Welcome Button
-                 [enterButton setTitle:[self welcomingTitle] forState:UIControlStateNormal];
-                 
-                 
+                 [_enterButton setTitle:[self welcomingTitle] forState:UIControlStateNormal];
                  
                  label.text = @"請點擊進入喔！";
-                 label.font = [UIFont systemFontOfSize:20]; 
+                 label.font = [UIFont systemFontOfSize:20];
              });
          }
      }];
@@ -260,8 +273,14 @@
         bkg = [UIImage imageNamed:@"rainBg"];
     }
     
-    else if ([imageName isEqualToString:@"sunny"]) {
-        bkg = [UIImage imageNamed:@"sunnyBg"];
+    else if ([imageName isEqualToString:@"sunny"] || [imageName containsString:@"clear"]) {
+        
+        if([currentDate floatValue] >= 18.0 || [currentDate floatValue] <= 6.0){
+            bkg = [UIImage imageNamed:@"nightClear"];
+        }
+        else{
+            bkg = [UIImage imageNamed:@"sunnyBg"];
+        }
     }
     
     else if ([imageName isEqualToString:@"broken"] || [imageName containsString:@"few"]) {
@@ -271,6 +290,9 @@
         } else {
             bkg = [UIImage imageNamed:@"sunset"];
         }
+    }
+    else if ([imageName isEqualToString:@"mist"]){
+        bkg = [UIImage imageNamed:@"Fog"];
     }
     else {
         bkg = [UIImage imageNamed:@"LaunchScreen"];
@@ -317,6 +339,12 @@
 
 - (void) resetButtonPressed{
     //    [_keychainMgr deleteKeychain:_userInfo.getUsername Password:_userInfo.getPassword];
+//    if (reachability.currentReachabilityStatus == NotReachable){
+//        [self reachabilityChanged];
+//    }
+//    else{
+//        [self checkKeyChain];
+//    }
     [self checkKeyChain];
 }
 
@@ -324,11 +352,13 @@
 - (void) segueSwitching{
     [timer invalidate];
     if (foundKeychain){
-        [DataManager prepareDatabase];
-        [DataManager updateContactDatabase:^(BOOL done) {
-            if (done){
-                [self performSegueWithIdentifier:@"Login" sender:self];
-            }
+        [self widgetConfiguration:^(NSError *error, id result) {
+            [DataManager prepareDatabase];
+            [DataManager updateContactDatabase:^(BOOL done) {
+                if (done){
+                    [self performSegueWithIdentifier:@"Login" sender:self];
+                }
+            }];
         }];
     } else {
         [self performSegueWithIdentifier:@"SignUp" sender:self];
@@ -347,6 +377,9 @@
     
     // Check if KEYCHAIN_ITEM is AVALIABLE
     if (foundKeychain){
+        [_weatherMgr findCurrentLocation];
+        [self setupHeartTouchingNotice];
+        
         // check if user is correct
         [_serverMgr loginAuthorization:@"user" UserName:_userInfo.getUsername UserPhoneNumber:_userInfo.getPassword Action:ACTION_GET_ID completion:^(NSError *error, id result) {
             if ([result[@"result"] boolValue]){
@@ -372,21 +405,21 @@
                 [_serverMgr updateToken:[_userInfo getDeviceToken] completion:^(NSError *error, id result) {
                     if ([result[ECHO_RESULT_KEY] boolValue]){
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [self setupHeartTouchingNotice];
                             [gestureKeyFound setEnabled:true];
+                            [_enterButton setEnabled:true];
                         });
                         
                     }
                 }];
                 
                 
-            } else {
+            } else if (error) {
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [_welcomeLabel setText:@"發生錯誤\n請確定網路開啟\n再點選這裡登入"];
-//                    [_resetButton setHidden:false];
-                    //                    [_keychainMgr deleteKeychain:_userInfo.getUsername Password:_userInfo.getPassword];
+                    [_welcomeLabel setBackgroundColor:[UIColor whiteColor]];
                     [gestureKeyNotFound setEnabled:true];
+                    [_enterButton setEnabled:false];
                 });
             }
             
@@ -398,5 +431,80 @@
     }
 }
 
+
+#pragma mark - widgetConfiguration
+-(void) widgetConfiguration: (DoneHandler) done {
+    NSUserDefaults * sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WIDGET_NAME];
+    
+    [sharedDefaults setObject:temperatureLabel.text forKey:@"currentTempTxt"];
+    
+    [sharedDefaults setObject:conditionsLabel.text forKey:@"currentConditions"];
+    
+    
+    [[EventManager shareInstance] sortTimeOrder:[NSDate date] complete:^(NSMutableArray *eventArray) {
+        NSMutableArray * eventsForWidget = [[NSMutableArray alloc] initWithArray:eventArray];
+        
+        EKEvent * event;
+        NSString * dateStr;
+        NSString * eventTitle;
+        
+        NSMutableArray * widgetEvent = [NSMutableArray new];
+        
+        if (eventsForWidget.count != 0) {
+            
+            for (int i = 0; i < eventsForWidget.count; i++) {
+                event = [eventsForWidget objectAtIndex:i];
+                
+                NSDateFormatter * today = [NSDateFormatter new];
+                today.dateFormat = @"HH:mm";
+                
+                dateStr = [today stringFromDate:event.startDate];
+                eventTitle = event.title;
+                
+                NSMutableDictionary * dict = [NSMutableDictionary new];
+                dict = [@{@"today date":dateStr, @"event title":eventTitle} mutableCopy];
+                
+                [widgetEvent addObject:dict];
+                //the first object contains the latest date and title...
+            }
+        }
+        
+        [sharedDefaults setObject:widgetEvent forKey:@"eventsArray"];
+        [sharedDefaults synchronize];
+        done(nil, @(true));
+    }];
+}
+
+-(void) requestAccessToEventType {
+    [[EventManager shareInstance] requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError * _Nullable error) {
+        
+        if (error)
+        {
+            NSLog(@"%@", error);
+            return;
+        }
+        
+        if (!granted)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"無法存取" message:@"「哈啦哈啦趣」無法存取您的行事曆喔，請允許我們使用您的日曆。" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction * ok = [UIAlertAction actionWithTitle:@"瞭解" style:UIAlertActionStyleDefault handler:nil];
+                UIAlertAction * redirect = [UIAlertAction actionWithTitle:@"設定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                }];
+                [alert addAction:ok];
+                [alert addAction:redirect];
+                
+                [self presentViewController:alert animated:YES completion:nil];
+            });
+        }
+        else{
+            [EventManager shareInstance].eventsAccessGranted = granted;
+        }
+        
+        
+    }];
+}
 
 @end

@@ -9,6 +9,8 @@
 #import "MemberDetailViewController.h"
 #import "CallButton.h"
 #import "ImageManager.h"
+#import "LocationManager.h"
+#import "MapViewController.h"
 
 @interface MemberDetailViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *cancelBtn;
@@ -26,6 +28,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
     [_imageView setContentMode:UIViewContentModeScaleAspectFit];
     [_imageView.layer setCornerRadius:_imageView.frame.size.height/2.5];
     [_imageView.layer setMasksToBounds:true];
@@ -84,6 +87,13 @@
     
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [[LocationManager shareInstance] stopUpdatingHeading];
+    if([self.parentViewController isKindOfClass:[MapViewController class]]){
+        [((MapViewController *)self.parentViewController).mapview setUserTrackingMode:MKUserTrackingModeNone];
+    }
+}
+
 - (void) makeACall: (CallButton *) sender{
     [sender callNumber];
 }
@@ -99,6 +109,11 @@
         [_imageView setHidden:false];
         [_trackerBtn setEnabled:true];
     }
+    [[LocationManager shareInstance] stopUpdatingHeading];
+    
+    if([self.parentViewController isKindOfClass:[MapViewController class]]){
+        [((MapViewController *)self.parentViewController).mapview setUserTrackingMode:MKUserTrackingModeNone];
+    }
 }
 
 - (void) setNextStep:(NSString *)nextStep{
@@ -106,9 +121,18 @@
 }
 
 - (void) showTracker {
+    [_trackingView setBackgroundColor:[UIColor clearColor]];
     [_trackingView setHidden:false];
     [_imageView setHidden:true];
     [_trackerBtn setEnabled:false];
+    
+    [[LocationManager shareInstance] startUpdatingHeading];
+    
+    if([self.parentViewController isKindOfClass:[MapViewController class]]){
+        [((MapViewController *)self.parentViewController).mapview setUserTrackingMode:MKUserTrackingModeFollowWithHeading];
+        
+    }
+    
 }
 
 @end

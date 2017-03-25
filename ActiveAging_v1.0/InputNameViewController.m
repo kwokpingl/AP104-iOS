@@ -38,7 +38,8 @@
     [_nextButton setEnabled:false];
     _userInfo   = [UserInfo shareInstance];
     _serverMgr  = [ServerManager shareInstance];
-//    _keyMgr     = [KeychainManager sharedInstance];
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
     
     // SETUP TEXTFIELD
     _lastnameTextField.delegate     = self;

@@ -9,8 +9,13 @@
 #ifndef Definitions_h
 #define Definitions_h
 
+
+#define WIDGET_NAME @"group.ActiveAging.TodayExtensionWidgetSharingDefaults"
+
 #pragma mark - === URLs ===
 /// MARK: SERVER_BASIC
+
+#define BASE_HOST       @"192.168.43.109/"
 #define BASE_URL        @"http://192.168.43.109/ActiveAging"
 /// MARK: EVENTS_URL
 #define EVENTS_REGISTER_URL     [BASE_URL stringByAppendingPathComponent:@"php/eventRegistration.php"]
@@ -180,7 +185,7 @@
 
 
 /// MARK: CLLocation
-#define DISTANCE_FILTER_30M 30
+#define DISTANCE_FILTER 10
 
 /// MARK: DATE_FORMAT
 #define DATE_FORMAT @"YYYY-MM-dd HH:mm:ss"

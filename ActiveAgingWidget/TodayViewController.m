@@ -9,8 +9,7 @@
 #import "TodayViewController.h"
 #import <NotificationCenter/NotificationCenter.h>
 #import "WidgetEventTableViewCell.h"
-
-#define WIDGET_NAME @"group.ActiveAging.TodayExtensionSharingDefaults"
+#import "Definitions.h"
 
 @interface TodayViewController () <NCWidgetProviding, UITableViewDelegate, UITableViewDataSource> {
 
@@ -25,6 +24,7 @@
 
 @implementation TodayViewController
 
+#pragma mark - VIEWS
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
@@ -39,9 +39,9 @@
     [self updateWidgetInfo];
     [self.view setBackgroundColor:[UIColor clearColor]];
     self.preferredContentSize = CGSizeMake(0, 100.0);
-//    self.preferredContentSize = CGSizeMake(320.0, 320.0);
 }
 
+#pragma mark - WIDGET
 - (void) widgetActiveDisplayModeDidChange:(NCWidgetDisplayMode)activeDisplayMode withMaximumSize:(CGSize)maxSize {
     
     if (activeDisplayMode == NCWidgetDisplayModeExpanded) {
@@ -50,11 +50,6 @@
     } else if (activeDisplayMode == NCWidgetDisplayModeCompact) {
         self.preferredContentSize = CGSizeMake(0, 100.0);
     }
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler {
@@ -91,7 +86,7 @@
     
     NSUserDefaults * defaults = [[NSUserDefaults alloc] initWithSuiteName:WIDGET_NAME];
     
-#pragma mark - temperature
+/// MARK: temperature
     NSString * temperatureTxt = [defaults stringForKey:@"currentTempTxt"];
     self.currentTempLabel.numberOfLines = 0;
     self.currentTempLabel.adjustsFontSizeToFitWidth = true;
@@ -101,18 +96,14 @@
     self.currentWeatherConditionsLabel.text = currentConditions;
     self.currentWeatherConditionsLabel.adjustsFontSizeToFitWidth = true;
     
-//    NSString * imagePath = [defaults objectForKey:@"imageURL"];
-//    self.weatherImageView.image = [UIImage imageWithContentsOfFile:imagePath];
-//    
-//    [UIImage imageWithData:[NSData dataWithContentsOfFile:imagePath]];
-    
-#pragma mark - Events calendar
+/// MARK: Events calendar
     eventsArray = [NSMutableArray new];
     eventsArray = [[defaults arrayForKey:@"eventsArray"] mutableCopy];
     
     [_eventsTable reloadData];
 }
 
+#pragma mark - TABLEVIEW DELEGATE
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (eventsArray.count == 0) {
         return 1;
@@ -131,12 +122,14 @@
         cell.titleLabel.text = @"今天沒有任何活動唷。\n 養足精神，重新出發！";
     }
     else{
-    
         cell.titleLabel.text = eventsArray[indexPath.row][@"event title"];
     }
-    cell.titleLabel.font = [UIFont systemFontOfSize:25];
-    cell.timeLabel.text = eventsArray[indexPath.row][@"today date"];
-    cell.timeLabel.font = [UIFont systemFontOfSize:20];
+    [cell.titleLabel setFont:[UIFont systemFontOfSize:25]];
+    [cell.titleLabel setAdjustsFontSizeToFitWidth:true];
+    [cell.titleLabel setNumberOfLines:0];
+    [cell.timeLabel setText: eventsArray[indexPath.row][@"today date"] ];
+    [cell.timeLabel setFont: [UIFont systemFontOfSize:20]];
+    [cell.timeLabel setNumberOfLines:0];
     
     return cell;
 }

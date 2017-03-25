@@ -57,7 +57,7 @@
             </objects>
             <point key="canvasLocation" x="-474.39999999999998" y="77.811094452773617"/>
         </scene>
-        <!--今天有啥好玩的呢?-->
+        <!--HOME-->
         <scene sceneID="GpT-D7-Yhx">
             <objects>
                 <viewController storyboardIdentifier="HomePageViewController" id="n5L-fl-gzX" customClass="HomePageViewController" sceneMemberID="viewController">
@@ -146,7 +146,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="今天有啥好玩的呢?" id="FHj-f7-mVz"/>
+                    <navigationItem key="navigationItem" title="HOME" id="FHj-f7-mVz"/>
                     <connections>
                         <outlet property="activityBtn" destination="d4f-TP-RYk" id="a6V-5M-PSm"/>
                         <outlet property="calendarBtn" destination="5eV-35-wac" id="y3E-KT-0Zg"/>

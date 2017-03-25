@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="prl-Ol-Di8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5ZC-bp-Htf">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -23,24 +23,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GEc-yY-wGw">
-                                <rect key="frame" x="237" y="619" width="122" height="48"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="緊急聯絡"/>
-                            </button>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="v73-xW-QFI">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="369"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="v73-xW-QFI">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="280"/>
                             </mapView>
                             <pickerView contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="rFS-K1-078">
-                                <rect key="frame" x="0.0" y="373" width="375" height="216"/>
+                                <rect key="frame" x="28" y="319" width="320" height="216"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </pickerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DM5-e8-gTm">
-                                <rect key="frame" x="0.0" y="64" width="375" height="305"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="267"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Emu-wK-6Vx">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="305"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="267"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="Gu4-l9-SaW" customClass="MapTableViewCell">
@@ -90,19 +85,18 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="Emu-wK-6Vx" firstAttribute="leading" secondItem="DM5-e8-gTm" secondAttribute="leading" id="Mf8-gM-Vwh"/>
-                                    <constraint firstItem="Emu-wK-6Vx" firstAttribute="top" secondItem="DM5-e8-gTm" secondAttribute="top" id="NBe-IZ-qpX"/>
-                                    <constraint firstAttribute="trailing" secondItem="Emu-wK-6Vx" secondAttribute="trailing" id="ero-S1-QiV"/>
-                                    <constraint firstAttribute="bottom" secondItem="Emu-wK-6Vx" secondAttribute="bottom" id="rNg-83-1sX"/>
+                                    <constraint firstItem="Emu-wK-6Vx" firstAttribute="centerY" secondItem="DM5-e8-gTm" secondAttribute="centerY" id="3G5-1G-vBF"/>
+                                    <constraint firstItem="Emu-wK-6Vx" firstAttribute="width" secondItem="DM5-e8-gTm" secondAttribute="width" id="BEI-cc-OGX"/>
+                                    <constraint firstItem="Emu-wK-6Vx" firstAttribute="height" secondItem="DM5-e8-gTm" secondAttribute="height" id="QJx-aa-kaz"/>
+                                    <constraint firstItem="Emu-wK-6Vx" firstAttribute="centerX" secondItem="DM5-e8-gTm" secondAttribute="centerX" id="pgi-un-8sf"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dJ7-mA-gbd">
-                                <rect key="frame" x="0.0" y="373" width="375" height="216"/>
-                                <color key="backgroundColor" red="1" green="0.86410001359999999" blue="0.028262648599999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="o2v-px-TO7">
-                                <rect key="frame" x="94" y="72" width="187.5" height="38"/>
+                                <rect key="frame" x="94" y="28" width="188" height="29"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="o2v-px-TO7" secondAttribute="height" multiplier="187:28" id="pHZ-uO-2tk"/>
+                                </constraints>
                                 <segments>
                                     <segment title="步行"/>
                                     <segment title="開車"/>
@@ -111,38 +105,33 @@
                                     <action selector="travelTypeSwitching:" destination="5ZC-bp-Htf" eventType="valueChanged" id="l2X-et-GdN"/>
                                 </connections>
                             </segmentedControl>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dJ7-mA-gbd">
+                                <rect key="frame" x="0.0" y="287" width="375" height="280"/>
+                                <color key="backgroundColor" red="1" green="0.86410001359999999" blue="0.028262648599999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="DM5-e8-gTm" firstAttribute="top" secondItem="Rrs-P6-rWY" secondAttribute="bottom" id="0Fq-a8-qT9"/>
-                            <constraint firstItem="dJ7-mA-gbd" firstAttribute="height" secondItem="rFS-K1-078" secondAttribute="height" id="4kO-X4-c57"/>
-                            <constraint firstItem="DM5-e8-gTm" firstAttribute="leading" secondItem="bJf-uW-qem" secondAttribute="leading" id="6IH-Gm-r2J"/>
-                            <constraint firstItem="GEc-yY-wGw" firstAttribute="top" secondItem="rFS-K1-078" secondAttribute="bottom" constant="30" id="79p-gV-OUn"/>
-                            <constraint firstItem="o2v-px-TO7" firstAttribute="centerX" secondItem="bJf-uW-qem" secondAttribute="centerX" id="7De-uB-1Qu"/>
-                            <constraint firstItem="o2v-px-TO7" firstAttribute="height" secondItem="v73-xW-QFI" secondAttribute="height" multiplier="0.1" id="DUW-er-tfs"/>
-                            <constraint firstItem="rFS-K1-078" firstAttribute="centerX" secondItem="bJf-uW-qem" secondAttribute="centerX" id="Eud-vM-ffB"/>
-                            <constraint firstItem="dJ7-mA-gbd" firstAttribute="width" secondItem="rFS-K1-078" secondAttribute="width" id="HZC-Kx-eih"/>
-                            <constraint firstItem="dJ7-mA-gbd" firstAttribute="centerX" secondItem="rFS-K1-078" secondAttribute="centerX" id="Hno-HX-WDl"/>
-                            <constraint firstItem="rFS-K1-078" firstAttribute="width" secondItem="bJf-uW-qem" secondAttribute="width" id="QIz-lL-0I9"/>
-                            <constraint firstItem="v73-xW-QFI" firstAttribute="centerX" secondItem="bJf-uW-qem" secondAttribute="centerX" id="Uak-hz-S0y"/>
-                            <constraint firstAttribute="trailing" secondItem="DM5-e8-gTm" secondAttribute="trailing" id="Wap-x2-KjP"/>
-                            <constraint firstItem="o2v-px-TO7" firstAttribute="width" secondItem="v73-xW-QFI" secondAttribute="width" multiplier="0.5" id="XT6-Ko-MvH"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="GEc-yY-wGw" secondAttribute="trailing" id="YAT-yR-GJi"/>
-                            <constraint firstItem="v73-xW-QFI" firstAttribute="top" secondItem="bJf-uW-qem" secondAttribute="top" id="YhC-cP-81D"/>
-                            <constraint firstItem="o2v-px-TO7" firstAttribute="top" secondItem="Rrs-P6-rWY" secondAttribute="bottom" constant="8" id="c0U-Bu-mJg"/>
-                            <constraint firstItem="ntd-nu-wkH" firstAttribute="top" secondItem="GEc-yY-wGw" secondAttribute="bottom" id="cDB-JP-iPY"/>
-                            <constraint firstItem="rFS-K1-078" firstAttribute="top" secondItem="v73-xW-QFI" secondAttribute="bottom" constant="4" id="iDV-ec-QcV"/>
-                            <constraint firstItem="dJ7-mA-gbd" firstAttribute="centerY" secondItem="rFS-K1-078" secondAttribute="centerY" id="j5M-0p-8Ec"/>
-                            <constraint firstItem="Emu-wK-6Vx" firstAttribute="bottom" secondItem="v73-xW-QFI" secondAttribute="bottom" id="tLk-Id-Bkz"/>
-                            <constraint firstItem="v73-xW-QFI" firstAttribute="width" secondItem="bJf-uW-qem" secondAttribute="width" id="x0O-q5-z5w"/>
+                            <constraint firstItem="o2v-px-TO7" firstAttribute="centerX" secondItem="bJf-uW-qem" secondAttribute="centerX" id="0do-I7-ex4"/>
+                            <constraint firstItem="ntd-nu-wkH" firstAttribute="top" secondItem="dJ7-mA-gbd" secondAttribute="bottom" constant="100" id="0fq-Er-PCe"/>
+                            <constraint firstItem="rFS-K1-078" firstAttribute="centerX" secondItem="dJ7-mA-gbd" secondAttribute="centerX" id="1bs-FQ-HK7"/>
+                            <constraint firstItem="o2v-px-TO7" firstAttribute="width" secondItem="bJf-uW-qem" secondAttribute="width" multiplier="0.5" id="4Xf-sw-57Y"/>
+                            <constraint firstAttribute="trailing" secondItem="v73-xW-QFI" secondAttribute="trailing" id="6qo-57-whc"/>
+                            <constraint firstItem="DM5-e8-gTm" firstAttribute="centerX" secondItem="bJf-uW-qem" secondAttribute="centerX" id="F63-23-Zbg"/>
+                            <constraint firstItem="dJ7-mA-gbd" firstAttribute="top" secondItem="DM5-e8-gTm" secondAttribute="bottom" id="Fch-Mx-GLl"/>
+                            <constraint firstItem="v73-xW-QFI" firstAttribute="top" secondItem="bJf-uW-qem" secondAttribute="top" id="Ioj-D2-mJM"/>
+                            <constraint firstAttribute="trailing" secondItem="dJ7-mA-gbd" secondAttribute="trailing" id="R7n-Yd-JQD"/>
+                            <constraint firstItem="DM5-e8-gTm" firstAttribute="height" secondItem="bJf-uW-qem" secondAttribute="height" multiplier="0.4" id="T0A-XX-uUk"/>
+                            <constraint firstItem="rFS-K1-078" firstAttribute="centerY" secondItem="dJ7-mA-gbd" secondAttribute="centerY" id="aGm-0T-3Ta"/>
+                            <constraint firstItem="o2v-px-TO7" firstAttribute="top" secondItem="Rrs-P6-rWY" secondAttribute="bottom" constant="8" id="ghv-1M-dCv"/>
+                            <constraint firstItem="v73-xW-QFI" firstAttribute="leading" secondItem="bJf-uW-qem" secondAttribute="leading" id="kji-Ob-UUO"/>
+                            <constraint firstItem="DM5-e8-gTm" firstAttribute="top" secondItem="Rrs-P6-rWY" secondAttribute="bottom" id="pSH-eE-qEw"/>
+                            <constraint firstItem="v73-xW-QFI" firstAttribute="bottom" secondItem="DM5-e8-gTm" secondAttribute="bottom" id="r1J-ya-QhI"/>
+                            <constraint firstItem="dJ7-mA-gbd" firstAttribute="leading" secondItem="bJf-uW-qem" secondAttribute="leading" id="wMW-AG-UKF"/>
+                            <constraint firstItem="DM5-e8-gTm" firstAttribute="width" secondItem="bJf-uW-qem" secondAttribute="width" id="wgU-Ih-UDT"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="地圖" id="QYm-BU-Ji5">
-                        <barButtonItem key="leftBarButtonItem" title="回首頁" id="cdG-c7-cKD">
-                            <connections>
-                                <action selector="returnButtonPresssed:" destination="5ZC-bp-Htf" id="g09-dX-UpY"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="分享位置" style="plain" id="OAW-Bi-Pod">
                             <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="GAE-Vw-957">
                                 <rect key="frame" x="310" y="6" width="51" height="31"/>
@@ -266,24 +255,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ai7-9O-g56" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3420" y="2952.3238380809598"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="tam-GK-ET9">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="prl-Ol-Di8" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Aj2-pC-X1y">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="5ZC-bp-Htf" kind="relationship" relationship="rootViewController" id="Qwe-QP-msi"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="h6Q-ex-acC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1610.4000000000001" y="2952.7736131934034"/>
         </scene>
     </scenes>
     <resources>

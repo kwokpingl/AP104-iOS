@@ -32,6 +32,7 @@
         [self application:application didReceiveRemoteNotification:pushNotificationDic];
     }
     
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
     return YES;
 }
@@ -59,8 +60,8 @@
     NSLog(@"BOOL : %d", [[self topViewController] isKindOfClass:[EmergencyViewController class]]);
     
     if ([[self topViewController] isKindOfClass:[EmergencyViewController class]]){
-        EmergencyViewController * evc = [self topViewController];
-        
+        EmergencyViewController * evc = (EmergencyViewController *)[self topViewController];
+        [evc callEmergency];
     }
 }
 
@@ -131,6 +132,8 @@
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSString * finalDeviceToken = @"TESTING";
+    [[UserInfo shareInstance] setDeviceToken:finalDeviceToken];
     NSLog(@"DID FAIL TO REGISTER : %@", error.description);
 }
 

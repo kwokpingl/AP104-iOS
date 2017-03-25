@@ -34,6 +34,8 @@
     _verificationCodeTextField.delegate = self;
     [_verificationCodeTextField setEnabled:true];
     
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
+    
     UITapGestureRecognizer * tap = [UITapGestureRecognizer new];
     [tap addTarget:self action:@selector(tapped)];
     [self.view addGestureRecognizer:tap];

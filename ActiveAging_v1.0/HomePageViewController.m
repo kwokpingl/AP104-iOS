@@ -38,6 +38,13 @@
     // Do any additional setup after loading the view.
     [self pageSetup];
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showClock) userInfo:nil repeats:YES];
+//    [_emergencyBtn addTarget:self action:@selector(callEmergency)
+//            forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    
+    [[WeatherManager sharedManager] findCurrentLocation];
     
     //Start
     [[RACObserve([WeatherManager sharedManager], currentCondition)
@@ -46,29 +53,26 @@
       //Delivers any changes on the main thread since you’re updating the UI
       deliverOn: RACScheduler.mainThreadScheduler]
      subscribeNext: ^(WeatherCondition * newCondition) {
+         if (newCondition != nil){
+         dispatch_async(dispatch_get_main_queue(), ^{
+             NSString * temp = [NSString stringWithFormat:@"%.0f°C",newCondition.temperature.floatValue];
+             [_weatherBtn setTitle:temp forState:UIControlStateNormal];
+             
+             UIImage * image = [[UIImage imageNamed:[newCondition imageName]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+             
+             [_weatherBtn setImage: image forState:UIControlStateNormal];
+             _weatherBtn.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+             _weatherBtn.titleLabel.numberOfLines = 0;
+         });
+         }
          
-         NSString * temp = [NSString stringWithFormat:@"%.0f°C",newCondition.temperature.floatValue];
-         [_weatherBtn setTitle:temp forState:UIControlStateNormal];
-         
-         UIImage * image = [[UIImage imageNamed:[newCondition imageName]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-         
-         [_weatherBtn setImage: image forState:UIControlStateNormal];
-         _weatherBtn.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-         _weatherBtn.titleLabel.numberOfLines = 0;
      }];
-    
-    [[WeatherManager sharedManager] findCurrentLocation];
     
     _locationMgr = [LocationManager shareInstance];
     if ([_locationMgr accessGranted]){
         [_locationMgr startMonitoringSignificatnLocationChanges];
     }
-    
-    [_emergencyBtn addTarget:self action:@selector(callEmergency)
-            forControlEvents:UIControlEventTouchUpInside];
-}
 
-- (void) viewWillAppear:(BOOL)animated {
     
     [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
@@ -82,8 +86,7 @@
 
 
 - (void) callEmergency {
-    EmergencyViewController * vc = [EmergencyViewController new];
-    [self.navigationController pushViewController:vc animated:true];
+    [_emergencyBtn callNumbers:self.navigationController];
 }
 
 -(void) showClock {
@@ -108,6 +111,12 @@
 
 
 - (void) pageSetup{
+    [self.navigationItem setTitle:@"哈啦哈啦趣"];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor], NSFontAttributeName:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:25]};
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
+    
+    
     CGFloat timeLabelHeight = self.view.frame.size.height/10.0;
     
     [_timeLabel setFrame:CGRectMake(self.view.frame.size.width*1.0/3.0,
@@ -116,7 +125,7 @@
                                     timeLabelHeight)];
     [_dateLabel setFrame:CGRectMake(_timeLabel.frame.origin.x,
                                     _timeLabel.frame.origin.y-10.0,
-                                    _timeLabel.frame.size.width * 2.0/3.0,
+                                    _timeLabel.frame.size.width * 2.5/3.0,
                                     _timeLabel.frame.size.height/3.0)];
     [_emergencyBtn setFrame:CGRectMake(self.view.frame.size.width/4.0,
                                        self.view.frame.size.height * 9.0/10.0,
@@ -148,40 +157,42 @@
                                      BUTTON_SIDE*4/3)];
     
     [_timeLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:50]];
-    [_timeLabel setAdjustsFontSizeToFitWidth:true];
+    [_timeLabel setAdjustsFontSizeToFitWidth:false];
     [_timeLabel setNumberOfLines:1];
     
     [_dateLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:25]];
-    [_dateLabel setAdjustsFontSizeToFitWidth:true];
+    [_dateLabel setAdjustsFontSizeToFitWidth:false];
     [_dateLabel setNumberOfLines:1];
     
-    [_emergencyBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
-    [_emergencyBtn setTitle:@"緊急連絡" forState:UIControlStateNormal];
-    [_emergencyBtn setBackgroundColor:[UIColor whiteColor]];
+//    [_emergencyBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:40]];
+//    [_emergencyBtn setBackgroundImage:[UIImage imageNamed:@"Emer"] forState:UIControlStateNormal];
+//    [_emergencyBtn setTintColor:[UIColor whiteColor]];
+//    [_emergencyBtn setTitle:@"緊急連絡" forState:UIControlStateNormal];
+    [_emergencyBtn addTarget:self action:@selector(callEmergency) forControlEvents:UIControlEventTouchUpInside];
     
-    [_settingsBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
+    [_settingsBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:40]];
     [_settingsBtn setTitle:@"設定" forState:UIControlStateNormal];
-    [_settingsBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    [_settingsBtn.titleLabel setAdjustsFontSizeToFitWidth:false];
     
-    [_contactBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:100]];
+    [_contactBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:40]];
     [_contactBtn.titleLabel setBaselineAdjustment:UIBaselineAdjustmentAlignCenters];
     [_contactBtn setTitle:@"聯絡人" forState:UIControlStateNormal];
-    [_contactBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    [_contactBtn.titleLabel setAdjustsFontSizeToFitWidth:false];
     
-    [_mapBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
+    [_mapBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:40]];
     [_mapBtn setTitle:@"地圖" forState:UIControlStateNormal];
-    [_mapBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    [_mapBtn.titleLabel setAdjustsFontSizeToFitWidth:false];
     
-    [_calendarBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
+    [_calendarBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:40]];
     [_calendarBtn.titleLabel setBaselineAdjustment:UIBaselineAdjustmentAlignCenters];
     [_calendarBtn setTitle:@"日曆" forState:UIControlStateNormal];
-    [_calendarBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    [_calendarBtn.titleLabel setAdjustsFontSizeToFitWidth:false];
     
-    [_activityBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
+    [_activityBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:40]];
     [_activityBtn setTitle:@"活動" forState:UIControlStateNormal];
-    [_activityBtn.titleLabel setAdjustsFontSizeToFitWidth:true];
+    [_activityBtn.titleLabel setAdjustsFontSizeToFitWidth:false];
     
-    [_weatherBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:32]];
+    [_weatherBtn.titleLabel setFont:[UIFont fontWithName:@"Tensentype-XiaoXiaoXinF" size:40]];
 }
 
 

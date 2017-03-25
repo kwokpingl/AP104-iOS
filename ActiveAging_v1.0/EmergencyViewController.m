@@ -16,10 +16,15 @@
 
 @interface EmergencyViewController ()<UITableViewDelegate, UITableViewDataSource>{
     NSInteger counter;
+    NSInteger timeCounter;
+    NSTimer * countDownTimer;
 }
 @property NSMutableArray * emergencyNumbers;
 @property CXCallObserver * observer;
 @property CTCallCenter * callCenter;
+@property UIView * countDownView;
+@property UILabel * countDownLabel;
+@property UIButton * countDownBtn;
 @property BOOL callsStop;
 @end
 
@@ -29,6 +34,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _callsStop = false;
+    
+    
+    
+    
+    
+    
+    
     CTTelephonyNetworkInfo * networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     NSString * code = [networkInfo.subscriberCellularProvider mobileCountryCode];
     
@@ -49,9 +61,15 @@
 }
 
 -(void) viewDidAppear:(BOOL)animated {
+    [self callEmergency];
+}
+
+- (void) callEmergency {
+    if (counter == _emergencyNumbers.count){
+        [self dismissViewControllerAnimated:true completion:nil];
+    }
     if (!_callsStop) {
         [self makeCalls:counter];
-        counter ++;
     }
 }
 
@@ -76,7 +94,7 @@
 #pragma mark - ===Private Methods===
 
 - (void) makeCalls: (NSInteger) callIndex {
-    
+    counter ++;
     if (callIndex < _emergencyNumbers.count && !_callsStop){
         NSString * phoneNumber = _emergencyNumbers[callIndex];
         NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", phoneNumber]];
@@ -122,9 +140,17 @@
     
 }
 
+- (void) countDown:(NSTimer *) timer {
+    timeCounter --;
+    if (timeCounter <= 0){
+        [countDownTimer invalidate];
+        countDownTimer = nil;
+    }
+}
 
 #pragma mark - ===SETUP===
 - (void) pageSetup {
+    
     CGRect tableViewFrame = CGRectMake(0, 50, self.view.frame.size.width, self.view.frame.size.height * 0.8);
     UITableView * tableView = [[UITableView alloc] initWithFrame:tableViewFrame
                                                            style:UITableViewStylePlain];
@@ -135,6 +161,11 @@
     [tableView setDelegate:self];
     [tableView setDataSource:self];
     [self.view addSubview:tableView];
+    
+    timeCounter = 5;
+    _countDownView = [[UIView alloc] initWithFrame:self.view.frame];
+    [_countDownView setBackgroundColor:[UIColor redColor]];
+    
 }
 
 - (void) getEmergencyNumbers {
@@ -148,8 +179,6 @@
         }
     }
     
-    
-    _emergencyNumbers = [@[@"0918756081", @"0918756081", @"0918756081"] mutableCopy];
 }
 
 @end

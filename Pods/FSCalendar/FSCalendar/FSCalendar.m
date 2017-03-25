@@ -1099,8 +1099,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)reloadData
 {
     if (!self.hasValidateVisibleLayout) return;
-    _minimumDate = [self.dataSourceProxy minimumDateForCalendar:self];
-    _maximumDate = [self.dataSourceProxy maximumDateForCalendar:self];
+//    _minimumDate = [self.dataSourceProxy minimumDateForCalendar:self];
+//    _maximumDate = [self.dataSourceProxy maximumDateForCalendar:self];
+    _needsRequestingBoundingDates = YES;
     [_collectionView reloadData];
     [_calendarHeaderView.collectionView reloadData];
     [self setNeedsLayout];
@@ -1441,7 +1442,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             headerView.scrollEnabled = _scrollEnabled;
             [_contentView addSubview:headerView];
             self.calendarHeaderView = headerView;
-            
         }
         
         if (!_calendarWeekdayView) {
@@ -1559,8 +1559,8 @@ cell.SEL1 = DEFAULT; \
 {
     cell.calendar = self;
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
-    cell.image = [self.dataSourceProxy calendar:self imageForDate:date];
     cell.numberOfEvents = [self.dataSourceProxy calendar:self numberOfEventsForDate:date];
+    cell.image = [self.dataSourceProxy calendar:self imageForDate:date];
     cell.title = [self.dataSourceProxy calendar:self titleForDate:date] ?: @([self.gregorian component:NSCalendarUnitDay fromDate:date]).stringValue;
     cell.subtitle  = [self.dataSourceProxy calendar:self subtitleForDate:date];
     cell.selected = [_selectedDates containsObject:date];

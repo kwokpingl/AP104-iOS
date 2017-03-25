@@ -20,6 +20,7 @@
     KeychainManager * _keychainMgr;
     UserInfo * _userInfo;
     ServerManager * _serverMgr;
+    BOOL shareLocation;
 }
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
@@ -27,6 +28,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
 @property (strong, nonatomic) IBOutlet EmergencyButton * emergencyButton;
+@property UISwitch * shareLocationSwitch;
+@property UILabel * shareLocationLabel;
 
 @end
 
@@ -34,6 +37,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
     // Do any additional setup after loading the view.
     _keychainMgr = [KeychainManager sharedInstance];
     _userInfo = [UserInfo shareInstance];
@@ -152,6 +156,16 @@
     [self presentViewController:alert animated:true completion:nil];
 }
 
+- (void) shareLocationPressed {
+    shareLocation = !shareLocation;
+    [_userInfo changeShareLocation];
+    NSString * shareLabelText = @"已關閉分享定位";
+    if (shareLocation){
+        shareLabelText = @"已開啟分享定位";
+    }
+    [_shareLocationLabel setText:shareLabelText];
+}
+
 #pragma mark - PHOTOBTN PRESSED
 - (void) photoButtonPressed {
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"挑照片" message:@"請挑選來源" preferredStyle:UIAlertControllerStyleActionSheet];
@@ -262,13 +276,7 @@
     [_userNameLabel setTextAlignment:NSTextAlignmentLeft];
     
     /// MARK: BUTTONS
-    _emergencyButton = [[EmergencyButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2.0, self.view.frame.size.height * 8.0/10.0, self.view.frame.size.width/2.0, self.view.frame.size.height * 2.0/10.0)];
-    [_emergencyButton setTitle:@"緊急電話" forState:UIControlStateNormal];
-    [_emergencyButton setTitleColor:[UIColor magentaColor] forState:UIControlStateNormal];
-    [_emergencyButton.titleLabel setFont:[UIFont systemFontOfSize:32.0]];
-    [_emergencyButton.titleLabel setAdjustsFontSizeToFitWidth:true];
-    [_emergencyButton setAutoresizesSubviews:true];
-    [_emergencyButton addTarget:self action:@selector(emergencyButton) forControlEvents:UIControlEventTouchUpInside];
+    _emergencyButton = [EmergencyButton new];
     [self.view addSubview:_emergencyButton];
     
     CGFloat spaceBtwLabEm = _emergencyButton.frame.origin.y - (_userNameLabel.frame.origin.y + _userNameLabel.frame.size.height);
@@ -284,6 +292,28 @@
     [_editButton.titleLabel setFont:[UIFont systemFontOfSize:32]];
     [_editButton.titleLabel setAdjustsFontSizeToFitWidth:true];
     [_editButton addTarget:self action:@selector(editButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    
+    shareLocation = [[[NSUserDefaults standardUserDefaults] objectForKey:@"shareLocation"] boolValue];
+    
+    
+    _shareLocationLabel = [[UILabel alloc] initWithFrame:CGRectMake(_deleteButton.frame.origin.x, _deleteButton.frame.origin.y + _deleteButton.frame.size.height, _deleteButton.frame.size.width, _deleteButton.frame.size.height)];
+    
+    NSString * shareLabelText = @"已關閉分享定位";
+    if (shareLocation){
+        shareLabelText = @"已開啟分享定位";
+    }
+    
+    [_shareLocationLabel setText:shareLabelText];
+    [_shareLocationLabel setFont:[UIFont systemFontOfSize:32]];
+    [_shareLocationLabel setAdjustsFontSizeToFitWidth:true];
+    [_shareLocationLabel setNumberOfLines:0];
+    [_shareLocationLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.view addSubview:_shareLocationLabel];
+    
+    _shareLocationSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((_editButton.frame.origin.x+_editButton.frame.size.width/4.0), _shareLocationLabel.frame.origin.y, _editButton.frame.size.width/2.0, _editButton.frame.size.height)];
+    [_shareLocationSwitch addTarget:self action:@selector(shareLocationPressed) forControlEvents:UIControlEventValueChanged];
+    [_shareLocationSwitch setOn:shareLocation];
+    [self.view addSubview:_shareLocationSwitch];
 }
 
 - (void) emergencyBtnPressed{

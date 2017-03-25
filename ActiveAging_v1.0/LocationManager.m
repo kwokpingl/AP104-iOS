@@ -13,7 +13,7 @@
 #define AVERAGE_STRIDE_LENGTH (30*0.0254)
 
 static LocationManager * _myLocationMgr;
-
+static NSInteger counter;
 @interface LocationManager() <CLLocationManagerDelegate>
 @property (strong, nonatomic) CLLocationManager * manager;
 @property (strong, nonatomic) NSMutableArray * observers;
@@ -65,8 +65,11 @@ static LocationManager * _myLocationMgr;
             _locationMgr = [[CLLocationManager alloc] init];
             _locationMgr.delegate = self;
             [_locationMgr setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
-            [_locationMgr setDistanceFilter:DISTANCE_FILTER_30M];
-            [_locationMgr setAllowsBackgroundLocationUpdates:true];
+            [_locationMgr setDistanceFilter:DISTANCE_FILTER];
+            
+            if ([_locationMgr respondsToSelector:@selector(allowsBackgroundLocationUpdates)]){
+                [_locationMgr setAllowsBackgroundLocationUpdates:true];
+            }
             [self setAccessGranted:true];
         }
         _isUpdatingLocation = false;
@@ -96,14 +99,13 @@ static LocationManager * _myLocationMgr;
         
         [serMgr updateLocationForAuthorization:@"user" andLat:lat andLon:lon completion:^(NSError *error, id result) {
             if (![result[ECHO_RESULT_KEY] boolValue]){
-                NSLog(@"\nUPDATE LOCATION ERROR: %@", error);
+                NSLog(@"\nUPDATE LOCATION ERROR: %@", result[ECHO_ERROR_KEY]);
             }
             else{
-                NSLog(@"\nUPDATE LCOATION SUCCESS");
+                NSLog(@"\nUPDATE LCOATION SUCCESS %ld", counter++);
             }
         }];
     }
-    
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
@@ -124,6 +126,16 @@ static LocationManager * _myLocationMgr;
         [_locationMgr stopMonitoringSignificantLocationChanges];
         _isUpdatingLocation = false;
     }
+}
+
+- (void) startUpdatingHeading {
+    if (_isUpdatingLocation && CLLocationManager.headingAvailable){
+        [_locationMgr startUpdatingHeading];
+    }
+}
+
+- (void) stopUpdatingHeading {
+    [_locationMgr stopUpdatingHeading];
 }
 
 - (void) showAlertWithTitle: (NSString*) title andMessage: (NSString *) message {
@@ -181,6 +193,10 @@ static LocationManager * _myLocationMgr;
         [_locationMgr startMonitoringSignificantLocationChanges];
         _isUpdatingLocation = !_isUpdatingLocation;
     }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
+    CLLocationDirection direction = newHeading.trueHeading;
     
 }
 @end

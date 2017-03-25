@@ -12,6 +12,7 @@
 #import "UserInfo.h"
 #import "ImageManager.h"
 #import "DateManager.h"
+#import "EmergencyButton.h"
 
 #define VIEW_TO_TOP 50
 #define VIEW_TO_BOTTOM 60
@@ -44,9 +45,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
 @property (weak, nonatomic) IBOutlet UIButton *eventRecordButton;
+@property (strong, nonatomic) EmergencyButton * emergencyBtn;
 @end
 
-@implementation EventsViewController
+@implementation EventsViewController{
+    NSString * languagCode;
+    NSLocale * locale;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -56,25 +61,28 @@
     
     _serverMgr = [ServerManager shareInstance];
     _userInfo = [UserInfo shareInstance];
-    
-    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLineEtched];
-    [_tableView setTableFooterView: [UITableViewHeaderFooterView new]];
-    [_tableView setSeparatorColor:[UIColor blackColor]];
     [_tableView setDataSource: self];
     [_tableView setDelegate: self];
     
+    locale = [NSLocale currentLocale];
+    languagCode = [locale objectForKey:NSLocaleLanguageCode];
     currentPage = @"notJoined";
+
+    _emergencyBtn = [EmergencyButton new];
+    [_emergencyBtn addTarget:self action:@selector(callEmergency) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_emergencyBtn];
     
-    UIBarButtonItem * backButton = [[UIBarButtonItem alloc] initWithTitle:@"回活動頁面"
-                                                                    style:UIBarButtonItemStylePlain
-                                                                   target:nil
-                                                                   action:nil];
-    [self.navigationItem setBackBarButtonItem:backButton];
     [self updateEvents];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
+    
     refreshControl = [UIRefreshControl new];
     [refreshControl setBackgroundColor:[UIColor purpleColor]];
     [refreshControl setTintColor:[UIColor whiteColor]];
     [refreshControl addTarget:self action:@selector(updateEvents) forControlEvents:UIControlEventValueChanged];
+    
+//    [_tableView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]]];
+    [_tableView setBackgroundColor:[UIColor clearColor]];\
+
     
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 10) {
         _tableView.refreshControl = refreshControl;
@@ -91,67 +99,78 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     // start loading the data and reload tableview
-    
 }
 
 
 #pragma mark- TABLEVIEW_METHODS
 // MARK: BASIC_SETUP
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    return 1;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return locationEventArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     EventTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    // CELL SETUP
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    
     // EVENT TITLE
-    [cell.eventTitleLabel setNumberOfLines:0];
-    [cell.eventTitleLabel setFont:[UIFont systemFontOfSize:25]];
-    [cell.eventTitleLabel setAdjustsFontSizeToFitWidth:true];
-    [cell.eventTitleLabel setText:locationEventArray[indexPath.row][EVENT_TITLE_KEY]];
+    [cell.eventTitleLabel setText:locationEventArray[indexPath.section][EVENT_TITLE_KEY]];
     
     // EVENT ORGANIZATION
-    [cell.eventOrganizationLabel setNumberOfLines:0];
-    [cell.eventOrganizationLabel setFont:[UIFont systemFontOfSize:25]];
-    [cell.eventOrganizationLabel setAdjustsFontSizeToFitWidth:true];
-    [cell.eventOrganizationLabel setLineBreakMode:NSLineBreakByWordWrapping];
-    [cell.eventOrganizationLabel setTextAlignment:NSTextAlignmentLeft];
-    [cell.eventOrganizationLabel setText:locationEventArray[indexPath.row][EVENT_ORGNTION_KEY]];
+    [cell.eventOrganizationLabel setText:locationEventArray[indexPath.section][EVENT_ORGNTION_KEY]];
     
     // EVENT LOCATION LABEL
-    [cell.eventLocationLabel setText:locationEventArray[indexPath.row][EVENT_CITY_KEY]];
-    [cell.eventLocationLabel setFont:[UIFont systemFontOfSize:25]];
-    [cell.eventLocationLabel setAdjustsFontSizeToFitWidth:true];
-    [cell.eventLocationLabel setNumberOfLines:0];
+    
+    NSString * location = locationEventArray[indexPath.section][EVENT_CITY_KEY];
+    if ([languagCode containsString:@"zh"]){
+        for (int i = 1; i<LOCATIONS_EN.count; i++){
+            NSString * location_en = LOCATIONS_EN[i];
+            if ([location_en caseInsensitiveCompare:location] == NSOrderedSame){
+                location = LOCATIONS_ZH[i];
+                break;
+            }
+        }
+    }
+    
+    [cell.eventLocationLabel setText:location];
+    
+    
+    
     
     // EVENT DATE
     NSDateFormatter * formatter = [NSDateFormatter new];
     [formatter setDateFormat:DATE_FORMAT];
     NSString * formattedDate;
-    formattedDate = [DateManager convertDateOnly:locationEventArray[indexPath.row][EVENT_START_KEY] withFormatter:formatter];
+    formattedDate = [DateManager convertDateOnly:locationEventArray[indexPath.section][EVENT_START_KEY] withFormatter:formatter];
 
-    [cell.eventRegistrationDateLabel setTextColor:[UIColor blueColor]];
     [cell.eventRegistrationDateLabel setText:formattedDate];
     
     
     // SET IMAGE
-    NSString * imageName = locationEventArray[indexPath.row][EVENT_PIC_KEY];
     
-    [ImageManager getEventImage:imageName completion:^(NSError *error, id result) {
-        if (!error){
-            [cell.eventImgView setContentMode:UIViewContentModeScaleAspectFit];
-            [cell.eventImgView.layer setCornerRadius:cell.eventImgView.frame.size.width/2.0];
-            [cell.eventImgView setClipsToBounds:true];
-            cell.eventImgView.image = [UIImage imageWithData:result];
-        } else {
-            cell.eventImgView.image = nil;
-        }
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString * imageName = locationEventArray[indexPath.section][EVENT_PIC_KEY];
+        [ImageManager getEventImage:imageName completion:^(NSError *error, id result) {
+            if (!error){
+                [UIView animateWithDuration:0.5 animations:^{
+                    [cell.eventImgView setContentMode:UIViewContentModeScaleAspectFill];
+                    [cell.eventImgView setImage:[UIImage imageWithData:result]];
+                    [cell.eventImgView setAlpha:1.0];
+                }];
+            } else {
+                cell.eventImgView.image = nil;
+            }
+        }];
+    });
+    
     
     return cell;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return tableView.frame.size.height/1.3;
 }
 
 
@@ -159,12 +178,23 @@
     
     EventDetailViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"EventDetailViewController"];
     vc.eventDetailDict = [NSMutableDictionary new];
-    [vc.navigationItem setLeftItemsSupplementBackButton:true];
-    [vc.eventDetailDict addEntriesFromDictionary:locationEventArray[indexPath.row]];
+    [vc.eventDetailDict addEntriesFromDictionary:locationEventArray[indexPath.section]];
     [vc setDelegate:self];
     [self.navigationController pushViewController:vc animated:true];
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView * footer = tableView.tableFooterView;
+    footer.tintColor = [UIColor clearColor];
+    return footer;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView * header = tableView.tableHeaderView;
+    header.tintColor = [UIColor clearColor];
+    header.backgroundColor = [UIColor clearColor];
+    return header;
+}
 
 #pragma mark - BUTTONS --- NEED MODIFICATION
 - (IBAction)locationButtonPressed:(id)sender {
@@ -189,6 +219,10 @@
     [self.view.subviews.lastObject removeFromSuperview];
 }
 
+- (void) callEmergency {
+    [_emergencyBtn callNumbers:self.navigationController];
+}
+
 #pragma mark - PRIVATE METHOD
 - (void) updateEvents{
     [_serverMgr retrieveEventInfo:USER_EVENT_FETCH UserID:_userInfo.getUserID EventID:@"-1" completion:^(NSError *error, id result) {
@@ -196,8 +230,7 @@
             eventsDict = [[NSDictionary alloc] initWithDictionary:result[@"message"]];
             locationEventArray = [eventsDict[currentPage] mutableCopy];
             
-            NSLocale * locale = [NSLocale currentLocale];
-            NSString * languagCode = [locale objectForKey:NSLocaleLanguageCode];
+            languagCode = [locale objectForKey:NSLocaleLanguageCode];
             
             if ([languagCode containsString:@"zh"]){
                 [self setNumberOfEvents:LOCATIONS_ZH];
@@ -233,12 +266,18 @@
     }
     [_tableView reloadData];
     if ([sender isKindOfClass:[UIButton class]]){
-        if ([((UIButton *) sender).titleLabel.text isEqualToString:@"OK"]){
+        if ([((UIButton *) sender).titleLabel.text isEqualToString:@"確定"]){
             [self.view.subviews.lastObject removeFromSuperview];
         }
     }
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 10.0;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 10.0;
+}
 
 
 #pragma mark - PICKERVIEW
@@ -286,11 +325,11 @@
         [view setBackgroundColor:[UIColor whiteColor]];
     }
     
-    [ok setTitle:@"OK" forState:UIControlStateNormal];
+    [ok setTitle:@"確定" forState:UIControlStateNormal];
     [ok setBackgroundColor:[UIColor blackColor]];
     [ok addTarget:self action:@selector(getEvents:) forControlEvents:UIControlEventTouchUpInside];
     
-    [cancel setTitle:@"CANCEL" forState:UIControlStateNormal];
+    [cancel setTitle:@"取消" forState:UIControlStateNormal];
     [cancel setBackgroundColor:[UIColor blackColor]];
     [cancel addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     

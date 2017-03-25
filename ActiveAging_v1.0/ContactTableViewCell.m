@@ -19,6 +19,8 @@
     [_imageView setFrame:CGRectMake(10, 5, self.frame.size.width/5.0, self.frame.size.height-20)];
     [_titleLabel setFrame:CGRectMake(10, _imageView.frame.size.width+5, self.frame.size.width*3.0/5.0, self.frame.size.height-20)];
     
+    self.backgroundColor = [UIColor clearColor];
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

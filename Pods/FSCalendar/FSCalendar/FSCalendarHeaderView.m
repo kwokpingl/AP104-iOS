@@ -109,6 +109,8 @@
                     // 2 more pages to prevent scrollView from auto bouncing while push/present to other UIViewController
                     NSDate *minimumPage = [_calendar.gregorian fs_firstDayOfMonth:_calendar.minimumDate];
                     NSInteger months = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:self.calendar.maximumDate options:0].month + 1;
+                    
+                    NSLog(@"MINIMUM PAGE : %@", minimumPage);
                     return months + 2;
                 }
                 default: {
@@ -147,6 +149,7 @@
                 } else {
                     NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.item-1 toDate:self.calendar.minimumDate options:0];
                     text = [_calendar.formatter stringFromDate:date];
+                    NSLog(@"MINIMUM DATE : %@\nMAXIMUM DATE : %@", _calendar.minimumDate, _calendar.maximumDate);
                 }
             } else {
                 NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.item toDate:self.calendar.minimumDate options:0];
@@ -170,6 +173,7 @@
     }
     text = usesUpperCase ? text.uppercaseString : text;
     cell.titleLabel.text = text;
+    NSLog(@"HEADER VIEW TEXT : %@", text);
     [cell setNeedsLayout];
     return cell;
 }
@@ -285,6 +289,9 @@
         titleLabel.numberOfLines = 0;
         [self.contentView addSubview:titleLabel];
         self.titleLabel = titleLabel;
+        
+        
+        NSLog(@"HEADER CELL : %@", titleLabel.text);
     }
     return self;
 }
@@ -314,7 +321,6 @@
         CGFloat center = CGRectGetMidY(self.header.bounds);
         self.contentView.alpha = 1.0 - (1.0-self.header.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_height;
     }
-    
 }
 
 @end
@@ -343,7 +349,6 @@
                                self.collectionView.fs_width*((self.scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1),
                                self.collectionView.fs_height
                                );
-    
 }
 
 @end

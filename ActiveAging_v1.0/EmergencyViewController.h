@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface EmergencyViewController : UIViewController
-
+- (void) callEmergency;
 @end

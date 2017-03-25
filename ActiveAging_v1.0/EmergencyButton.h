@@ -6,8 +6,10 @@
 //  Copyright © 2017年 PING. All rights reserved.
 //
 
+
+
 #import <UIKit/UIKit.h>
 
 @interface EmergencyButton : UIButton
-- (void) callNumbers;
+- (void) callNumbers: (UINavigationController *) controller;
 @end

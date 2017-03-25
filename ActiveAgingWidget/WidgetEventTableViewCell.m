@@ -13,6 +13,12 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    
+    [_timeLabel setFont:[UIFont systemFontOfSize:25]];
+    [_timeLabel setAdjustsFontSizeToFitWidth:true];
+    [_timeLabel setNumberOfLines:0];
+    
+    [_titleLabel setFont:[UIFont systemFontOfSize:25]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

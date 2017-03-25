@@ -34,6 +34,7 @@
     _serverMgr = [ServerManager shareInstance];
     _userInfo = [UserInfo shareInstance];
     _keychainMgr = [KeychainManager sharedInstance];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
 }
 
 - (void)viewDidAppear:(BOOL)animated{

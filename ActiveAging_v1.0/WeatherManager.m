@@ -42,12 +42,7 @@
 - (id) init {
     if (self = [super init]) {
         //1
-        
-#warning ALTERNATED 1
-//        _locationManager = [CLLocationManager new];
-//        _locationManager.delegate = self;
-//        [_locationManager requestAlwaysAuthorization];
-        
+
         _locationMgr = [LocationManager shareInstance];
         _locationMgr.delegate = self;
         
@@ -87,28 +82,16 @@
 #pragma mark - trigger weather fetching when a location is found
 - (void) findCurrentLocation {
     self.isFirstUpdate = YES;
-    #warning ALTERNATED 1
-//    [self.locationManager startUpdatingLocation];
     [_locationMgr startUpdatingLocation];
 }
 
-#warning ALTERNATED 1
-//-(void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
 -(void)locationControllerDidUpdateLocation:(CLLocation *)location{
-    //1
-//    if (self.isFirstUpdate) {
-//        self.isFirstUpdate = NO;
-//        return;
-//    }
-    
-//    CLLocation * location = [locations lastObject];
     
     //2
     if (location.horizontalAccuracy > 0) {
         //3
         [_locationMgr stopUpdatingLocation];
         self.currentLocation = location;
-//        [self.locationManager stopUpdatingLocation];
     }
 }
 

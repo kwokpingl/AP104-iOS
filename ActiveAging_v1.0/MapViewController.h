@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MKMapView+Autoadjustment.h"
 
 @interface MapViewController : UIViewController
-
+@property (weak, nonatomic) IBOutlet MKMapView *mapview;
 @end

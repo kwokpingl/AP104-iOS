@@ -13,6 +13,8 @@
 #import "UserInfo.h"
 #import "MapTableViewCell.h"
 #import "MemberDetailViewController.h"
+#import "EmergencyViewController.h"
+#import "Reachability.h"
 
 #import "MemberAnnotationView.h"
 #import "InfrastructureAnnotationView.h"
@@ -20,7 +22,7 @@
 #import "CustomPointAnnotation.h"
 
 #import <MapKit/MapKit.h>
-#import "MKMapView+Autoadjustment.h"
+#import "EmergencyButton.h"
 
 
 
@@ -34,29 +36,35 @@ typedef enum : NSUInteger {
 typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nullable error);
 
 @interface MapViewController () <MKMapViewDelegate,UIPickerViewDelegate, UIPickerViewDataSource, UITableViewDelegate, UITableViewDataSource, LocationManagerDelegate>
-@property (weak, nonatomic) IBOutlet UISegmentedControl *directionStyleSwitcher;
-@property (weak, nonatomic) IBOutlet UISwitch *shareLocationSwitch;
+@property (weak, nonatomic) IBOutlet UISegmentedControl * directionStyleSwitcher;
+@property (weak, nonatomic) IBOutlet UISwitch * shareLocationSwitch;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerview;
 @property (weak, nonatomic) IBOutlet UIView *memberDetailView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet MKMapView *mapview;
 @property (weak, nonatomic) IBOutlet UIView *groupView;
 
-@property (strong, nonatomic) NSMutableDictionary * friendListDict;
-@property (strong, nonatomic) NSMutableArray * targetFriendList; // contains details of a Specific friend
-@property (strong, nonatomic) NSMutableArray * eventsLocations;
-@property (strong, nonatomic) NSMutableArray * targetList; // contains detail of a Certain group / Certain event
-@property (strong, nonatomic) NSMutableArray * groupList; // contains details of the Groups
-@property (strong, nonatomic) NSMutableArray * eventList; // contains detail of Joined Events
+@property (strong, nonatomic) EmergencyButton *emergencyBtn;
 
-@property (strong, nonatomic) NSArray * generalGroupList; // contains the Title of Groups (ie Personal Groups, Other Groups, Activities ...)
+@property (strong, nonatomic) NSMutableDictionary * friendListDict;
+// contains details of a Specific friend
+@property (strong, nonatomic) NSMutableArray * targetFriendList;
+// contains detail of a Certain group / Certain event
+@property (strong, nonatomic) NSMutableArray * targetList;
+// contains details of the Groups
+@property (strong, nonatomic) NSMutableArray * groupList;
+// contains detail of Joined Events
+@property (strong, nonatomic) NSMutableArray * eventList;
+// contains the Title of Groups (ie Personal Groups, Other Groups, Activities ...)
+@property (strong, nonatomic) NSArray * generalGroupList;
+
+/// MARK: MAP OBJECTS
 @property (strong, nonatomic) NSArray <MKRouteStep *> * routeStep;
 @property (strong, nonatomic) UIViewController * currentVC;
 @property (strong, nonatomic) MKPolyline * routeOverlay;
 @property (strong, nonatomic) MKRoute * currentRoute;
-
 @property (assign) CLLocationCoordinate2D targetLocation;
-@property (assign) NSInteger chosenGroup; // use to determine wheather Group/Event was chosen
+// use to determine wheather Group/Event was chosen
+@property (assign) NSInteger chosenGroup;
 @end
 
 @implementation MapViewController{
@@ -64,52 +72,70 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
     MKDirectionsTransportType transportationType;
     ServerManager * _serverMgr;
     UserInfo * _userInfo;
-    CLLocation * specificLocation;
+    
     MKPolyline * polyLine;
+    NSInteger outerCounter;
+    NSInteger innerCounter;
     BOOL shareLocation;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
+    
+//    NSLog(@"TestViewController Retain count is %ld", CFGetRetainCount((__bridge CFTypeRef) self));
 
     // SETUP SINGLETONs
     _userInfo = [UserInfo shareInstance];
-//    [LocationManager shareInstance] = [LocationManager shareInstance];
-    
-    if ([LocationManager shareInstance].accessGranted){
-        [[LocationManager shareInstance] startMonitoringSignificatnLocationChanges];
-    }
-    
     
     // Check if user wish to ShareLocation
     shareLocation = [[[NSUserDefaults standardUserDefaults] objectForKey:@"shareLocation"] boolValue];
     
     // SETUP VIEWS
+    [[LocationManager shareInstance] setDelegate:self];
     [_shareLocationSwitch setOn:shareLocation];
     [_mapview setShowsUserLocation:true];
     [_memberDetailView setHidden:true];
     [_pickerview setDataSource:self];
     [_tableView setDataSource:self];
-    [[LocationManager shareInstance] setDelegate:self];
     [_pickerview setDelegate:self];
     [_tableView setDelegate:self];
     [_mapview setDelegate:self];
     [_groupView setHidden:true];
     
+    [_pickerview setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]]];
     
+    
+    
+    // EMERGENCY BUTTON
+    _emergencyBtn = [EmergencyButton new];
+    [_emergencyBtn addTarget:self action:@selector(callEmergency) forControlEvents:UIControlEventTouchUpInside];
+    
+    transportationType = MKDirectionsTransportTypeWalking;
+    outerCounter = 0;
+    innerCounter = 0;
+    
+    [self.view addSubview:_emergencyBtn];
     [self setupInfo];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    [[LocationManager shareInstance] startUpdatingLocation];
+    if ([LocationManager shareInstance].accessGranted){
+        [[LocationManager shareInstance] stopUpdatingLocation];
+        [[LocationManager shareInstance] startUpdatingLocation];
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [_mapview locatePointA:[LocationManager shareInstance].location.coordinate];
     [_pickerview selectRow:0 inComponent:0 animated:true];
     [self pickerView:_pickerview didSelectRow:0 inComponent:0];
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+    [[LocationManager shareInstance] stopUpdatingLocation];
+    [[LocationManager shareInstance] startMonitoringSignificatnLocationChanges];
 }
 
 
@@ -121,7 +147,8 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
         
     }];
     
-    if ([_currentVC isKindOfClass:[MemberDetailViewController class]] && ![_memberDetailView isHidden]){
+    if ([_currentVC isKindOfClass:[MemberDetailViewController class]] && ![_memberDetailView isHidden] && _chosenGroup != activities){
+//        outerCounter ++;
         NSInteger userID = ((MemberDetailViewController *) _currentVC).userID;
         NSArray * tempArray = [DataManager fetchUserInfoFromTableWithUserID:userID];
         CLLocationDegrees lon = [tempArray.lastObject[USER_CUR_LON_KEY] doubleValue];
@@ -130,12 +157,14 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
     }
     
     if (CLLocationCoordinate2DIsValid(_targetLocation)){
+//        innerCounter ++;
         [self showDirection:_targetLocation];
     }
     
     if (![_groupView isHidden]){
         [_tableView reloadData];
     }
+
 }
 
 #pragma mark - MAP
@@ -299,6 +328,8 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
                 
                 break;
         }
+        [_groupView setHidden:true];
+        [_directionStyleSwitcher setHidden:false];
         [_pickerview reloadComponent:1];
         [_pickerview selectRow:0 inComponent:1 animated:true];
     }
@@ -339,13 +370,14 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
                 if (CLLocationCoordinate2DIsValid(location)){
                     [self showDirection:location];
                 }
-                
+                _targetLocation = location;
                 MemberDetailViewController * vc = [self.storyboard instantiateViewControllerWithIdentifier:@"MemberDetailViewController"];
                 [vc setPhoneNumber: _targetList[row][EVENT_ORGN_PHONE_KEY]];
                 [vc setEventImageName: _targetList[row][EVENT_PIC_KEY] ];
                 [vc setUserID:0];
                 
                 [self setSubView:vc];
+                [_mapview setRegionBetweenA:_mapview.userLocation.coordinate andB:_targetLocation];
             }
             else {
                 NSMutableArray * coordinates = [NSMutableArray new];
@@ -481,11 +513,7 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
 
 
 
-#pragma mark - BUTTONS
-- (IBAction)returnButtonPresssed:(id)sender {
-    [self dismissViewControllerAnimated:true completion:nil];
-}
-
+#pragma mark - BUTTON
 - (IBAction)shouldShareLocationSwitch:(id)sender {
     shareLocation = !shareLocation;
     [_userInfo changeShareLocation];
@@ -565,6 +593,9 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
     [directionRequest setSource:sourceMapItem];
     
     MKDirections * directions = [[MKDirections alloc] initWithRequest:directionRequest];
+    
+    if(![directions isCalculating]){
+    
     [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse * _Nullable response, NSError * _Nullable error) {
         if (error){
             NSLog(@"ERROR in MKDirections : %@", error);
@@ -573,7 +604,8 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
         _currentRoute = [response.routes firstObject];
         [self plotRouteOnMap:_currentRoute];
     }];
-    
+    }
+    innerCounter++;
 }
 
 - (void) plotRouteOnMap: (MKRoute *) route {
@@ -589,7 +621,6 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
     if (_currentVC && [_currentVC isKindOfClass:[MemberDetailViewController class]]){
         [((MemberDetailViewController *) _currentVC) setNextStep:[NSString stringWithFormat:@"%@", _routeStep.firstObject.instructions]];
     }
-
 }
 
 /// GET ESTIMATED TIME of ARRIVAL
@@ -619,30 +650,36 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
                           @"個人群組",
                           @"其他群組",
                           @"我的活動"];
-    
     // 1. update the Database from Server
     [DataManager updateContactDatabase:^(BOOL done) {
-        if (done){
+        
             // 2. setup GROUP_LIST
-            [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:1]];
-            [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:-1]];
-            
-            NSMutableArray * tempGroups = [NSMutableArray new];
-            [tempGroups addObjectsFromArray:[DataManager fetchDatabaseFromTable:GROUP_LIST_TABLE]];
-            
-            // 3. setup FRIEND_LIST (based on GROUPS)
-            for (int i = 0; i < tempGroups.count; i++)
-            {
-                NSInteger groupID = [tempGroups[i][GROUP_ID_KEY] integerValue];
-                NSArray * tempArray = [[NSArray alloc] initWithArray:[DataManager fetchUserInfoFromTableWithGroupID:groupID]];
-                [_friendListDict setObject:tempArray forKey:@(groupID)];
-            }
-            
-            // 4. setup EVENT_LIST
-            [_eventList addObject:[DataManager fetchEventsFromTable]];
-        }
+            [self setupDatabase];
     }];
+}
+
+- (void) setupDatabase {
+    [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:1]];
+    [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:-1]];
     
+    NSMutableArray * tempGroups = [NSMutableArray new];
+    [tempGroups addObjectsFromArray:[DataManager fetchDatabaseFromTable:GROUP_LIST_TABLE]];
+    
+    // 3. setup FRIEND_LIST (based on GROUPS)
+    for (int i = 0; i < tempGroups.count; i++)
+    {
+        NSInteger groupID = [tempGroups[i][GROUP_ID_KEY] integerValue];
+        NSMutableArray * tempArray = [[DataManager fetchUserInfoFromTableWithGroupID:groupID] mutableCopy];
+        for(int i = 0; i < tempArray.count; i++){
+            if ([tempArray[i][USER_ROLE_KEY] isEqualToString:@"-2"]){
+                [tempArray removeObjectAtIndex:i];
+            }
+        }
+        [_friendListDict setObject:tempArray forKey:@(groupID)];
+    }
+    
+    // 4. setup EVENT_LIST
+    [_eventList addObject:[DataManager fetchEventsFromTable]];
 }
 
 - (void) setSubView: (UIViewController *) vc {
@@ -742,6 +779,10 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
             [_mapview addAnnotations:annotations];
         });
     }];
+}
+
+- (void) callEmergency {
+    [_emergencyBtn callNumbers:self.navigationController];
 }
 
 -(void)dealloc {
