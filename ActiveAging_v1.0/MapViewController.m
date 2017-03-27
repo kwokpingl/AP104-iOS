@@ -167,6 +167,7 @@ typedef void (^MKETAHandler)(MKETAResponse * __nullable response, NSError * __nu
 
 }
 
+
 #pragma mark - MAP
 /// MARK: ANNOTATION
 -(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
@@ -659,6 +660,7 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
 }
 
 - (void) setupDatabase {
+    
     [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:1]];
     [_groupList addObject: [DataManager fetchGroupsFromTableWithRole:-1]];
     
@@ -684,15 +686,18 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
 
 - (void) setSubView: (UIViewController *) vc {
     // Remove all subviews
-    for (UIView * view in [_memberDetailView subviews]) {[view removeFromSuperview];}
+    for (UIView * view in _memberDetailView.subviews) {[view removeFromSuperview];}
     
     // Check if there is _currentVC
     if (_currentVC) {
         [_currentVC willMoveToParentViewController:nil];
-    } else {
-        [vc willMoveToParentViewController:self];
-        [self addChildViewController:vc];
+        [_currentVC removeFromParentViewController];
+        [_currentVC didMoveToParentViewController:nil];
+        _currentVC = nil;
     }
+    [vc willMoveToParentViewController:self];
+    [self addChildViewController:vc];
+    [vc didMoveToParentViewController:self];
     
     // add vc to _memberDetailView and displays it
     [vc.view setFrame:(CGRect){{0,0},_memberDetailView.frame.size}];
@@ -708,7 +713,7 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
 #pragma mark - Annotations for HOSPITAL and POLICE STATION
 - (void) hospitalSearch : (CLLocationCoordinate2D) location {
     
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.1, 0.1);
+    MKCoordinateSpan span = MKCoordinateSpanMake(1, 1);
     MKCoordinateRegion region = MKCoordinateRegionMake(location, span);
     MKLocalSearchRequest * request = [MKLocalSearchRequest new];
     NSString * naturalLanguageQuery = @"hospital";
@@ -746,7 +751,7 @@ heightForFooterInSection:(NSInteger)section{ return 5.0; }
 }
 
 - (void) policsStationSearch : (CLLocationCoordinate2D) location {
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.1,0.1);
+    MKCoordinateSpan span = MKCoordinateSpanMake(1,1);
     MKCoordinateRegion region = MKCoordinateRegionMake(location, span);
     MKLocalSearchRequest * request = [MKLocalSearchRequest new];
     NSString * naturalLanguageQuery = @"police";

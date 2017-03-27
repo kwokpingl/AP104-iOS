@@ -19,6 +19,7 @@
     [_timeLabel setNumberOfLines:0];
     
     [_titleLabel setFont:[UIFont systemFontOfSize:25]];
+    self.backgroundColor = [UIColor clearColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

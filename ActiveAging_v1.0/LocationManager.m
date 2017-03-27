@@ -129,7 +129,7 @@ static NSInteger counter;
 }
 
 - (void) startUpdatingHeading {
-    if (_isUpdatingLocation && CLLocationManager.headingAvailable){
+    if (_isUpdatingLocation && [CLLocationManager headingAvailable]){
         [_locationMgr startUpdatingHeading];
     }
 }
@@ -196,7 +196,6 @@ static NSInteger counter;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
-    CLLocationDirection direction = newHeading.trueHeading;
-    
+    CLLocationDirection direction = newHeading.trueHeading; 
 }
 @end

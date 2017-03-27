@@ -37,7 +37,8 @@
     _eventsTable.dataSource = self;
     
     [self updateWidgetInfo];
-    [self.view setBackgroundColor:[UIColor clearColor]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
+    self.eventsTable.backgroundColor = [UIColor clearColor];
     self.preferredContentSize = CGSizeMake(0, 100.0);
 }
 
@@ -73,6 +74,7 @@
                                                  selector:@selector(userDefaultDidChange:)
                                                      name:NSUserDefaultsDidChangeNotification object:nil];
     }
+    
     return self;
 }
 
@@ -99,7 +101,6 @@
 /// MARK: Events calendar
     eventsArray = [NSMutableArray new];
     eventsArray = [[defaults arrayForKey:@"eventsArray"] mutableCopy];
-    
     [_eventsTable reloadData];
 }
 
@@ -120,14 +121,16 @@
     [cell.titleLabel setNumberOfLines:0];
     if (eventsArray.count == 0) {
         cell.titleLabel.text = @"今天沒有任何活動唷。\n 養足精神，重新出發！";
+        cell.timeLabel.text = @"";
     }
     else{
         cell.titleLabel.text = eventsArray[indexPath.row][@"event title"];
+        cell.timeLabel.text = eventsArray[indexPath.row][@"today date"];
     }
     [cell.titleLabel setFont:[UIFont systemFontOfSize:25]];
     [cell.titleLabel setAdjustsFontSizeToFitWidth:true];
     [cell.titleLabel setNumberOfLines:0];
-    [cell.timeLabel setText: eventsArray[indexPath.row][@"today date"] ];
+    
     [cell.timeLabel setFont: [UIFont systemFontOfSize:20]];
     [cell.timeLabel setNumberOfLines:0];
     

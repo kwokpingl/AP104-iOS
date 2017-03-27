@@ -16,6 +16,7 @@
 #import "WeatherManager.h"
 #import "EventManager.h"
 #import "Reachability.h"
+#import "Widget.h"
 
 @interface AccountVerificationViewController () <CLLocationManagerDelegate> {
     KeychainManager * _keychainMgr;
@@ -352,7 +353,16 @@
 - (void) segueSwitching{
     [timer invalidate];
     if (foundKeychain){
-        [self widgetConfiguration:^(NSError *error, id result) {
+//        [self widgetConfiguration:^(NSError *error, id result) {
+//            [DataManager prepareDatabase];
+//            [DataManager updateContactDatabase:^(BOOL done) {
+//                if (done){
+//                    [self performSegueWithIdentifier:@"Login" sender:self];
+//                }
+//            }];
+//        }];
+        
+        [Widget widgetConfigurationWithTemperature:nil conditions:nil complete:^(NSError *error, id result) {
             [DataManager prepareDatabase];
             [DataManager updateContactDatabase:^(BOOL done) {
                 if (done){
@@ -360,6 +370,7 @@
                 }
             }];
         }];
+        
     } else {
         [self performSegueWithIdentifier:@"SignUp" sender:self];
     }
@@ -421,6 +432,9 @@
                     [gestureKeyNotFound setEnabled:true];
                     [_enterButton setEnabled:false];
                 });
+            } else {
+                [_keychainMgr deleteKeychain:_userInfo.getUsername Password:_userInfo.getPassword];
+                [timer fire];
             }
             
         }];

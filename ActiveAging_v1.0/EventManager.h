@@ -26,6 +26,10 @@ typedef void (^Donehandler)(NSMutableArray * eventArray);
 
 -(void) comparedWithStoredEvents: (NSDate *)newEventStartDateTime newEventEndDateTime:(NSDate *) newEventEndDateTime complete:(Donehandler) done;
 
+-(void) comparedWithStoredEvents:(NSDate *)eventStartDateTime eventEndDateTime:(NSDate *)eventEndDateTime complete:(Donehandler)done;
+
+-(void) checkEvent:(NSDictionary *)event complete:(Donehandler)done;
+
 -(void) newEventToBeAdded: (NSDictionary *) newEvent complete: (Donehandler) done;
 
 - (void) eventToBeRemoved: (NSDictionary *) event complete:(Donehandler) done;

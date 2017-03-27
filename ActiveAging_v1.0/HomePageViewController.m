@@ -11,6 +11,7 @@
 #import "EmergencyButton.h"
 #import "LocationManager.h"
 #import "EmergencyViewController.h"
+#import "DataManager.h"
 
 #define BUTTON_SIDE (self.view.frame.size.height/7.0)
 
@@ -40,10 +41,12 @@
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showClock) userInfo:nil repeats:YES];
 //    [_emergencyBtn addTarget:self action:@selector(callEmergency)
 //            forControlEvents:UIControlEventTouchUpInside];
+    
+    [DataManager updateEventDatabase];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-    
+    self.navigationController.toolbar.hidden = true;
     [[WeatherManager sharedManager] findCurrentLocation];
     
     //Start

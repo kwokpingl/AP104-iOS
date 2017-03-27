@@ -164,6 +164,7 @@
         shareLabelText = @"已開啟分享定位";
     }
     [_shareLocationLabel setText:shareLabelText];
+    [_shareLocationLabel setAdjustsFontSizeToFitWidth:true];
 }
 
 #pragma mark - PHOTOBTN PRESSED

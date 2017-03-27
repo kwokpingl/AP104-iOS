@@ -65,6 +65,7 @@
 		BF2FD9DB1E7A2F880092A45F /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = BF2FD9DA1E7A2F880092A45F /* Reachability.m */; };
 		BF2FD9DD1E7A2FD00092A45F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF2FD9DC1E7A2FD00092A45F /* CoreFoundation.framework */; };
 		BF439F371E6F225E00B52479 /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF439F361E6F225E00B52479 /* CallKit.framework */; };
+		BF473EBB1E8760E9005CD4E3 /* Widget.m in Sources */ = {isa = PBXBuildFile; fileRef = BF473EBA1E8760E9005CD4E3 /* Widget.m */; };
 		E700A1801E4732E90001725A /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E700A17F1E4732E90001725A /* 1.jpg */; };
 		E70C46A51E3657F50007FEC4 /* SQLite3DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */; };
 		E70C46AC1E365E750007FEC4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70C46AB1E365E750007FEC4 /* ViewController.m */; };
@@ -244,6 +245,8 @@
 		BF2FD9DA1E7A2F880092A45F /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		BF2FD9DC1E7A2FD00092A45F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		BF439F361E6F225E00B52479 /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
+		BF473EB91E8760E9005CD4E3 /* Widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Widget.h; sourceTree = "<group>"; };
+		BF473EBA1E8760E9005CD4E3 /* Widget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Widget.m; sourceTree = "<group>"; };
 		E700A17F1E4732E90001725A /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		E70C46A31E3657F50007FEC4 /* SQLite3DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLite3DBManager.h; sourceTree = "<group>"; };
 		E70C46A41E3657F50007FEC4 /* SQLite3DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLite3DBManager.m; sourceTree = "<group>"; };
@@ -531,6 +534,8 @@
 		BF3354C01E783DB800678CCB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BF473EB91E8760E9005CD4E3 /* Widget.h */,
+				BF473EBA1E8760E9005CD4E3 /* Widget.m */,
 				AE1250B21E540266000CDAD6 /* DateManager.h */,
 				AE1250B31E540266000CDAD6 /* DateManager.m */,
 				AE46F48C1E4401D000ED51A1 /* DataManager.h */,
@@ -878,6 +883,7 @@
 				BF2FD9DB1E7A2F880092A45F /* Reachability.m in Sources */,
 				AE0B0E551E46D69B00C4F076 /* SubViewController.m in Sources */,
 				E7CECFE81E426B2800561645 /* WeatherClient.m in Sources */,
+				BF473EBB1E8760E9005CD4E3 /* Widget.m in Sources */,
 				AE130A541E4FFC3700141C97 /* EventDetailViewController.m in Sources */,
 				3DA5E5121E37AF5600D50E7C /* MapViewController.m in Sources */,
 				AE11559B1E6AC32B00F57241 /* MapTableViewCell.m in Sources */,

@@ -33,6 +33,7 @@
     _keychainMgr = [KeychainManager sharedInstance];
     _verificationCodeTextField.delegate = self;
     [_verificationCodeTextField setEnabled:true];
+    _verificationCodeTextField.keyboardType = UIKeyboardTypeNumberPad;
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
     

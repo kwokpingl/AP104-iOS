@@ -101,6 +101,8 @@
 - (void) cancelBtnPressed:(id) sender {
     if ([_trackingView isHidden]){
         [self willMoveToParentViewController:nil];
+        [self removeFromParentViewController];
+        [self didMoveToParentViewController:nil];
         [self.view.superview setHidden:true];
         [self.view removeFromSuperview];
     }
@@ -128,9 +130,10 @@
     
     [[LocationManager shareInstance] startUpdatingHeading];
     
+    NSLog(@"PARENT VIEW CONTROLLER CALSS : %@", self.parentViewController.class);
+    
     if([self.parentViewController isKindOfClass:[MapViewController class]]){
         [((MapViewController *)self.parentViewController).mapview setUserTrackingMode:MKUserTrackingModeFollowWithHeading];
-        
     }
     
 }

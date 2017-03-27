@@ -265,7 +265,7 @@ typedef enum : NSUInteger {
                                        EVENT_ADDRESS_KEY: _eventDetailDict[EVENT_ADDRESS_KEY],
                                        EVENT_DESCRIPTION_KEY: _eventDetailDict[EVENT_DESCRIPTION_KEY]
                                        };
-        [_eventMgr checkNewEvent:eventDetail complete:^(NSMutableArray *eventArray) {
+        [_eventMgr checkEvent:eventDetail complete:^(NSMutableArray *eventArray) {
             [self isNewEventAdded:([eventArray[0] intValue] == 1)?true:false];
                 
         }];

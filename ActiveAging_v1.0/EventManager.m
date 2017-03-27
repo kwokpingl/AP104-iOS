@@ -233,6 +233,61 @@ static EventManager * _store = nil;
     done([@[@(true),event.eventIdentifier ] mutableCopy]);
 }
 
+
+-(void) checkEvent:(NSDictionary *)event complete:(Donehandler)done {
+    NSString * startDateTimeStr = event[EVENT_START_KEY];
+    NSString * endDateTimeStr = event[EVENT_END_KEY];
+    
+    
+    NSDateFormatter * dateFormatter = [NSDateFormatter new];
+    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_TW"];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+    NSDate * startDateTime = [dateFormatter dateFromString:startDateTimeStr];
+    if (startDateTime == nil){
+        dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+        startDateTime = [dateFormatter dateFromString:startDateTimeStr];
+    }
+    NSDate * endDateTime = [dateFormatter dateFromString:endDateTimeStr];
+    
+    [self comparedWithStoredEvents:startDateTime eventEndDateTime:endDateTime complete:done];
+}
+
+/// MARK: COMPARE STORED EVENTS
+-(void) comparedWithStoredEvents:(NSDate *)eventStartDateTime eventEndDateTime:(NSDate *)eventEndDateTime complete:(Donehandler)done {
+    
+    NSPredicate * predicate = [_store predicateForEventsWithStartDate:eventStartDateTime
+                                                              endDate:eventEndDateTime
+                                                            calendars:calendarArray];
+    comparedWithNewEvent = [_store eventsMatchingPredicate:predicate];
+    
+    
+    
+    if (!comparedWithNewEvent){
+        done([@[@(true)] mutableCopy]);
+        return;
+    }
+    
+    EKEvent * event;
+    
+    NSInteger counter = 0;
+    addEvent.startDate = eventStartDateTime;
+    for (EKEvent * e in comparedWithNewEvent) {
+        if (eventStartDateTime == e.startDate) {
+            // if event at the same time was found
+            counter++;
+            if (counter>=1){
+                done([@[@(false)] mutableCopy]);
+                return;
+            }
+            event = e;
+        }
+    }
+    
+    done([@[@(true)] mutableCopy]);
+}
+
+
+
 - (void)fetchAllEvents:(NSDate *)startingFromDate complete:(Donehandler)done {
     
     if (_eventsAccessGranted){

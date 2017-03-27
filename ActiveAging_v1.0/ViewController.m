@@ -14,6 +14,7 @@
 #import "EditEventViewController.h"
 #import <NotificationCenter/NotificationCenter.h>
 #import "Definitions.h"
+#import "Widget.h"
 
 #define WIDGET_NAME @"group.ActiveAging.TodayExtensionSharingDefaults"
 
@@ -95,7 +96,9 @@ static void * __KVOContext;
     // While the scope gesture begin, the pan gesture of tableView should cancel.
     [self.tableView.panGestureRecognizer requireGestureRecognizerToFail:_scopeGesture];
     [self chineseCalendar];
-    [self widgetConfiguration];
+    [Widget widgetConfigurationWithTemperature:nil conditions:nil complete:^(NSError *error, id result) {
+        
+    }];
 }
 
 #pragma mark - viewWillAppear
@@ -104,12 +107,16 @@ static void * __KVOContext;
         allEventsArray = [[NSMutableArray alloc] initWithArray:eventArray];
         [self updateAuthorizationStatusToAccessEventStore];
     }];
-    
+    self.navigationController.toolbar.hidden = true;
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [_calendar reloadData];
     [_calendar.calendarHeaderView reloadData];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    self.navigationController.toolbar.hidden = false;
 }
 
 - (void)dealloc
@@ -120,41 +127,41 @@ static void * __KVOContext;
 
 
 #pragma mark - widgetConfiguration
-- (void) widgetConfiguration {
-    NSUserDefaults * sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WIDGET_NAME];
-    
-    [_eventManager sortTimeOrder:[NSDate date] complete:^(NSMutableArray *eventArray) {
-        NSMutableArray * eventsForWidget = [[NSMutableArray alloc] initWithArray:eventArray];
-        
-        EKEvent * event;
-        NSString * dateStr;
-        NSString * eventTitle;
-        
-        NSMutableArray * widgetEvent = [NSMutableArray new];
-        
-        if (eventsForWidget.count != 0) {
-            
-            for (int i = 0; i < eventsForWidget.count; i++) {
-                event = [eventsForWidget objectAtIndex:i];
-                
-                NSDateFormatter * today = [NSDateFormatter new];
-                today.dateFormat = @"HH:mm";
-                
-                dateStr = [today stringFromDate:event.startDate];
-                eventTitle = event.title;
-                
-                NSMutableDictionary * dict = [NSMutableDictionary new];
-                dict = [@{@"today date":dateStr, @"event title":eventTitle} mutableCopy];
-                
-                [widgetEvent addObject:dict];
-                //the first object contains the latest date and title...
-            }
-        }
-        
-        [sharedDefaults setObject:widgetEvent forKey:@"eventsArray"];
-        [sharedDefaults synchronize];
-    }];
-}
+//- (void) widgetConfiguration {
+//    NSUserDefaults * sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WIDGET_NAME];
+//    
+//    [_eventManager sortTimeOrder:[NSDate date] complete:^(NSMutableArray *eventArray) {
+//        NSMutableArray * eventsForWidget = [[NSMutableArray alloc] initWithArray:eventArray];
+//        
+//        EKEvent * event;
+//        NSString * dateStr;
+//        NSString * eventTitle;
+//        
+//        NSMutableArray * widgetEvent = [NSMutableArray new];
+//        
+//        if (eventsForWidget.count != 0) {
+//            
+//            for (int i = 0; i < eventsForWidget.count; i++) {
+//                event = [eventsForWidget objectAtIndex:i];
+//                
+//                NSDateFormatter * today = [NSDateFormatter new];
+//                today.dateFormat = @"HH:mm";
+//                
+//                dateStr = [today stringFromDate:event.startDate];
+//                eventTitle = event.title;
+//                
+//                NSMutableDictionary * dict = [NSMutableDictionary new];
+//                dict = [@{@"today date":dateStr, @"event title":eventTitle} mutableCopy];
+//                
+//                [widgetEvent addObject:dict];
+//                //the first object contains the latest date and title...
+//            }
+//        }
+//        
+//        [sharedDefaults setObject:widgetEvent forKey:@"eventsArray"];
+//        [sharedDefaults synchronize];
+//    }];
+//}
 
 #pragma mark - FSCALENDAR
 /// MARK: FSCalendar Delegates
@@ -363,6 +370,10 @@ static void * __KVOContext;
                 if (error){
                     NSLog(@"ERROR : %@", error.description);
                 }
+            } else {
+                [Widget widgetConfigurationWithTemperature:nil conditions:nil complete:^(NSError *error, id result) {
+                   
+                }];
             }
         }];
     }
@@ -372,7 +383,9 @@ static void * __KVOContext;
 
         dispatch_async(dispatch_get_main_queue(), ^{
                  [_eventManager sortTimeOrder:[NSDate date] complete:^(NSMutableArray *eventArray) {
-                     [self widgetConfiguration];
+                     [Widget widgetConfigurationWithTemperature:nil conditions:nil complete:^(NSError *error, id result) {
+                         
+                     }];
                  }];
             
                 [weakSelf.tableView reloadData]; //Update the UI with the above events

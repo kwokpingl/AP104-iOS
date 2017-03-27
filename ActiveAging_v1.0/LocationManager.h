@@ -14,6 +14,8 @@
 
 @protocol LocationManagerDelegate <NSObject>
 - (void) locationControllerDidUpdateLocation: (CLLocation *) location;
+@optional
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading;
 @end
 
 
